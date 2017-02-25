@@ -84,7 +84,18 @@ namespace scope. Instead, as explained above, this just defines a standard
 
 Technical: `$start_with_ascii_arguments` invokes the specified function with, literally,
 `{args, args+n_args}` as argument, where `args` is the `char**` that `main`
-receives. This means that your function doesn't need to have a `vector<string>` as
-formal argument. Your function's formal argument type just needs to be able to consume
-the curly braces initializer list.
+receives. This means that your function doesn't need to have specifically a
+`vector<string>` as formal argument. Your function's formal argument type just needs
+to be able to consume the curly braces initializer list that's passed to it.
 
+Hardcore technical: `$start_with_ascii_arguments` has &ldquo;ascii&rdquo; in its name
+because the ASCII character set, which for letters is only A through Z, is all that
+you can rely on portably. In the \*nix-world the command line arguments are usually encoded
+with a superset of ASCII called UTF-8, which is also what's expected by all other \*nix
+software, and which can encode all of Unicode. That means that for creation of
+\*nix-specific programs you can just the ignore the &ldquo;ascii&rdquo;. But in
+Windows a number of different old encodings with limited character sets, are used,
+depending on your country and the Windows configuration. There are technical solutions
+for Windows, and these solutions involve calling the operation system's API behind some
+portable more nice abstraction, but I haven't yet got that far with the Expressive C++
+library code.
