@@ -100,6 +100,6 @@ exists on mother Earth. That means that for creation of
 \*nix-specific programs you can happily ignore the &ldquo;ascii&rdquo;. But in
 Windows one of a number of different old encodings with limited character sets, is used.
 Exactly which one depends on your country and the Windows configuration. There are
-technical solutions for Windows, and these solutions involve calling the operation
+technical solutions for Windows, and these solutions involve calling the operating
 system's API (in Windows `GetCommandLineW` and `CommandLineToArgvW`) behind some portable
 more nice abstraction, but I haven't yet got that far with the Expressive C++ library code.
