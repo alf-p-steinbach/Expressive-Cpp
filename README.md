@@ -52,7 +52,7 @@ presented on the standard error stream.
 
 Technical: your statement block becomes the body of a `void` function
 called `cpp_main` in the global namespace. The `cpp_main` function is
-invoked, by $just`, via `$start_with( cpp_main )`. The **`$start_with`**
+invoked, by `$just`, via `$start_with( cpp_main )`. The **`$start_with`**
 macro is the most general Expressive C++ way to specify
 the program startup.
 
