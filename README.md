@@ -60,7 +60,7 @@ the specified startup function, plus arguments, if any. At the end of this
 call chain **`default_startup`** invokes your code within a `try`-block.
 
 If you want to process command line arguments you can use
-**`**start_with_ascii_arguments`** instead of just `$just`. As with `$just`
+**`start_with_ascii_arguments`** instead of just `$just`. As with `$just`
 this is a shallow wrapper for `$start_with`. Here's an example:
 
     #include <p/expressive/use_weakly_all.hpp>
@@ -81,3 +81,10 @@ There's no semicolon after the `$start_with_ascii_arguments` invocation because
 it isn't an executable statement. C++ does not support executable statements at
 namespace scope. Instead, as explained above, this just defines a standard
 `main` function, with some machinery to catch and report exceptions.
+
+Technical: `$start_with_ascii_arguments` invokes the specified function with, literally,
+`{args, args+n_args}` as argument, where `args` is the `char**` that `main`
+receives. This means that your function doesn't need to have a `vector<string>` as
+formal argument. Your function's formal argument type just needs to be able to consume
+the curly braces initializer list.
+
