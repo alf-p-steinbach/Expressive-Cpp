@@ -31,7 +31,7 @@ implemented as macros. Expressive C++ also offers some stuff implemented with
 ordinary C++ code, using C++ core language features up to and including C++14.
 For example, the *expression*
 
-    $invoked{ $let a=5+1; $let b=5+2; return a*b; }
+    $invoked{ $var x=1; while( x*x < 50 ) ++x; return x - 1; }
     
 &hellip; uses an Expressive C++ pseudo keyword macro, `$invoked`, to produce a lambda,
 and to pass it to some ordinary C++14 machinery that invokes that lambda and
