@@ -48,16 +48,19 @@ The basic way to specify what should happen when the program starts, is to use t
 
 Behind the scenes `$just` declares a standard C++ **`main`** function that
 invokes your statement block in a context where exceptions are caught and
-presented on the standard error stream. Technical: your statement block
-becomes the body of a `void` function called `cpp_main` in the global
-namespace. The `cpp_main` function is invoked via `$start_with( cpp_main )`,
-where **`$start_with`** is the most general Expressive C++ way to specify
-the startup.
+presented on the standard error stream.
 
-The `$start_with` macro is the one responsible for actually defining the
-standard `main`, which invokes `progrock::expressive::default_startup` with
-the specified startup function, plus arguments, if any. At the end of this
-call chain **`default_startup`** invokes your code within a `try`-block.
+Technical: your statement block becomes the body of a `void` function
+called `cpp_main` in the global namespace. The `cpp_main` function is
+invoked, by $just`, via `$start_with( cpp_main )`. The **`$start_with`**
+macro is the most general Expressive C++ way to specify
+the program startup.
+
+Hardcore technical: The `$start_with` macro is the one responsible for
+actually defining the standard `main`, which invokes
+`progrock::expressive::default_startup` with the specified startup function,
+plus arguments, if any. At the end of this call chain **`default_startup`**
+invokes your code within a `try`-`catch`-block.
 
 If you want to process command line arguments you can use
 **`start_with_ascii_arguments`** instead of just `$just`. As with `$just`
@@ -92,10 +95,11 @@ Hardcore technical: `$start_with_ascii_arguments` has &ldquo;ascii&rdquo; in its
 because the ASCII character set, which for letters is only A through Z, is all that
 you can rely on portably. In the \*nix-world the command line arguments are usually encoded
 with a superset of ASCII called UTF-8, which is also what's expected by all other \*nix
-software, and which can encode all of Unicode. That means that for creation of
-\*nix-specific programs you can just the ignore the &ldquo;ascii&rdquo;. But in
-Windows a number of different old encodings with limited character sets, are used,
-depending on your country and the Windows configuration. There are technical solutions
-for Windows, and these solutions involve calling the operation system's API behind some
-portable more nice abstraction, but I haven't yet got that far with the Expressive C++
-library code.
+software, and which can encode all of Unicode, just about every character and glyph that
+exists on mother Earth. That means that for creation of
+\*nix-specific programs you can happily ignore the &ldquo;ascii&rdquo;. But in
+Windows one of a number of different old encodings with limited character sets, is used.
+Exactly which one depends on your country and the Windows configuration. There are
+technical solutions for Windows, and these solutions involve calling the operation
+system's API (in Windows `GetCommandLineW` and `CommandLineToArgvW`) behind some portable
+more nice abstraction, but I haven't yet got that far with the Expressive C++ library code.
