@@ -1,0 +1,74 @@
+#pragma once
+// #include <p/expressive/library_extension/View_.hpp
+// Copyright © 2016 Alf P. Steinbach, distributed under Boost license 1.0.
+
+#include <p/expressive/library_extension/Collection_traits_.hpp>
+
+#include <iterator>     // std::reverse_iterator
+
+namespace progrock{ namespace expressive{
+#include <p/expressive/pseudo_keywords/begin_region.hpp>
+    inline namespace libx {
+        $use_from( std,
+            begin, end, reverse_iterator
+            );
+
+        template< class Iterator_tp >
+        class View_
+        {
+        public:
+            using Iterator = Iterator_tp;
+
+        private:
+            Iterator        first_;
+            Iterator        beyond_;
+
+        public:
+            $func first() const     -> Iterator     { return first_; }
+            $func beyond() const    -> Iterator     { return beyond_; }
+
+            $func begin() const     -> Iterator     { return first_; }
+            $func end() const       -> Iterator     { return beyond_; }
+
+            View_( const Iterator first, const Iterator beyond )
+                : first_{ first }
+                , beyond_{ beyond }
+            {}
+        };
+
+        template< class Iterator >
+        $func view_of( const Iterator first, const Iterator beyond )
+            -> View_<Iterator>
+        { return { first, beyond }; }
+
+        template< class Collection >
+        $func view_of( ref_<Collection> c )
+            -> View_<typename Collection_traits_<Collection>::Iterator>
+        { return { begin( c ), end( c ) }; }
+
+        template< class Iterator >
+        $func reverse_view_of( const Iterator first, const Iterator beyond )
+            -> View_< reverse_iterator< Iterator > >
+        {
+            return 
+            {
+                reverse_iterator<Iterator>{ beyond },
+                reverse_iterator<Iterator>{ first }
+            };
+        }
+
+        template< class Collection >
+        $func reverse_view_of( ref_<Collection> c )
+            -> View_< reverse_iterator< typename Collection_traits_< Collection >::Iterator > >
+        {
+            using Iterator = typename Collection_traits_< Collection >::Iterator;
+            return
+            {
+                reverse_iterator<Iterator>{ end( c ) },
+                reverse_iterator<Iterator>{ begin( c ) }
+            };
+        }
+
+    }  // namespace libx
+#include <p/expressive/pseudo_keywords/end_region.hpp>
+}}  // namespace progrock::cppx
