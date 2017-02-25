@@ -7,5 +7,5 @@ C++ and CLang, and probably also by far more compilers: `__COUNTER__`,
 `#pragma once`, `#pragma push_macro`, `#pragma pop_macro`, and use of the
 `$` character in identifiers. The shortest possible Expressive C++
 program is `$just{}`, where if any statements are added, any exception is
-reported on the standard error stream, and an suitable process exit code
+reported on the standard error stream, and a suitable process exit code
 is produced.
