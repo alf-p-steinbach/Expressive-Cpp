@@ -37,7 +37,7 @@ For example, the *expression*
 and to pass it to some ordinary C++14 machinery that invokes that lambda and
 produces its return value with the type implied by the `return` statement.
 
-## Program startup
+## Program startup and termination
 
 The basic way to specify what should happen when the program starts, is to use the
 **`$just`** keyword, followed by a statement sequence enclosed in curly braces.
@@ -50,21 +50,32 @@ Behind the scenes `$just` declares a standard C++ **`main`** function that
 invokes your statement block in a context where exceptions are caught and
 presented on the standard error stream.
 
-Technical: your statement block becomes the body of a `void` function
-called `cpp_main` in the global namespace. The `cpp_main` function is
-invoked, by `$just`, via `$start_with( cpp_main )`. The **`$start_with`**
-macro is the most general Expressive C++ way to specify
-the program startup.
+With `$just` your statement block becomes the body of a no-arguments `void`
+function called `cpp_main` in the global namespace. You can freely throw
+an exception to report failure. For a standard exception its message is then
+reported on the standard error stream, and if the exception doesn't specify
+a process exit code an OS-specific process code is returned. In \*nix-land
+this general failure code is the value `EXIT_FAILURE` from the
+`<stdlib.h>` header. But in Windows `EXIT_FAILURE` conflicts with a specific
+Windows error code called `ERROR_INVALID_FUNCTION`, so in Windows a special
+code defined by Windows, called `E_FAIL` by Windows, is returned instead.
 
-Hardcore technical: The `$start_with` macro is the one responsible for
-actually defining the standard `main`, which invokes
-`progrock::expressive::default_startup` with the specified startup function,
-plus arguments, if any. At the end of this call chain **`default_startup`**
-invokes your code within a `try`-`catch`-block.
+In summary, `$just` augments the raw standard `main` function in the
+following ways:
+
+* Catches and reports exceptions.  
+  This guarantees an orderly stack unrolling with cleanup, which is not
+  guaranteed by standard `main`. And it's nice to be able see the
+  exception message rather than a cryptic crash box.
+* The default return values are not in conflict with the OS conventions.
+* It's just less to write.
+
+---
 
 If you want to process command line arguments you can use
-**`start_with_ascii_arguments`** instead of just `$just`. As with `$just`
-this is a shallow wrapper for `$start_with`. Here's an example:
+**`start_with_ascii_arguments`** instead of just `$just`. As with
+`$just` this is a shallow wrapper for a more general startup macro
+called `$start_with`. Here's an example:
 
     #include <p/expressive/use_weakly_all.hpp>
     #include <iostream>
@@ -85,21 +96,11 @@ it isn't an executable statement. C++ does not support executable statements at
 namespace scope. Instead, as explained above, this just defines a standard
 `main` function, with some machinery to catch and report exceptions.
 
-Technical: `$start_with_ascii_arguments` invokes the specified function with, literally,
-`{args, args+n_args}` as argument, where `args` is the `char**` that `main`
-receives. This means that your function doesn't need to have specifically a
-`vector<string>` as formal argument. Your function's formal argument type just needs
-to be able to consume the curly braces initializer list that's passed to it.
-
-Hardcore technical: `$start_with_ascii_arguments` has &ldquo;ascii&rdquo; in its name
-because the ASCII character set, which for letters is only A through Z, is all that
-you can rely on portably. In the \*nix-world the command line arguments are usually encoded
-with a superset of ASCII called UTF-8, which is also what's expected by all other \*nix
-software, and which can encode all of Unicode, just about every character and glyph that
-exists on mother Earth. That means that for creation of
-\*nix-specific programs you can happily ignore the &ldquo;ascii&rdquo;. But in
-Windows one of a number of different old encodings with limited character sets, is used.
-Exactly which one depends on your country and the Windows configuration. There are
-technical solutions for Windows, and these solutions involve calling the operating
-system's API (in Windows `GetCommandLineW` and `CommandLineToArgvW`) behind some portable
-more nice abstraction, but I haven't yet got that far with the Expressive C++ library code.
+The argument to `$start_with_ascii_arguments` can be a lambda, it doesn't have to
+be a named function. And if it's named it doesn't have to be named `cpp_main`,
+although using a convention for the name can help with searching and with
+quickly seeing the purpose of the code. And it doesn't necessarily have to have a
+`vector<string>` formal argument. Your named function or lambda just has to be
+able to consume the literal actual argument expression `{args, args+n_args}`,
+where `args` is the `char**` that `main` receives. This initializer expression
+works nicely with a `vector<string>`, producing a vector of `n_args` strings.
