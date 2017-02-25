@@ -1,4 +1,4 @@
-# Expressive-Cpp
+# Expressive C++
 
 Expressive C++ is a header only library. It implements a more
 readable-for-non-C++-expert-folks dialect of C++. To do this it depends
