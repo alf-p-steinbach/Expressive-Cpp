@@ -9,35 +9,35 @@ C++ and CLang, and probably also by far more compilers: `__COUNTER__`,
 `$` character in identifiers.
 
 The shortest possible Expressive C++ program is
-
-    $just{}
-    
+```C++
+$just{}
+```
 which is • shorter than a standard `main`, and • safer than a standard
 `main` in the case of an exception being thrown out of it, and more • directly
 readable, without distracting bits such as the `int` in
-
-    int main(){} 
-
+```C++
+int main(){} 
+```
 And this is the general philosophy: not always shorter like here, but safer and
 to the non-expert more directly readable, and generally more convenient than
 the raw C++ that Expressive C++ code translates to.
 
 Flavor example:
+```C++
+#include <p/expressive/use_weakly_all.hpp>
+#include <iostream>
+$use_weakly_all_from( std );
 
-    #include <p/expressive/use_weakly_all.hpp>
-    #include <iostream>
-    $use_weakly_all_from( std );
-
-    $just
+$just
+{
+    $var sum = 0;
+    for( $each value $in {3, 1, 4, 1, 5, 9, 2, 6, 5, 4} )
     {
-        $var sum = 0;
-        for( $each value $in {3, 1, 4, 1, 5, 9, 2, 6, 5, 4} )
-        {
-            sum += value;
-        }
-        cout << sum << endl;
+        sum += value;
     }
-
+    cout << sum << endl;
+}
+```
 The `ref_` type builder, and others like it, allows one to use the principle
 of substitution to construct types, as in non-C languages in general. It also
 supports the practice of putting `const` first, even in nested parts. The
@@ -48,9 +48,9 @@ The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros. Expressive C++ also offers some stuff implemented with
 ordinary C++ code, using C++ core language features up to and including C++14.
 For example, the *expression*
-
-    $invoked{ $var x=1; while( x*x < 50 ) ++x; return x - 1; }
-    
+```C++
+$invoked{ $var x=1; while( x*x < 50 ) ++x; return x - 1; }
+```    
 &hellip; uses an Expressive C++ pseudo keyword macro, `$invoked`, to produce a lambda,
 and to pass it to some ordinary C++14 machinery that invokes that lambda and
 produces its return value with the type implied by the `return` statement.
@@ -59,11 +59,11 @@ produces its return value with the type implied by the `return` statement.
 
 The basic way to specify what should happen when the program starts, is to use the
 **`$just`** keyword, followed by a statement sequence enclosed in curly braces.
-
-    #include <p/expressive/use_weakly_all.hpp>
-    #include <iostream>
-    $just{ std::cout << "Hello, world!\n"; }
-
+```C++
+#include <p/expressive/use_weakly_all.hpp>
+#include <iostream>
+$just{ std::cout << "Hello, world!\n"; }
+```
 Behind the scenes `$just` declares a standard C++ **`main`** function that
 executes `setlocale( LC_ALL, "" )` and then invokes your statement block in
 a context where exceptions are caught and presented on the standard error
@@ -117,21 +117,21 @@ If you want to process command line arguments you can use
 **`start_with_ascii_arguments`** instead of just `$just`. As with
 `$just` this is a shallow wrapper for a more general startup macro
 called `$start_with`. Here's an example:
+```C++
+#include <p/expressive/use_weakly_all.hpp>
+#include <iostream>
+#include <vector>           // std::vector
+#include <string>           // std::string
+$use_weakly_all_from( std );
 
-    #include <p/expressive/use_weakly_all.hpp>
-    #include <iostream>
-    #include <vector>           // std::vector
-    #include <string>           // std::string
-    $use_weakly_all_from( std );
+$proc cpp_main( ref_<const vector<string>> args )
+{
+    for( $each arg $in enumerated( args ) )
+        cout << "Arg " << arg.index() << " is '" << arg.object() << "'.\n";
+}
 
-    $proc cpp_main( ref_<const vector<string>> args )
-    {
-        for( $each arg $in enumerated( args ) )
-            cout << "Arg " << arg.index() << " is '" << arg.object() << "'.\n";
-    }
-
-    $start_with_ascii_arguments( cpp_main )
-
+$start_with_ascii_arguments( cpp_main )
+```
 There's no semicolon after the `$start_with_ascii_arguments` invocation because
 it shouldn't be thought of as an executable statement. C++ does not support
 executable statements at namespace scope. Instead, as explained above, this just
@@ -153,25 +153,25 @@ If you want to customize the exception handling, e.g. to present the exception
 message in a GUI message box instead of just on the standard error stream, then
 you can pass your own handler as a second argument to **`$start_with`** (the macro
 used by `$just` and `$start_with_ascii_arguments`), like this:
+```C++
+#include <p/expressive/use_weakly_all.hpp>
+#include <iostream>
+$use_weakly_all_from( std );
 
-    #include <p/expressive/use_weakly_all.hpp>
-    #include <iostream>
-    $use_weakly_all_from( std );
+$proc my_fatal_error_handler( ref_<const exception> x )
+{
+    // E.g. present the `x.what()` message in a GUI message box. But for now:
+    cerr << "?%¤#\"!$! Something ungood happened: " << x.what() << endl;
+}
 
-    $proc my_fatal_error_handler( ref_<const exception> x )
-    {
-        // E.g. present the `x.what()` message in a GUI message box. But for now:
-        cerr << "?%¤#\"!$! Something ungood happened: " << x.what() << endl;
-    }
+$proc compute_something_difficult()
+{
+    // Here could be some computation, e.g. parsing a file, that could fail.
+    $fail( "Oh my, something was not as expected." );   // Throws an exception.
+}
 
-    $proc compute_something_difficult()
-    {
-        // Here could be some computation, e.g. parsing a file, that could fail.
-        $fail( "Oh my, something was not as expected." );   // Throws an exception.
-    }
-
-    $start_with( compute_something_difficult, my_fatal_error_handler )
-
+$start_with( compute_something_difficult, my_fatal_error_handler )
+```
 Output:
 
 <pre>
