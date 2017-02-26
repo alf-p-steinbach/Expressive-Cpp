@@ -105,7 +105,10 @@ following ways (plus some!):
   exception message rather than a cryptic crash box. And the default
   return values are not in conflict with the OS conventions.
 * Runs your code after a `setlocale( LC_ALL, "" )` call.  
-  This makes character classification functions and wide streams, work.
+  This makes character classification functions and wide streams, work,
+  sort of. In particular the wide streams then work with no problem in
+  \*nix-land. In Windows, however, some  additional magic incantations
+  are necessary to get full Unicode-support; I may add that later.
 * It's just less to write.
 
 ---
