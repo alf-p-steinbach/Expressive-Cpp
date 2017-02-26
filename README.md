@@ -100,7 +100,7 @@ In summary, `$just` augments the raw standard `main` function in the
 following ways (plus some!):
 
 * Catches and reports exceptions.  
-  This guarantees an orderly stack unrolling with cleanup, which is not
+  This guarantees an orderly stack unwinding with cleanup, which is not
   guaranteed by standard `main`. Also it's nice to be able see the
   exception message rather than a cryptic crash box. And the default
   return values are not in conflict with the OS conventions.
