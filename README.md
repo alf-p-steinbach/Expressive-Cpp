@@ -121,7 +121,7 @@ called `$start_with`. Here's an example:
     #include <string>           // std::string
     $use_weakly_all_from( std );
 
-    void cpp_main( ref_<const vector<string>> args )
+    $proc cpp_main( ref_<const vector<string>> args )
     {
         for( $each arg $in enumerated( args ) )
             cout << "Arg " << arg.index() << " is '" << arg.object() << "'.\n";
