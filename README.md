@@ -38,7 +38,11 @@ Flavor example:
         cout << sum << endl;
     }
 
-The `ref_` type builder, and others like it, allows one to use the principle of substitution to construct types, as in non-C languages in general. It also supports the practice of putting `const` first, even in nested parts. The resulting type specifications can be naturally read in the forward direction, unlike in raw C and C++.
+The `ref_` type builder, and others like it, allows one to use the principle
+of substitution to construct types, as in non-C languages in general. It also
+supports the practice of putting `const` first, even in nested parts. The
+resulting type specifications can be naturally read in the forward direction,
+unlike in raw C and C++.
 
 The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros. Expressive C++ also offers some stuff implemented with
@@ -67,7 +71,7 @@ stream.
 
 The `setlocale` call makes the standard library's character
 classification functions like `toupper` work for non-ASCII characters in
-single byte encodings such as in Windows. It makes the standard library's
+single byte encodings such as in Windows. And it makes the standard library's
 wide iostreams (input/output), work, to the degree directly supported by
 the OS. For unfortunately, with the raw C++ `main` function this stuff
 doesn't work by default, which can be pretty baffling to the novice.
