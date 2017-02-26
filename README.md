@@ -133,9 +133,10 @@ called `$start_with`. Here's an example:
     $start_with_ascii_arguments( cpp_main )
 
 There's no semicolon after the `$start_with_ascii_arguments` invocation because
-it isn't an executable statement. C++ does not support executable statements at
-namespace scope. Instead, as explained above, this just defines a standard
-`main` function, with some machinery to catch and report exceptions.
+it shouldn't be thought of as an executable statement. C++ does not support
+executable statements at namespace scope. Instead, as explained above, this just
+defines a standard `main` function, with some machinery to configure things and
+catch and report exceptions.
 
 The argument to `$start_with_ascii_arguments` can be a lambda, it doesn't have to
 be a named function. And if it's named it doesn't have to be named `cpp_main`,
@@ -145,3 +146,39 @@ quickly seeing the purpose of the code. And it doesn't necessarily have to have 
 able to consume the literal actual argument expression `{args, args+n_args}`,
 where `args` is the `char**` that `main` receives. This initializer expression
 works nicely with a `vector<string>`, producing a vector of `n_args` strings.
+
+---
+
+If you want to customize the exception handling, e.g. to present the exception
+message in a GUI message box instead of just on the standard error stream, then
+you can pass your own handler as a second argument to **`$start_with`** (the macro
+used by `$just` and `$start_with_ascii_arguments`), like this:
+
+    #include <p/expressive/use_weakly_all.hpp>
+    #include <iostream>
+    $use_weakly_all_from( std );
+
+    $proc my_fatal_error_handler( ref_<const exception> x )
+    {
+        // E.g. present the `x.what()` message in a GUI message box. But for now:
+        cerr << "?%¤#\"!$! Something ungood happened: " << x.what() << endl;
+    }
+
+    $proc compute_something_difficult()
+    {
+        // Here could be some computation, e.g. parsing a file, that could fail.
+        $fail( "Oh my, something was not as expected." );   // Throws an exception.
+    }
+
+    $start_with( compute_something_difficult, my_fatal_error_handler )
+
+Output:
+
+<pre>
+?%☼#"!$! Something ungood happened: compute_something_difficult - Oh my, something was not as expected.
+</pre>
+
+Digression: the function name `compute_something_difficult` was automatically prepended to the exception
+message, by the `$fail` macro. If instead you use the basic pure C++ `fail` function then you
+get just exactly the specified message. Usually the function name is enough to identify where the
+exception occurred and what it's about.
