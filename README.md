@@ -61,27 +61,43 @@ The basic way to specify what should happen when the program starts, is to use t
     $just{ std::cout << "Hello, world!\n"; }
 
 Behind the scenes `$just` declares a standard C++ **`main`** function that
-invokes your statement block in a context where exceptions are caught and
-presented on the standard error stream.
+executes `setlocale( LC_ALL, "" )` and then invokes your statement block in
+a context where exceptions are caught and presented on the standard error
+stream.
 
-With `$just` your statement block becomes the body of a no-arguments `void`
-function called `cpp_main` in the global namespace. You can freely throw
-an exception to report failure. For a standard exception its message is then
-reported on the standard error stream, and if the exception doesn't specify
-a process exit code an OS-specific process code is returned. In \*nix-land
-this general failure code is the value `EXIT_FAILURE` from the
+The `setlocale` call makes the standard library's character
+classification functions like `toupper` work for non-ASCII characters in
+single byte encodings such as in Windows. It makes the standard library's
+wide iostreams (input/output), work, to the degree directly supported by
+the OS. For unfortunately, with the raw C++ `main` function this stuff
+doesn't work by default, which can be pretty baffling to the novice.
+
+The catching and presentation of exceptions from your code avoids the raw
+`main` default behavior, where exceptions just make the program crash with
+some cryptic unrelated message.
+
+When an exception propagates out of your code, if the exception doesn't
+specify a process exit code then an OS-specific process code is returned.
+In \*nix-land this general failure code is the value `EXIT_FAILURE` from the
 `<stdlib.h>` header. But in Windows `EXIT_FAILURE` conflicts with a specific
 Windows error code called `ERROR_INVALID_FUNCTION`, so in Windows a special
 code defined by Windows, called `E_FAIL` by Windows, is returned instead.
+However, unlike the non-working classification functions and non-working
+wide streams and lack of exception catching, the exit code conflict isn't
+a problem with the C++ language. Rather, this problem is due to Microsoft
+choosing two conflicting conventions: one for Windows itself, and different
+one for `EXIT_FAILURE` in their C++ implementation for Windows, Visual C++.
 
 In summary, `$just` augments the raw standard `main` function in the
 following ways (plus some!):
 
 * Catches and reports exceptions.  
   This guarantees an orderly stack unrolling with cleanup, which is not
-  guaranteed by standard `main`. And it's nice to be able see the
-  exception message rather than a cryptic crash box.
-* The default return values are not in conflict with the OS conventions.
+  guaranteed by standard `main`. Also it's nice to be able see the
+  exception message rather than a cryptic crash box. And the default
+  return values are not in conflict with the OS conventions.
+* Runs your code after a `setlocale( LC_ALL, "" )` call.  
+  This makes character classification functions and wide streams, work.
 * It's just less to write.
 
 ---
