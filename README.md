@@ -93,7 +93,7 @@ code defined by Windows, called `E_FAIL` by Windows, is returned instead.
 However, unlike the non-working classification functions and non-working
 wide streams and lack of exception catching, the exit code conflict isn't
 a problem with the C++ language. Rather, this problem is due to Microsoft
-choosing two conflicting conventions: one for Windows itself, and different
+choosing two conflicting conventions: one for Windows itself, and a different
 one for `EXIT_FAILURE` in their C++ implementation for Windows, Visual C++.
 
 In summary, `$just` augments the raw standard `main` function in the
