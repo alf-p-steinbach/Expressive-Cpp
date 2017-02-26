@@ -109,7 +109,7 @@ following ways (plus some!):
   sort of. In particular the wide streams then work with no problem in
   \*nix-land. In Windows, however, some  additional magic incantations
   are necessary to get full Unicode-support; I may add that later.
-* It's just less to write.
+* It's just less to write. Wonderful!
 
 ---
 
