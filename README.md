@@ -71,6 +71,10 @@ single byte encodings such as in Windows. It makes the standard library's
 wide iostreams (input/output), work, to the degree directly supported by
 the OS. For unfortunately, with the raw C++ `main` function this stuff
 doesn't work by default, which can be pretty baffling to the novice.
+&ldquo;Huh, what's this? My brand new car starts but won't move!&rdquo;
+&ldquo;Oh, you didn't know? Before you try to start and drive your car
+you have to utter the precise magic incantation to *enable* your car's
+forward movement. It is, of course, disabled by default.&rdquo;
 
 The catching and presentation of exceptions from your code avoids the raw
 `main` default behavior, where exceptions just make the program crash with
