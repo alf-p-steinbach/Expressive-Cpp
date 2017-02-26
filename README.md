@@ -1,14 +1,26 @@
-# Expressive C++
+# Expressive C++  &ndash;  readability, safety and convenience
 
-Expressive C++ is a header only library. It implements a more
-readable-for-non-C++-expert-folks dialect of C++. To do this it depends
+Expressive C++ is a header only library. It implements a less unsafe, more
+convenient and readable-for-non-C++-expert-folks dialect of C++. To do this
+it depends
 on the following language extensions, which are supported by g++, Visual
 C++ and CLang, and probably also by far more compilers: `__COUNTER__`,
 `#pragma once`, `#pragma push_macro`, `#pragma pop_macro`, and use of the
-`$` character in identifiers. The shortest possible Expressive C++
-program is `$just{}`, where if any statements are added, any exception is
-reported on the standard error stream, and a suitable process exit code
-is produced.
+`$` character in identifiers.
+
+The shortest possible Expressive C++ program is
+
+    $just{}
+    
+which is • shorter than a standard `main`, and • safer than a standard
+`main` in the case of an exception being thrown out of it, and more • directly
+readable, without distracting bits such as the `int` in
+
+    int main(){} 
+
+And this is the general philosophy: not always shorter like here, but safer and
+to the non-expert more directly readable, and generally more convenient than
+the raw C++ that Expressive C++ code translates to.
 
 Flavor example:
 
@@ -25,6 +37,8 @@ Flavor example:
         }
         cout << sum << endl;
     }
+
+The `ref_` type builder, and others like it, allows one to use the principle of substitution to construct types, as in non-C languages in general. It also supports the practice of putting `const` first, even in nested parts. The resulting type specifications can be naturally read in the forward direction, unlike in raw C and C++.
 
 The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros. Expressive C++ also offers some stuff implemented with
@@ -61,7 +75,7 @@ Windows error code called `ERROR_INVALID_FUNCTION`, so in Windows a special
 code defined by Windows, called `E_FAIL` by Windows, is returned instead.
 
 In summary, `$just` augments the raw standard `main` function in the
-following ways:
+following ways (plus some!):
 
 * Catches and reports exceptions.  
   This guarantees an orderly stack unrolling with cleanup, which is not
