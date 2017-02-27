@@ -231,14 +231,16 @@ reading the complete function definition!, and the difference is not there in
 the raw C++ terminology: the C and C++ terminology is to call all routines
 &ldquo;functions&rdquo;. The Expressive C++ pseudo keywords `$proc` and `$func`
 are there to let you much more clearly communicate the *intended kind*
-of function declaration.
+of function declaration. No doubt about whether `empty` empties or checks. If
+it's a `$proc` then it empties, and if it's a `$func`, then it checks.
 
 If you intend that a function should be a command, use `$proc`. If you intend
 instead that it should produce an expression result, whose type you will
 specify with `->`*`Type`* after the function head, use `$func`.
 
-Only if really intend to have an automatically deduced return type, as in the
-(de-) motivating example above, use raw `auto`, which has mnemonic value that way.
+Only if you really intend to have a C++14 automatically deduced return type, as
+in the (de-) motivating example above, use raw `auto`, which has mnemonic value
+that way; &ldquo;automatic&rdquo;.
 
 For the purpose of high level source code, as opposed to writing assembly
 code, is primarily to communicate the intended meaning *to human readers*.
