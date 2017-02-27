@@ -12,7 +12,6 @@
 #pragma push_macro( "$invoked" )
 #pragma push_macro( "$of_type" )
 #pragma push_macro( "$as" )
-#pragma push_macro( "$as_bool" )
 #pragma push_macro( "$when" )
 #pragma push_macro( "$use" )
 #pragma push_macro( "$default_to" )

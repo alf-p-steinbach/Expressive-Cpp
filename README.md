@@ -1,12 +1,45 @@
 # Expressive C++  &ndash;  readability, safety and convenience
 
-Expressive C++ is a header only library. It implements a less unsafe, more
-convenient and readable-for-non-C++-expert-folks dialect of C++. To do this
-it depends
-on the following language extensions, which are supported by g++, Visual
-C++ and CLang, and probably also by far more compilers: `__COUNTER__`,
-`#pragma once`, `#pragma push_macro`, `#pragma pop_macro`, and use of the
-`$` character in identifiers.
+## About.
+
+Expressive C++ implements a less unsafe, more convenient and
+readable-for-non-C++-expert-folks dialect of C++. It's based on ordinary C++
+code plus some supporting pseudo keywords that start with `$`. Expressive C++
+uses the `$` sign as effectively a so far clean and unused namespace for
+its macro keywords. The `$` is supported by the main C++ compilers, including g++,
+Visual C++ and clang, and it provides easy recognition, improved readability
+(no uppercase shouting or prefix verbosity), and greatly reduced chance of name
+collision.
+
+Example of ordinary C++ code: `enumerated( c )` where `c` is a collection such as a
+`std::vector`, creates a view of index/item pairs that can be iterated over in a
+range-based `for`, much like Pyhon's `enumerate`.
+
+Example of a pseudo keyword macro: `$fail( "Blah" )` throws a `std::runtime_error`
+exception with  the containing function's qualified name prepended to the specified
+exception message `"Blah"` (a macro is needed to pick up the function name). 
+
+## Requirements & how to install.
+
+The following language extensions, supported by g++, Visual C++ and CLang, and probably
+also by far more compilers, are required:
+
+* `__COUNTER__`,
+* `#pragma once`,
+* `#pragma push_macro`,
+* `#pragma pop_macro`, and
+*  that `$` characters are accepted in identifiers.
+
+Expressive C++ is a pure header C++ library. I.e. you don't have to build or download
+binaries for your platform: the headers are all you need. The library is designed to
+reside in a folder called `p`, somewhere in your compiler's include path. You can just
+copy the file hierarhcy there.
+
+There is one library dependency, one additional library to install, namely the
+[Macro Magic](https://github.com/alf-p-steinbach/Macro-Magic) micro-library, which also
+is a pure header library, and which also is designed to reside in the `p` folder.
+
+## Introduction
 
 The shortest possible Expressive C++ program is
 ```C++

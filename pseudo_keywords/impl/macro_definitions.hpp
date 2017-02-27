@@ -38,7 +38,6 @@
             expr                            \
         )
 #   define $as                          static_cast
-#   define $as_bool( e )                !!(e)               // Avoids MSVC sillywarning.
 #
 #   define $when( condition )           (condition?
 #   define $use( value )                value :

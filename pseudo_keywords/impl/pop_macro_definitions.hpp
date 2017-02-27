@@ -12,7 +12,6 @@
 #pragma pop_macro( "$invoked" )
 #pragma pop_macro( "$of_type" )
 #pragma pop_macro( "$as" )
-#pragma pop_macro( "$as_bool" )
 #pragma pop_macro( "$when" )
 #pragma pop_macro( "$use" )
 #pragma pop_macro( "$default_to" )
