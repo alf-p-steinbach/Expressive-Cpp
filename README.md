@@ -15,9 +15,23 @@ Example of ordinary C++ code: `enumerated( c )` where `c` is a collection such a
 `std::vector`, creates a view of index/item pairs that can be iterated over in a
 range-based `for`, much like Pyhon's `enumerate`.
 
+In namespace `progrock::expressive` (some in nested `inline`
+namespaces for selective unqualified usage), as of late Feb 2017: `Byte`, `Index`, `max_byte_value`, `max_index_value`, `max_size_value`, `n_bits_per_<T>`, `forwarding_ref_<T>`, `ptr_<T>`, `raw_array_<T>`, `raw_array_of_<n`, `T>`, `ref_<T>`, `temp_ref_<T>`, `type_<T>`, `call_of<F>`, `default_fatal_error_handler`, `default_startup`, `dummy_main_func`, `Fatal_error_handler`, `Main_func`, `enumerated<T>`, `Enumerator_<T>`, `Exit_code::Enum`, `fail`, `fail_from_location`, `hopefully`, `is_true<T>`, `no_more_used`, `ref_to<T>`, `append_to`, `Collection_traits_`, `Is_string_class_`, `is_string_class_`, `length_of`, `n_items_in`, `No_copy`, `No_copy_or_move`, `Non_instantiable`, `Range`, `operator<<(S,T)`, `convert_to<T>`, `convert_to_hex_in`, `convert_to_hexsz_in`, `to_<T>`, `to_hex`, `Type_`, `reverse_view_of`, `View_<T>`, `view_of`, `system_is_little_endian`
+
 Example of a pseudo keyword macro: `$fail( "Blah" )` throws a `std::runtime_error`
 exception with  the containing function's qualified name prepended to the specified
 exception message `"Blah"` (a macro is needed to pick up the function name). 
+
+As of late Feb 2017: (general:) `$e`, `$static_assert`, `$funcname`, `$noreturn`
+(expressions:) `$invoked`, `$of_type`, `$as`, `$when`, `$use`, `$default_to`, `$self`, `$lambda_using`, `$byref`, `$byval`, `$capture_byref`, `$capture_byval`, `$lambda`, `$lambda_using_references`, `$lambda_using_values`
+(declarations & namespaces:) `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$name`, `$readonly_name`, `$func`, `$proc`, `$simple_pure_function`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`
+(templates:) `$enabled_if`, `$is`
+(flow control:) `$repeat`, `$until`, `$each_value`, `$each_ref`, `$each`, `$in`, `$n_times`, `$hopefully`, `$fail`
+(startup:) `$start_with`, `$start_with_ascii_arguments`, `$just`
+
+The main criterion for including something or not has been whether it has been of direct
+value to me, and something that a novice could reasonably expect to be part of the core
+language.
 
 ## Requirements & how to install.
 
