@@ -281,20 +281,21 @@ then novel and to some, at the time, abhorrent idea of regarding every routine
 as a **function**: that every routine call produced some expression result value,
 that just could be ignored and discarded if it wasn't meaningful. If an
 expression result type was not declared the routine would implicitly have `int`
-return type, and would often just produce some garbage value. The
+expression result type, and would often just produce some garbage value. The
 expression result type was called the function's **return type**, and the concept
 of an implicit `int` return type is known as &ldquo;**implicit int**&rdquo;.
 
-Just some years after, when Bjarne Stroustrup conceived of C++ in 1979-80, the C
-compilers at AT&T already supported `void` as return type for functions that did
-not really produce expression result values. Perhaps warnings about calls
-not using the apparent return values, had become too great an annoyance? Anyway,
-the routine kind unification idealism had met practical reality and had lost,
-already in 1980. And with the stronger typing in C++ the implicit `int`, which
-mainly supported the now dropped unification, has also been dropped: it's not
-valid in C++ code. Backing up that notational de-unification with corresponding
-de-unified semantics, in C++ returning from a non-`void` function without
-producing a return value is now formally Undefined Behavior.
+Just some years after, when Bjarne Stroustrup conceived of C++ at AT&T Bell Labs
+in 1979-80, the C compilers at AT&T already supported `void` as return type for
+functions that did not really produce expression result values. Perhaps warnings
+about calls not using the apparent return values, had become too great an
+annoyance? Anyway, the routine kind unification idealism had met practical
+reality and had lost, already in 1980. And with the stronger typing in C++ the
+implicit `int`, which mainly supported the now dropped unification, has also
+been dropped: it's not valid in C++ code. Backing up that notational
+de-unification with corresponding de-unified semantics, in C++ returning from a
+non-`void` function without producing a return value is now formally Undefined
+Behavior.
 
 So, after the de-unification in C++, somewhere around 1980, we now have
 
