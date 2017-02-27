@@ -184,25 +184,76 @@ get just exactly the specified message. Usually the function name is enough to i
 exception occurred and what it's about.
 
 ## Function declarations
+As motivation for distinguishing clearly between two kinds of functions,
+called `$proc` and `$func` in Expressive C++, consider a system for managing
+an automated warehouse. It sometimes has to move things around, e.g. to make
+place for new items, or to optimize access patterns. So, guess what is the
+`empty` member function below, here expressed in raw C++14 syntax with
+automatically deduced return type:
+```C++
+struct Warehouse
+{
+    auto foo();
+    auto empty();
+};
+```
+<sup>*Yes, you're absolutely right, one really shouldn't do this!*</sup>
 
-Both the raw C++ syntax and its semantics distinguish between
-routines that do produce expression result values, and those that don't. But
-it's a difference that for historical reasons is toned down, so much that
-in some cases it can't be deduced by just reading a function definition!,
-and it's not there in the raw C++ terminology: the C and C++ terminology is
-to call all routines &ldquo;functions&rdquo;. The Expressive C++ pseudo
-keywords `$proc` and `$func` are purely syntactic sugar to let you
-communicate more clearly the *intent* of a function declaration.
+Well, if `empty` is a `void` function then it's certainly about emptying the
+warehouse, &ldquo;empty it!&rdquo;. But if `empty` is a `bool` function, then
+it's most likely a means to check whether the warehouse is empty, like,
+&ldquo;is it empty?&rdquo;, in the same way as e.g. `std::string::empty()`. So
+let's look at the complete definition to find out:
+```C++
+inline auto Warehouse::empty() { return foo(); }
+```
+Oh, the return type depends on the return type of `foo`! ***One can't deduce
+the meaning of `empty` merely by looking at its complete definition***, in
+isolation. One must further look at the definition of `foo` that it calls:
+```C++
+inline auto Warehouse::foo() { return void(); }
+```
+Aha! Assuming the author hasn't gone berserk in some world of fantasy C++
+programming, what with the apparent instantiation of `void` here and all, it turns
+out that `foo` returns `void`, and so must then also `empty`, which
+therefore certainly is a command to make empty, not a query to check for
+emptiness&hellip;
 
-For, the purpose of high level source code, as opposed to writing assembly
+---
+
+The above motivating ugliness example was a special case.
+
+In general both the raw C++ syntax and its semantics distinguish between
+routines that do produce expression result values, and those that don't. *But*
+it's a difference that for historical reasons is very much toned down, so much
+toned down that in some cases, like the one above, it can't even be deduced by
+reading the complete function definition!, and the difference is not there in
+the raw C++ terminology: the C and C++ terminology is to call all routines
+&ldquo;functions&rdquo;. The Expressive C++ pseudo keywords `$proc` and `$func`
+are there to let you much more clearly communicate the *intended kind*
+of function declaration.
+
+If you intend that a function should be a command, use `$proc`. If you intend
+instead that it should produce an expression result, whose type you will
+specify with `->`*`Type`* after the function head, use `$func`.
+
+Only if really intend to have an automatically deduced return type, as in the
+(de-) motivating example above, use raw `auto`, which has mnemonic value that way.
+
+For the purpose of high level source code, as opposed to writing assembly
 code, is primarily to communicate the intended meaning *to human readers*.
+
+---
 
 In addition to `$proc` and `$func` the `$lambda` keyword denotes a main
 category:
 
 * **`$proc`**:  
    A function that does not produce an expression result value. It's a function
-   with `void` result.
+   with `void` result. It can't be used to produce a value (although it
+   can appear to be used that way in a `return` expression), and since it's all
+   about run-time side effects, even the simplest `$proc` can't be evaluated at
+   compile time.
 * **`$func`**:  
    A function that's *intended* to be one that produces an expression result
    value. It's *intended* to have a non-`void` result. If it doesn't then most
@@ -212,6 +263,14 @@ category:
    spot, right here where it's used (plus it has some more interesting
    properties exemplified below). It can produce an expression result value, or
    not; by default it doesn't.
+
+While these pseudo-keywords express important differences, as a group they unify
+the syntax. In raw C++ they correspond to respectively `void`, `auto` and `[]`,
+which are a type, a non-type keyword, and an operator-like special syntax, which
+not only lack mnemonic value but in the case of `auto` is directly
+misleading, just an opportunistic reuse of a keyword used for something else
+entirely in original C. With `$proc`, `$func` and `$lambda` a function declaration
+always starts with pseudo-keyword that's readable and indicates what it is about.
 
 ### Historical reasons for the raw C++ terminology versus notation mismatch
 
@@ -243,7 +302,9 @@ So, after the de-unification in C++, somewhere around 1980, we now have
 * the more purely action-oriented `void` routines that are unlike anything in
   maths, called `procedure` in Pascal and `$proc` in Expressive C++.
 
-Raw C++ just pays lip service to the original and early dropped C unification
+Raw C++ pays lip service to the original and early dropped C unification
 idea by *keeping the original unification terminology* with all routines
 referred to as &ldquo;functions&rdquo;, whether they produce expression values
 or not.
+
+###
