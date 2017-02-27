@@ -182,3 +182,68 @@ Digression: the function name `compute_something_difficult` was automatically pr
 message, by the `$fail` macro. If instead you use the basic pure C++ `fail` function then you
 get just exactly the specified message. Usually the function name is enough to identify where the
 exception occurred and what it's about.
+
+## Function declarations
+
+Both the raw C++ syntax and its semantics distinguish between
+routines that do produce expression result values, and those that don't. But
+it's a difference that for historical reasons is toned down, so much that
+in some cases it can't be deduced by just reading a function definition!,
+and it's not there in the raw C++ terminology: the C and C++ terminology is
+to call all routines &ldquo;functions&rdquo;. The Expressive C++ pseudo
+keywords `$proc` and `$func` are purely syntactic sugar to let you
+communicate more clearly the *intent* of a function declaration.
+
+For, the purpose of high level source code, as opposed to writing assembly
+code, is primarily to communicate the intended meaning *to human readers*.
+
+In addition to `$proc` and `$func` the `$lambda` keyword denotes a main
+category:
+
+* **`$proc`**:  
+   A function that does not produce an expression result value. It's a function
+   with `void` result.
+* **`$func`**:  
+   A function that's *intended* to be one that produces an expression result
+   value. It's *intended* to have a non-`void` result. If it doesn't then most
+   probably that's a bug.
+* **`$lambda`**:  
+   A function that doesn't have a name.  It's anonymous and it's defined on the
+   spot, right here where it's used (plus it has some more interesting
+   properties exemplified below). It can produce an expression result value, or
+   not; by default it doesn't.
+
+### Historical reasons for the raw C++ terminology versus notation mismatch
+
+The C language in the early 1970’s, ancestor of modern C++, introduced the
+then novel and to some, at the time, abhorrent idea of regarding every routine
+as a **function**: that every routine call produced some expression result value,
+that just could be ignored and discarded if it wasn't meaningful. If an
+expression result type was not declared the routine would implicitly have `int`
+return type, and would often just produce some garbage value value. The
+expression result type was called the function's **return type**, and the concept
+of an implicit `int` return type is known as &ldquo;**implicit int**&rdquo;.
+
+Just some years after, when Bjarne Stroustrup conceived of C++ in 1979-80, the C
+compilers at AT&T already supported `void` as return type for functions that did
+not really produce expression result values. Perhaps warnings about calls
+not using the apparent return values, had become too great an annoyance? Anyway,
+the routine unification idealism had met practical reality and had lost, already
+in 1980. And with the stronger typing in C++ the implicit `int`, which mainly
+supported the now dropped unification, has also been dropped: it's not valid in
+C++ code. Backing up that notational de-unification with corresponding
+de-unified semantics, in C++ returning from a non-`void` function without
+producing a return value is now formally Undefined Behavior.
+
+So, after the de-unification in C++, somewhere around 1980, we now have
+
+* routines that do produce expression  result values and sometimes model
+  mathematical functions, called `function` in the Pascal language and `$func`
+  in Expressive C++; and
+* the more purely action-oriented `void` routines that are unlike anything in
+  maths, called `procedure` in Pascal and `$proc` in Expressive C++.
+
+Raw C++ just pays lip service to the original and early dropped C unification
+idea by *keeping the original unification terminology* with all routines
+referred to as &ldquo;functions&rdquo;, whether they produce expression values
+or not.
