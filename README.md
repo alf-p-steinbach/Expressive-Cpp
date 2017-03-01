@@ -300,15 +300,17 @@ In addition to `$p` and `$f` the `$lambda` keyword denotes a main
 category:
 
 * **`$p`**:  
-   A function that does not produce an expression result value. It's a function
-   with `void` result. It can't be used to produce a value (although it
-   can appear to be used that way in a `return` expression), and since it's all
-   about run-time side effects, even the simplest `$p` can't be evaluated at
-   compile time.
+   A function that does not produce an expression result value and is just
+   meant to have some side effect, like a Pascal `procedure`. It's a function
+   with `void` result type. So, it can't be used to produce a value (although
+   it can appear to be used that way in a `return` expression), and since it's
+   all about run-time side effects, even the simplest `$p` can't be evaluated
+   at compile time.
 * **`$f`**:  
    A function that's *intended* to be one that produces an expression result
-   value. It's *intended* to have a non-`void` result. If it doesn't then most
-   probably that's a bug.
+   value. It's *intended* to have a non-`void` result that can be used in an
+   expression, like a Pascal `function`. If it doesn't have `void` result then
+   most likely that's a bug.
 * **`$lambda`**:  
    A function that doesn't have a name.  It's anonymous and it's defined on the
    spot, right here where it's used (plus it has some more interesting
