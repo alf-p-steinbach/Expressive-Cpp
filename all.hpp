@@ -17,4 +17,4 @@
 
 #include <p/expressive/core_language.hpp>               // expressive::core::*
 #include <p/expressive/library_extension.hpp>           // expressive::libx::*
-#include <p/expressive/pseudo_keywords/definitions.hpp> // macros, e.g. `$proc`.
+#include <p/expressive/pseudo_keywords/definitions.hpp> // macros, e.g. `$p`.

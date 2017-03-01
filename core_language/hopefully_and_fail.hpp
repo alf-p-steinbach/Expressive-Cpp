@@ -21,17 +21,17 @@ namespace progrock{ namespace expressive{
 
         //TODO: add System_error class with error codes.
 
-        inline $func hopefully( const bool e )
+        inline $f hopefully( const bool e )
             -> bool
         { return e; }
 
         $noreturn
-        inline $func fail( ref_<const string> cause )
+        inline $f fail( ref_<const string> cause )
             -> bool
         { throw runtime_error( cause ); }
 
         $noreturn
-        inline $func fail_from_location(
+        inline $f fail_from_location(
             ref_<const string>      location,
             ref_<const string>      cause
             ) -> bool

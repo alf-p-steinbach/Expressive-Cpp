@@ -13,12 +13,12 @@ namespace progrock{ namespace expressive {
         $use_from( std, bitset );
 
         template< class Collection >
-        inline $func n_items_in( ref_<const Collection> c )
+        inline $f n_items_in( ref_<const Collection> c )
             -> Size
         { return c.size(); }
 
         template< size_t n >
-        inline $func n_items_in( ref_<bitset<n>> bits )
+        inline $f n_items_in( ref_<bitset<n>> bits )
             -> Size
         { return bits.count(); }
 

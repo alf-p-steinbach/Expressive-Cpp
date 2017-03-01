@@ -26,7 +26,7 @@ exception message `"Blah"` (a macro is needed to pick up the function name).
 > As of late Feb 2017:  
 General: `$e`, `$static_assert`, `$funcname`, `$noreturn`.
 Expressions: `$invoked`, `$of_type`, `$as`, `$when`, `$use`, `$default_to`, `$self`, `$lambda_using`, `$byref`, `$byval`, `$capture_byref`, `$capture_byval`, `$lambda`, `$lambda_using_references`, `$lambda_using_values`.
-Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$name`, `$readonly_name`, `$func`, `$proc`, `$simple_pure_function`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
+Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$name`, `$readonly_name`, `$f`, `$p`, `$simple_pure_function`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
 Templates: `$enabled_if`, `$is`.
 Flow control: `$repeat`, `$until`, `$each_value`, `$each_ref`, `$each`, `$in`, `$n_times`, `$hopefully`, `$fail`.
 Startup: `$start_with`, `$start_with_ascii_arguments`, `$just`.
@@ -173,7 +173,7 @@ called `$start_with`. Here's an example:
 #include <string>           // std::string
 $use_weakly_all_from( std );
 
-$proc cpp_main( ref_<const vector<string>> args )
+$p cpp_main( ref_<const vector<string>> args )
 {
     for( $each arg $in enumerated( args ) )
         cout << "Arg " << arg.index() << " is '" << arg.object() << "'.\n";
@@ -207,13 +207,13 @@ used by `$just` and `$start_with_ascii_arguments`), like this:
 #include <iostream>
 $use_weakly_all_from( std );
 
-$proc my_fatal_error_handler( ref_<const exception> x )
+$p my_fatal_error_handler( ref_<const exception> x )
 {
     // E.g. present the `x.what()` message in a GUI message box. But for now:
     cerr << "?%¤#\"!$! Something ungood happened: " << x.what() << endl;
 }
 
-$proc compute_something_difficult()
+$p compute_something_difficult()
 {
     // Here could be some computation, e.g. parsing a file, that could fail.
     $fail( "Oh my, something was not as expected." );   // Throws an exception.
@@ -234,7 +234,7 @@ exception occurred and what it's about.
 
 ## Function declarations
 As motivation for distinguishing clearly between two kinds of functions,
-called `$proc` and `$func` in Expressive C++, consider a system for managing
+called `$p` and `$f` in Expressive C++, consider a system for managing
 an automated warehouse. It sometimes has to move things around, e.g. to make
 place for new items, or to optimize access patterns. So, guess what is the
 `empty` member function below, here expressed in raw C++14 syntax with
@@ -278,14 +278,14 @@ it's a difference that for historical reasons is very much toned down, so much
 toned down that in some cases, like the one above, it can't even be deduced by
 reading the complete function definition!, and the difference is not there in
 the raw C++ terminology: the C and C++ terminology is to call all routines
-&ldquo;functions&rdquo;. The Expressive C++ pseudo keywords `$proc` and `$func`
+&ldquo;functions&rdquo;. The Expressive C++ pseudo keywords `$p` and `$f`
 are there to let you much more clearly communicate the *intended kind*
 of function declaration. No doubt about whether `empty` empties or checks. If
-it's a `$proc` then it empties, and if it's a `$func`, then it checks.
+it's a `$p` then it empties, and if it's a `$f`, then it checks.
 
-If you intend that a function should be a command, use `$proc`. If you intend
+If you intend that a function should be a command, use `$p`. If you intend
 instead that it should produce an expression result, whose type you will
-specify with `->`*`Type`* after the function head, use `$func`.
+specify with `->`*`Type`* after the function head, use `$f`.
 
 Only if you really intend to have a C++14 automatically deduced return type, as
 in the (de-) motivating example above, use raw `auto`, which has mnemonic value
@@ -296,16 +296,16 @@ code, is primarily to communicate the intended meaning *to human readers*.
 
 ---
 
-In addition to `$proc` and `$func` the `$lambda` keyword denotes a main
+In addition to `$p` and `$f` the `$lambda` keyword denotes a main
 category:
 
-* **`$proc`**:  
+* **`$p`**:  
    A function that does not produce an expression result value. It's a function
    with `void` result. It can't be used to produce a value (although it
    can appear to be used that way in a `return` expression), and since it's all
-   about run-time side effects, even the simplest `$proc` can't be evaluated at
+   about run-time side effects, even the simplest `$p` can't be evaluated at
    compile time.
-* **`$func`**:  
+* **`$f`**:  
    A function that's *intended* to be one that produces an expression result
    value. It's *intended* to have a non-`void` result. If it doesn't then most
    probably that's a bug.
@@ -320,7 +320,7 @@ the syntax. In raw C++ they correspond to respectively `void`, `auto` and `[]`,
 which are a type, a non-type keyword, and an operator-like special syntax, which
 not only lack mnemonic value but in the case of `auto` is directly
 misleading, just an opportunistic reuse of a keyword used for something else
-entirely in original C. With `$proc`, `$func` and `$lambda` a function declaration
+entirely in original C. With `$p`, `$f` and `$lambda` a function declaration
 always starts with a pseudo-keyword that's readable and indicates what it is about.
 
 ### Historical reasons for the raw C++ terminology versus notation mismatch
@@ -349,10 +349,10 @@ Behavior.
 So, after the de-unification in C++, somewhere around 1980, we now have
 
 * routines that do produce expression  result values and sometimes model
-  mathematical functions, called `function` in the Pascal language and `$func`
+  mathematical functions, called `function` in the Pascal language and `$f`
   in Expressive C++; and
 * the more purely action-oriented `void` routines that are unlike anything in
-  maths, called `procedure` in Pascal and `$proc` in Expressive C++.
+  maths, called `procedure` in Pascal and `$p` in Expressive C++.
 
 Raw C++ pays lip service to the original and early dropped C routine kind
 unification idea by *keeping the original unification terminology* with all

@@ -9,7 +9,7 @@ namespace progrock{ namespace expressive{
     inline namespace core {
 
         template< class Type >
-        inline $func is_true( ref_<const Type> o )
+        inline $f is_true( ref_<const Type> o )
             -> bool
         { return !!o; }         // The `!!` avoids an MSVC silly-warning about performance.
 

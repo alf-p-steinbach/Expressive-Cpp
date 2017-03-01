@@ -17,19 +17,19 @@ namespace progrock{ namespace expressive {
             exception, function, runtime_error
             );
 
-        using Main_func = $proc();
-        using Fatal_error_handler = $proc( ref_<const exception> );
+        using Main_func = $p();
+        using Fatal_error_handler = $p( ref_<const exception> );
 
-        inline $proc dummy_main_func() {}
+        inline $p dummy_main_func() {}
 
-        inline $proc default_fatal_error_handler( ref_<const exception> x )
+        inline $p default_fatal_error_handler( ref_<const exception> x )
         {
             fprintf( stderr, "\n! %s\n", x.what() );
             fflush( stderr );       // It's here that failure may be discovered.
             if( ferror( stderr ) ) { throw x; }
         }
 
-        inline $func default_startup(
+        inline $f default_startup(
             const function<Main_func>           main_func       = dummy_main_func,
             const function<Fatal_error_handler> on_fatal_error  = default_fatal_error_handler
             ) -> int

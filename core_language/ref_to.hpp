@@ -9,7 +9,7 @@ namespace progrock{ namespace expressive{
     inline namespace core {
 
         template< class Type >
-        inline $func ref_to( forwarding_ref_<Type> r )
+        inline $f ref_to( forwarding_ref_<Type> r )
             -> ref_<Type>
         { return r; }
 

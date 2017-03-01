@@ -27,10 +27,10 @@ namespace progrock{ namespace expressive{
                 Index       index_;
                 ptr_<Item>  p_object_;
 
-                $func index() const     -> Index        { return index_; }
-                $func p_object() const  -> ptr_<Item>   { return p_object_; }
-                $func is_first() const  -> bool         { return index_ == 0; }
-                $func object() const    -> ref_<Item>   { return *p_object_; }
+                $f index() const     -> Index        { return index_; }
+                $f p_object() const  -> ptr_<Item>   { return p_object_; }
+                $f is_first() const  -> bool         { return index_ == 0; }
+                $f object() const    -> ref_<Item>   { return *p_object_; }
             };
 
             class Iterator
@@ -54,7 +54,7 @@ namespace progrock{ namespace expressive{
                 {}
 
             public:
-                $proc advance()
+                $p advance()
                 {
                     ++it_;
                     ++enumerated_.index_;
@@ -63,23 +63,23 @@ namespace progrock{ namespace expressive{
                 }
 
                 // Valid also for an end-iterator `it`, while `*it` would be UB.
-                $func index() const
+                $f index() const
                     -> Index
                 { return enumerated_.index; }
 
                 // UB for end-iterator.
-                $func object() const
+                $f object() const
                     -> ref_<Item>
                 { return *enumerated_.p_object; }
 
-                $func operator++()
+                $f operator++()
                     -> ref_<Iterator>
                 {
                     advance();
                     return *this;
                 }
 
-                $func operator++( int )
+                $f operator++( int )
                     -> Iterator
                 {
                     Iterator original{ *this };
@@ -87,7 +87,7 @@ namespace progrock{ namespace expressive{
                     return original;
                 }
 
-                $func operator*() const
+                $f operator*() const
                     -> ref_<Enumerated>
                 {
                     if( not enumerated_.p_object_ )
@@ -97,28 +97,28 @@ namespace progrock{ namespace expressive{
                     return enumerated_;
                 }
 
-                $func operator->() const
+                $f operator->() const
                     -> ptr_<Enumerated>
                 { return &(operator*()); }
 
                 friend
-                $func operator==( ref_<const Iterator> a, ref_<const Iterator> b )
+                $f operator==( ref_<const Iterator> a, ref_<const Iterator> b )
                     -> bool
                 { return (a.it_ == b.it_); }
 
                 friend
-                $func operator!=( ref_<const Iterator> a, ref_<const Iterator> b )
+                $f operator!=( ref_<const Iterator> a, ref_<const Iterator> b )
                     -> bool
                 { return (a.it_ != b.it_); }
             };
 
-            $func begin() const
+            $f begin() const
                 -> Iterator
             {
                 return Iterator{ typename Iterator::Start{}, std::begin( *p_collection_ ) };
             }
 
-            $func end() const
+            $f end() const
                 -> Iterator
             { return Iterator{ typename Iterator::Beyond{}, std::end( *p_collection_ ) }; }
 
@@ -128,7 +128,7 @@ namespace progrock{ namespace expressive{
         };
 
         template< class Collection >
-        inline $func enumerated( ref_<Collection> collection )
+        inline $f enumerated( ref_<Collection> collection )
             -> Enumerator_<Collection>
         { return Enumerator_<Collection>{ collection }; }
 

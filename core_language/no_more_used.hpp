@@ -15,7 +15,7 @@ namespace progrock{ namespace expressive{
             );
 
         template< class Type >
-        constexpr $func no_more_used( ref_<Type const> o )
+        constexpr $f no_more_used( ref_<Type const> o )
             -> temp_ref_<remove_reference_t<Type>>
         { return move( const_cast<ref_<Type>>( o ) ); }
 

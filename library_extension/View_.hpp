@@ -24,11 +24,11 @@ namespace progrock{ namespace expressive{
             Iterator        beyond_;
 
         public:
-            $func first() const     -> Iterator     { return first_; }
-            $func beyond() const    -> Iterator     { return beyond_; }
+            $f first() const     -> Iterator     { return first_; }
+            $f beyond() const    -> Iterator     { return beyond_; }
 
-            $func begin() const     -> Iterator     { return first_; }
-            $func end() const       -> Iterator     { return beyond_; }
+            $f begin() const     -> Iterator     { return first_; }
+            $f end() const       -> Iterator     { return beyond_; }
 
             View_( const Iterator first, const Iterator beyond )
                 : first_{ first }
@@ -37,17 +37,17 @@ namespace progrock{ namespace expressive{
         };
 
         template< class Iterator >
-        $func view_of( const Iterator first, const Iterator beyond )
+        $f view_of( const Iterator first, const Iterator beyond )
             -> View_<Iterator>
         { return { first, beyond }; }
 
         template< class Collection >
-        $func view_of( ref_<Collection> c )
+        $f view_of( ref_<Collection> c )
             -> View_<typename Collection_traits_<Collection>::Iterator>
         { return { begin( c ), end( c ) }; }
 
         template< class Iterator >
-        $func reverse_view_of( const Iterator first, const Iterator beyond )
+        $f reverse_view_of( const Iterator first, const Iterator beyond )
             -> View_< reverse_iterator< Iterator > >
         {
             return 
@@ -58,7 +58,7 @@ namespace progrock{ namespace expressive{
         }
 
         template< class Collection >
-        $func reverse_view_of( ref_<Collection> c )
+        $f reverse_view_of( ref_<Collection> c )
             -> View_< reverse_iterator< typename Collection_traits_< Collection >::Iterator > >
         {
             using Iterator = typename Collection_traits_< Collection >::Iterator;

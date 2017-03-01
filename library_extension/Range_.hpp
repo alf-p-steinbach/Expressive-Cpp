@@ -30,7 +30,7 @@ namespace progrock{ namespace expressive{
             Unsigned        beyond_;
 
         public:
-           $func length() const
+           $f length() const
                -> Size
            { return beyond_ - first_; }
 
@@ -45,16 +45,16 @@ namespace progrock{ namespace expressive{
                 {}
 
             public:
-                $proc advance() { value_ += static_cast<Unsigned>( delta ); }
+                $p advance() { value_ += static_cast<Unsigned>( delta ); }
 
-                $func operator++()
+                $f operator++()
                     -> ref_<Iterator>
                 {
                     advance();
                     return *this;
                 }
 
-                $func operator++( int )
+                $f operator++( int )
                     -> Iterator
                 {
                     Iterator original{ *this };
@@ -62,30 +62,30 @@ namespace progrock{ namespace expressive{
                     return original;
                 }
 
-                $func operator*() const
+                $f operator*() const
                     -> Integer
                 { return $as<Integer>( value_ ); }
 
-                $func operator->() const
+                $f operator->() const
                     -> ptr_<const Integer>
                     = delete;
 
                 friend
-                $func operator==( ref_<const Iterator> a, ref_<const Iterator> b )
+                $f operator==( ref_<const Iterator> a, ref_<const Iterator> b )
                     -> bool
                 { return (a.value_ == b.value_); }
 
                 friend
-                $func operator!=( ref_<const Iterator> a, ref_<const Iterator> b )
+                $f operator!=( ref_<const Iterator> a, ref_<const Iterator> b )
                     -> bool
                 { return (a.value_ != b.value_); }
             };
 
-            $func first() const         -> Iterator { return Iterator{ first_ }; }
-            $func beyond() const        -> Iterator { return Iterator{ beyond_ }; }
+            $f first() const         -> Iterator { return Iterator{ first_ }; }
+            $f beyond() const        -> Iterator { return Iterator{ beyond_ }; }
 
-            $func begin() const         -> Iterator { return first(); }
-            $func end() const           -> Iterator { return beyond(); }
+            $f begin() const         -> Iterator { return first(); }
+            $f end() const           -> Iterator { return beyond(); }
 
             explicit Range_( const Integer first, const Integer last )
                 : first_{ $as<Unsigned>( first ) }
@@ -102,23 +102,23 @@ namespace progrock{ namespace expressive{
         };
 
         template< class Int_a, class Int_b >
-        inline $func range( const Int_a first, const Int_b last )
+        inline $f range( const Int_a first, const Int_b last )
             -> Range_<decltype( first + last )>
         { return Range_<decltype( first + last )>{ first, last }; }
 
         template< class Integer = int >
-        inline $func i_up_to( const Integer beyond )
+        inline $f i_up_to( const Integer beyond )
             -> Range_<Integer>
         { return Range_<Integer>{ 0, beyond - 1 }; }
 
         template< class Integer = int >
-        inline $func i_down_from( const Integer beyond )
+        inline $f i_down_from( const Integer beyond )
             -> Range_<Integer, Range_delta::reverse>
         { return Range_<Integer, Range_delta::reverse>{ beyond - 1, 0 }; }
 
         // Not quite natural, but for generality, e.g. in template code:
         template< class Integer >
-        inline $func n_items_in( ref_<const Range_<Integer>> range )
+        inline $f n_items_in( ref_<const Range_<Integer>> range )
             -> Size
         { return range.length(); }
 

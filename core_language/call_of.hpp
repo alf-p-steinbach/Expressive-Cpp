@@ -10,7 +10,7 @@ namespace progrock{ namespace expressive{
     inline namespace core {
 
         template< class Function >
-        inline $func call_of( ref_<const Function> f )
+        inline $f call_of( ref_<const Function> f )
             -> decltype(( f() ))
         { return f(); }
 

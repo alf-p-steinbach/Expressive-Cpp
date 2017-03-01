@@ -21,11 +21,11 @@ namespace progrock{ namespace expressive{
             );
 
         template< class String_type, class Value, class... Args >
-        inline $func to_( ref_<Value const> v, Args&&... args )
+        inline $f to_( ref_<Value const> v, Args&&... args )
             -> String_type
         { return convert_to( Type_<String_type>{}, v, forward<Args>( args )... ); }
 
-        inline $func convert_to_hex_in(
+        inline $f convert_to_hex_in(
             const ptr_<char>            buffer,
             const uint8_t               v
             ) -> int
@@ -36,7 +36,7 @@ namespace progrock{ namespace expressive{
             return 2;
         }
 
-        inline $func convert_to_hexsz_in(
+        inline $f convert_to_hexsz_in(
             const ptr_<char>            buffer,
             const uint8_t               v
             ) -> int
@@ -46,7 +46,7 @@ namespace progrock{ namespace expressive{
             return n;
         }
 
-        inline $func to_hex( const uint8_t v )
+        inline $f to_hex( const uint8_t v )
             -> string
         {
             $compile_time $let buffer_size = n_bits_per_< decltype(v) >()/4;
@@ -55,7 +55,7 @@ namespace progrock{ namespace expressive{
             return buffer;
         }
 
-        inline $func convert_to_hex_in(
+        inline $f convert_to_hex_in(
             const ptr_<char>            buffer,
             const uint16_t              v
             ) -> int
@@ -65,7 +65,7 @@ namespace progrock{ namespace expressive{
             return 4;
         }
 
-        inline $func convert_to_hexsz_in(
+        inline $f convert_to_hexsz_in(
             const ptr_<char>            buffer,
             const uint16_t              v
             ) -> int
@@ -75,7 +75,7 @@ namespace progrock{ namespace expressive{
             return n;
         }
 
-        inline $func to_hex( const uint16_t v )
+        inline $f to_hex( const uint16_t v )
             -> string
         {
             $compile_time $let buffer_size = n_bits_per_< decltype(v) >()/4;
@@ -84,7 +84,7 @@ namespace progrock{ namespace expressive{
             return buffer;
         }
 
-        inline $func convert_to_hex_in(
+        inline $f convert_to_hex_in(
             const ptr_<char>            buffer,
             const uint32_t              v
             ) -> int
@@ -94,7 +94,7 @@ namespace progrock{ namespace expressive{
             return 8;
         }
 
-        inline $func convert_to_hexsz_in(
+        inline $f convert_to_hexsz_in(
             const ptr_<char>            buffer,
             const uint32_t              v
             ) -> int
@@ -104,7 +104,7 @@ namespace progrock{ namespace expressive{
             return n;
         }
 
-        inline $func to_hex( const uint32_t v )
+        inline $f to_hex( const uint32_t v )
             -> string
         {
             $compile_time $let buffer_size = n_bits_per_< decltype(v) >()/4;
@@ -113,7 +113,7 @@ namespace progrock{ namespace expressive{
             return buffer;
         }
 
-        inline $func convert_to_hex_in(
+        inline $f convert_to_hex_in(
             const ptr_<char>            buffer,
             const uint64_t              v
             ) -> int
@@ -123,7 +123,7 @@ namespace progrock{ namespace expressive{
             return 16;
         }
 
-        inline $func convert_to_hexsz_in(
+        inline $f convert_to_hexsz_in(
             const ptr_<char>            buffer,
             const uint64_t              v
             ) -> int
@@ -133,7 +133,7 @@ namespace progrock{ namespace expressive{
             return n;
         }
 
-        inline $func to_hex( const uint64_t v )
+        inline $f to_hex( const uint64_t v )
             -> string
         {
             $compile_time $let buffer_size = n_bits_per_< decltype(v) >()/4;
@@ -143,13 +143,13 @@ namespace progrock{ namespace expressive{
         }
 
         // Minimum buffer size here is `expressive::bufsize_for_pointer_as_hex`.
-        inline $func convert_to_hex_in(
+        inline $f convert_to_hex_in(
             const ptr_<char>            buffer,
             const ptr_<const void>      p
             ) -> int
         { return convert_to_hex_in( buffer, reinterpret_cast<uintptr_t>( p ) ); }
 
-        inline $func convert_to_hexsz_in(
+        inline $f convert_to_hexsz_in(
             const ptr_<char>            buffer,
             const ptr_<const void>      p
             ) -> int
@@ -159,7 +159,7 @@ namespace progrock{ namespace expressive{
             return n;
         }
 
-        inline $func to_hex( const ptr_<const void> p )
+        inline $f to_hex( const ptr_<const void> p )
             -> string
         {
             $var buffer = string( bufsize_for_pointer_as_hex, '\0' );
@@ -167,19 +167,19 @@ namespace progrock{ namespace expressive{
             return buffer;
         }
 
-        inline $func convert_to( Type_<string>, ref_<const string> s )
+        inline $f convert_to( Type_<string>, ref_<const string> s )
             -> string
         { return s; }
 
-        inline $func convert_to( Type_<string>, const ptr_<const char> s )
+        inline $f convert_to( Type_<string>, const ptr_<const char> s )
             -> string
         { return s; }
 
-        inline $func convert_to( Type_<string>, const char ch )
+        inline $f convert_to( Type_<string>, const char ch )
             -> string
         { return string{ ch }; }
 
-        inline $func convert_to( Type_<string>, const ptr_<const void> p )
+        inline $f convert_to( Type_<string>, const ptr_<const void> p )
             -> string
         {
             string result( bufsize_for_pointer_as_hex, '\0' );
@@ -188,7 +188,7 @@ namespace progrock{ namespace expressive{
             return result;
         }
 
-        inline $func convert_to( Type_<string>, const double v )
+        inline $f convert_to( Type_<string>, const double v )
             -> string
         { return to_string( v ); }      // TODO:
 
@@ -198,7 +198,7 @@ namespace progrock{ namespace expressive{
         template< class Value
             , $enabled_if< $is( _arithmetic, Value ) >
             >
-        inline $func convert_to( Type_<string>, ref_<const Value> v )
+        inline $f convert_to( Type_<string>, ref_<const Value> v )
             -> string
         { return to_string( v ); }
 

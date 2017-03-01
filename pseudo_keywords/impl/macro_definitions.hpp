@@ -24,18 +24,20 @@
 
 //--------------------------------------- Expressions:
 //
-#   define $invoked                     $e::impl::Gurkemeie{} % []()
+#   define $invoked                     $e::impl::Gurkemeie{} % [&]()
 #
-#   define $of_type( Type, expr )           \
-        $as<Type>(                          \
-            $lambda{ $static_assert(( not $is( _reference, Type ) )); },    \
-            $lambda_using_references{ $static_assert((                      \
-                $is( _same,                 \
-                    std::add_const_t<Type>, \
+#   define $of_type( Type, expr )                   \
+        (                                           \
+            (void)sizeof( expr ),                   \
+            (void)sizeof( Type ),                   \
+            static_cast<Type>( $invoked{            \
+                return expr;                        \
+                $static_assert(( ::std::is_same<    \
+                    std::add_const_t<Type>,         \
                     std::add_const_t< ::std::remove_reference_t<decltype( expr )> > \
-                    )                       \
-                )); },                      \
-            expr                            \
+                    >::value ));                    \
+                $static_assert(( not ::std::is_reference<Type>::value )); \
+            } )                                     \
         )
 #   define $as                          static_cast
 #
@@ -68,10 +70,10 @@
 #   define $name                    auto&
 #   define $readonly_name           auto const&
 #
-#   define $func                    auto
-#   define $proc                    void
+#   define $f                       auto        // Function (intended to have expr. result)
+#   define $p                       void        // Procedure (void function)
 #
-#   define $simple_pure_function    constexpr $func
+#   define $simple_pure_function    constexpr $f
 #   define $compile_time            static constexpr
 #
 #   define $use_weakly_all_from( ns )   \
@@ -121,7 +123,7 @@
 #   // To use `n_args` and `args` you can pass a lambda as macro argument.
 #   // The macro is variadic to allow specification of a fatal error handler.
 #   define $start_with( ... ) \
-        $func main( const int n_args, $e::raw_array_<$e::ptr_<char>> args ) \
+        $f main( const int n_args, $e::raw_array_<$e::ptr_<char>> args ) \
             -> int \
         { \
             (void) n_args; (void) args; \
@@ -139,6 +141,6 @@
 #   // A super-convenience wrapper, primarily for the really tiny C++ program,
 #   // used like `$just{ cout << "Hello!"; }`.
 #   define $just \
-        $proc cpp_main(); $start_with( cpp_main ) $proc cpp_main()
+        $p cpp_main(); $start_with( cpp_main ) $p cpp_main()
 
 #endif  // EXPRESSIVE_PSEUDO_KEYWORDS_MACRO_DEFINITIONS_HPP

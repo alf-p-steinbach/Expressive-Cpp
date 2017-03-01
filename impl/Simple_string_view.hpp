@@ -19,22 +19,22 @@ namespace progrock{ namespace expressive{ namespace impl{
         ptr_<const char>    p_first;
         ptr_<const char>    p_beyond;
 
-        $func length() const
+        $f length() const
             -> Size
         { return p_beyond - p_first; }
 
-        $func str() const
+        $f str() const
             -> string
         { return string{ p_first, p_beyond }; }
 
         operator string() const
         { return str(); }
 
-        $func begin() const
+        $f begin() const
             -> ptr_<const char>
         { return p_first; }
 
-        $func end() const
+        $f end() const
             -> ptr_<const char>
         { return p_beyond; }
     };

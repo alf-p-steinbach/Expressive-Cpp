@@ -10,14 +10,14 @@ namespace progrock{ namespace expressive{
 
         struct No_copy
         {
-            $func operator=( ref_<const No_copy> )
+            $f operator=( ref_<const No_copy> )
                 -> ref_<No_copy>
                 = delete;
 
             No_copy( No_copy const& )
                 = delete;
 
-            $func operator=( temp_ref_<No_copy> )
+            $f operator=( temp_ref_<No_copy> )
                 -> ref_<No_copy>
             { return *this; }
 
