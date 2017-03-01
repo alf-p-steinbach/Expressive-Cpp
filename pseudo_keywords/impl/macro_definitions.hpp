@@ -30,14 +30,14 @@
         (                                           \
             (void)sizeof( expr ),                   \
             (void)sizeof( Type ),                   \
-            static_cast<Type>( $invoked{            \
+            static_cast<Type>( $lambda() -> decltype( expr ) { \
                 return expr;                        \
-                $static_assert(( ::std::is_same<    \
-                    std::add_const_t<Type>,         \
-                    std::add_const_t< ::std::remove_reference_t<decltype( expr )> > \
-                    >::value ));                    \
+                static_assert(( ::std::is_same<    \
+                    $e::const_<Type>,         \
+                    $e::const_< $e::unref_<decltype( expr )> > \
+                    >::value ), "$of_type: failed because `" #expr "` was not like `" #Type "`." ); \
                 $static_assert(( not ::std::is_reference<Type>::value )); \
-            } )                                     \
+            }() )                                   \
         )
 #   define $as                          static_cast
 #
