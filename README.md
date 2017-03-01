@@ -309,7 +309,7 @@ category:
 * **`$f`**:  
    A function that's *intended* to be one that produces an expression result
    value. It's *intended* to have a non-`void` result that can be used in an
-   expression, like a Pascal `function`. If it doesn't have `void` result then
+   expression, like a Pascal `function`. If it has `void` result then
    most likely that's a bug.
 * **`$lambda`**:  
    A function that doesn't have a name.  It's anonymous and it's defined on the
