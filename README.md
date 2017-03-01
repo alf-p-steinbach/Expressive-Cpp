@@ -316,7 +316,7 @@ category:
    not; by default it doesn't.
 
 While these pseudo-keywords express important differences, as a group they unify
-the syntax. In raw C++ they correspond to respectively `void`, `auto` and `[]`,
+the syntax. In raw C++ they correspond to respectively `void`, `auto` and `[&]`,
 which are a type, a non-type keyword, and an operator-like special syntax, which
 not only lack mnemonic value but in the case of `auto` is directly
 misleading, just an opportunistic reuse of a keyword used for something else
