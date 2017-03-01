@@ -21,9 +21,9 @@
 #pragma pop_macro( "$byval" )
 #pragma pop_macro( "$capture_byref" )
 #pragma pop_macro( "$capture_byval" )
-#pragma pop_macro( "$lambda" )
 #pragma pop_macro( "$lambda_using_references" )
 #pragma pop_macro( "$lambda_using_values" )
+#pragma pop_macro( "$lambda" )
 
 //--------------------------------------- Declarations & namespace handling:
 #pragma pop_macro( "$invoked_with" )

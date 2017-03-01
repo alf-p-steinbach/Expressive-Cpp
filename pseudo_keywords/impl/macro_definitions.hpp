@@ -53,9 +53,9 @@
 #   define $capture_byref               &
 #   define $capture_byval               =
 #
-#   define $lambda                      $lambda_using()
 #   define $lambda_using_references     $lambda_using( $capture_byref )
 #   define $lambda_using_values         $lambda_using( $capture_byval )
+#   define $lambda                      $lambda_using_references
 
 //--------------------------------------- Declarations & namespace handling:
 //

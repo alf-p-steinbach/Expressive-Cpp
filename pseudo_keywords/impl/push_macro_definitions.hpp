@@ -21,9 +21,9 @@
 #pragma push_macro( "$byval" )
 #pragma push_macro( "$capture_byref" )
 #pragma push_macro( "$capture_byval" )
-#pragma push_macro( "$lambda" )
 #pragma push_macro( "$lambda_using_references" )
 #pragma push_macro( "$lambda_using_values" )
+#pragma push_macro( "$lambda" )
 
 //--------------------------------------- Declarations & namespace handling:
 #pragma push_macro( "$invoked_with" )
