@@ -234,7 +234,7 @@ exception occurred and what it's about.
 
 ## Function declarations
 As motivation for distinguishing clearly between two kinds of functions,
-called `$p` and `$f` in Expressive C++, consider a system for managing
+called `$p` (procedure) and `$f` (function) in Expressive C++, consider a system for managing
 an automated warehouse. It sometimes has to move things around, e.g. to make
 place for new items, or to optimize access patterns. So, guess what is the
 `empty` member function below, here expressed in raw C++14 syntax with
