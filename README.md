@@ -268,64 +268,70 @@ out that `foo` returns `void`, and so must then also `empty`, which
 therefore certainly is a command to make empty, not a query to check for
 emptiness&hellip;
 
----
+### `$p`, `$f` and `$lambda`
 
-The above motivating ugliness example was a special case.
-
-In general both the raw C++ syntax and its semantics distinguish between
-routines that do produce expression result values, and those that don't. *But*
-it's a difference that for historical reasons is very much toned down, so much
-toned down that in some cases, like the one above, it can't even be deduced by
-reading the complete function definition!, and the difference is not there in
-the raw C++ terminology: the C and C++ terminology is to call all routines
-&ldquo;functions&rdquo;. The Expressive C++ pseudo keywords `$p` and `$f`
+The Expressive C++ pseudo keywords `$p` and `$f`
 are there to let you much more clearly communicate the *intended kind*
 of function declaration. No doubt about whether `empty` empties or checks. If
 it's a `$p` then it empties, and if it's a `$f`, then it checks.
 
-If you intend that a function should be a command, use `$p`. If you intend
-instead that it should produce an expression result, whose type you will
-specify with `->`*`Type`* after the function head, use `$f`.
-
-Only if you really intend to have a C++14 automatically deduced return type, as
-in the (de-) motivating example above, use raw `auto`, which has mnemonic value
-that way; &ldquo;automatic&rdquo;.
-
 For the purpose of high level source code, as opposed to writing assembly
 code, is primarily to communicate the intended meaning *to human readers*.
-
----
 
 In addition to `$p` and `$f` the `$lambda` keyword denotes a main
 category:
 
-* **`$p`**:  
+* **`$p`** &ndash; *procedure*  
+   a.k.a. raw C++ `void`:  
    A function that does not produce an expression result value and is just
    meant to have some side effect, like a Pascal `procedure`. It's a function
    with `void` result type. So, it can't be used to produce a value (although
    it can appear to be used that way in a `return` expression), and since it's
    all about run-time side effects, even the simplest `$p` can't be evaluated
    at compile time.
-* **`$f`**:  
+* **`$f`** &ndash; *function*  
+   a.k.a. raw C++ `auto`:  
    A function that's *intended* to be one that produces an expression result
    value. It's *intended* to have a non-`void` result that can be used in an
    expression, like a Pascal `function`. If it has `void` result then
-   most likely that's a bug.
-* **`$lambda`**:  
+   that's most likely a bug.
+* **`$lambda`**  
+   a.k.a. raw C++ `[&]`:  
    A function that doesn't have a name.  It's anonymous and it's defined on the
    spot, right here where it's used (plus it has some more interesting
    properties exemplified below). It can produce an expression result value, or
    not; by default it doesn't.
 
-While these pseudo-keywords express important differences, as a group they unify
-the syntax. In raw C++ they correspond to respectively `void`, `auto` and `[&]`,
-which are a type, a non-type keyword, and an operator-like special syntax, which
-not only lack mnemonic value but in the case of `auto` is directly
-misleading, just an opportunistic reuse of a keyword used for something else
-entirely in original C. With `$p`, `$f` and `$lambda` a function declaration
-always starts with a pseudo-keyword that's readable and indicates what it is about.
+So, if you intend that a function should be a command, use `$p`. If you intend
+instead that it should produce an expression result, whose type you will
+specify with `->`*`Type`* after the function head, use `$f`.
+
+With this focus on distinction of function kinds also comes a natural different
+choice of names, with verbs for `$p` commands, and, often, expression result
+descriptions for the `$f` query functions:
+```C++
+struct Warehouse
+{
+    $p foo();
+    $p make_empty();
+    $f is_empty() const -> bool;
+};
+```
+Only if you really intend to have a C++14 automatically deduced return type, as
+in the earlier (de-) motivating example, use raw `auto`, which has mnemonic value
+that way; &ldquo;automatic&rdquo;.
 
 ### Historical reasons for the raw C++ terminology versus notation mismatch
+
+The earlier motivating ugliness example was a special case.
+
+In general both the raw C++ syntax and its semantics distinguish between
+routines that do produce expression result values, and those that don't. *But*
+it's a difference that for historical reasons is very much toned down, so much
+toned down that in some cases, like in the `empty` example, it can't even be
+deduced by reading the complete function definition! And the difference is not
+there in the raw C++ terminology: the C and C++ terminology is to call all
+routines &ldquo;functions&rdquo;. 
 
 The C language in the early 1970’s, ancestor of modern C++, introduced the
 then novel and to some, at the time, abhorrent idea of regarding every routine
@@ -361,4 +367,12 @@ unification idea by *keeping the original unification terminology* with all
 routines referred to as &ldquo;functions&rdquo;, whether they produce
 expression values or not.
 
-###
+While the `$p`, `$f` and `$lambda` pseudo-keywords more clearly express important
+differences that have been toned down in the raw C++ syntax, as a group these
+keywords unify the other-wild-directions differences in the syntax. In raw C++ they
+correspond to respectively `void`, `auto` and `[&]`, which are a type, a non-type
+keyword, and an operator-like special syntax, which not only lack mnemonic value
+but in the case of `auto` is directly misleading, an opportunistic reuse, at cost,
+of a keyword used for something else entirely in original C. With `$p`, `$f` and
+`$lambda` a function declaration always starts with a pseudo-keyword that's readable
+and indicates what it is about, what main kind of function it is.
