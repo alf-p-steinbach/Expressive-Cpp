@@ -26,19 +26,19 @@ Visual C++ and clang, and it provides easy recognition, improved readability
  &ndash;  no uppercase shouting or prefix verbosity &ndash; and greatly reduced
  chance of name collision.
 
-Example of ordinary Expressive C++ code: `for( auto const& it : enumerated( c ) )`
-where `c` is a collection such as a `std::vector`, produces an index+item pair `it`
-for each item in `c`. The body of the loop can refer to `it.index()` and
-`it.object()`, as well as a convenience method `it.is_first()`. Similarly,
-`i_up_to( n )` creates a view of the integers 0 through `n`-1 of the type of the
-expression `n`, that can be iterated over in a range-based `for`, much like Python
+Example of ordinary Expressive C++ code, generally **useful functions** (and types):
+`for( auto const& it : enumerated( c ) )` where `c` is a collection such as a
+`std::vector`, produces an index+item pair `it` for each item in `c`. The body of the
+loop can refer to `it.index()` and `it.object()`, as well as a convenience method
+`it.is_first()`. Similarly `i_up_to( n )` creates a view of the integers 0 through
+`n`-1 of the type of the expression `n`, that can be iterated over, much like Python
 3.x's `range`, and there's `i_down_from( n )`, `reverse_view_of( c )`, and more.
 
 > In namespace `progrock::expressive` (some in nested `inline`
 namespaces for selective unqualified usage), as of late Feb 2017:  
 `Byte`, `Size`, `Index`, `max_byte_value`, `max_index_value`, `max_size_value`, `n_bits_per_<T>`, `forwarding_ref_<T>`, `ptr_<T>`, `raw_array_<T>`, `raw_array_of_<n`, `T>`, `ref_<T>`, `temp_ref_<T>`, `type_<T>`, `call_of<F>`, `default_fatal_error_handler`, `default_startup`, `dummy_main_func`, `Fatal_error_handler`, `Main_func`, `enumerated<T>`, `Enumerator_<T>`, `Exit_code::Enum`, `fail`, `fail_from_location`, `hopefully`, `is_true<T>`, `no_more_used`, `ref_to<T>`, `append_to`, `Collection_traits_`, `Is_string_class_`, `is_string_class_`, `length_of`, `n_items_in`, `No_copy`, `No_copy_or_move`, `Non_instantiable`, `i_down_from`, `i_up_to`, `n_items_in`, `Range`, `range`, `operator<<(S,T)`, `convert_to<T>`, `convert_to_hex_in`, `convert_to_hexsz_in`, `to_<T>`, `to_hex`, `Type_`, `reverse_view_of`, `View_<T>`, `view_of`, `system_is_little_endian`
 
-Example of a pseudo keyword macro: `$fail( "Blah" )` throws a `std::runtime_error`
+Example of a **pseudo keyword** macro: `$fail( "Blah" )` throws a `std::runtime_error`
 exception with  the containing function's qualified name prepended to the specified
 exception message. A macro is needed to pick up the function signature. It uses some
 additional machinery to pare it down to just the qualified function name.
@@ -62,6 +62,16 @@ Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`,
 Templates: `$enabled_if`, `$is`.
 Flow control: `$repeat`, `$until`, `$each_value`, `$each_ref`, `$each`, `$in`, `$n_times`, `$hopefully`, `$fail`.
 Startup: `$start_with`, `$start_with_ascii_arguments`, `$just`.
+
+Finally, in addition to useful ordinary C++ functions like `enumerated` and `i_up_to`,
+and supporting pseudo keywords like `$fail`, Expressive C++ offers a number of **type
+builder** template aliases such as `ref_`, `ptr_` and `raw_array_`, that enables one
+to use the principle of substitution to construct types. The type builders also
+support the practice of putting `const` first, even in
+nested parts. For example, instead of raw C++ `char const* const x = "A";` you can
+write `const ptr_<const char> x = "A";`, and this notation works with C++03 template
+argument deduction. The resulting type specifications can be naturally read in the
+forward direction, unlike raw C and C++ type specifications.
 
 The main criterion for including something or not has been whether it has been of direct
 value to me, and something that a novice could reasonably expect to be part of the core
@@ -89,7 +99,8 @@ is a pure header library, and which also is designed to reside in the `p` folder
 
 ## Introduction
 
-The shortest possible Expressive C++ program is
+When an appropriate header is included via the build command the shortest possible
+Expressive C++ program is
 ```C++
 $just{}
 ```
@@ -103,32 +114,58 @@ And this is the general philosophy: not always shorter like here, but safer and
 to the non-expert more directly readable, and generally more convenient than
 the raw C++ that Expressive C++ code translates to.
 
-Flavor example:
+Flavor example, with the header inclusion expressed in code:
 ```C++
-#include <p/expressive/use_weakly_all.hpp>
+#include <p/expressive/use_weakly_all.hpp>  // is_odd, enumerated
+
+#include <vector>
 #include <iostream>
 $use_weakly_all_from( std );
 
+$f collatz( const int n )
+    -> vector<int>
+{
+    vector<int> result;
+    int x = n;
+    $loop
+    {
+        result.push_back( x );
+        if( x == 1 ) { break; }
+        x = (is_odd( x )? 3*x + 1 : x/2);
+    }
+    return result;
+}
+
 $just
 {
-    $var sum = 0;
-    for( $each value $in {3, 1, 4, 1, 5, 9, 2, 6, 5, 4} )
+    for( $each it $in enumerated( collatz( 42 ) ) )
     {
-        sum += value;
+        if( not it.is_first() ) { cout << ", "; }
+        cout << it.value();
     }
-    cout << sum << endl;
+    cout << "." << endl;
 }
 ```
-The `ref_` type builder, and others like it, allows one to use the principle
-of substitution to construct types, as in non-C languages in general. It also
-supports the practice of putting `const` first, even in nested parts. The
-resulting type specifications can be naturally read in the forward direction,
-unlike in raw C and C++.
+Here `$f`, short for *`function`*, denotes a trailing return type function definition;
+`$just` generates a safe standard C++ `main` function, discussed in the next
+subsection; and the readable `$loop`, `$each` and `$in` are just syntactic sugar,
+expanding to respectively raw C++ &ldquo;`for(;;)`&rdquo;, &ldquo;`auto
+const&`&rdquo; and &ldquo;`:`&rdquo; &ndash; which might be perplexing to a novice.
 
 The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros. Expressive C++ also offers some stuff implemented with
 ordinary C++ code, using C++ core language features up to and including C++14.
-For example, the *expression*
+For example, the `is_odd` and `enumerated` functions used above.
+
+And, for example, the use of a temporary `vector<int>` result in the expression
+`enumerated( collatz( 41 ) )` is both safe and efficient. The lifetime of the
+temporary is *not* extended to cover the full loop execution, so do take care for
+such calls in raw C++! But the `enumerated` function uses the Expressive C++ facility
+`Copy_or_ref_` to deal with a temporary argument, and makes a safe logical copy of
+that temporary &ndash; here very efficiently by just `std::move`-ing the vector.
+
+As an example where the pseudo keywords combine with underlying pure C++ machinery,
+i.e. where both macros and ordinary C++ code are involved, the *expression*
 ```C++
 $invoked{ $var x=1; while( x*x < 50 ) ++x; return x - 1; }
 ```    

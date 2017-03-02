@@ -1,20 +1,24 @@
 #pragma once
-// #include <p/cppx/Enumerator_.hpp>
+// #include <p/expressive/library_extension/Enumerator.hpp>
 // Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <p/expressive/core_language/basic_type_aliases.hpp>        // (Index, max_index_value)
 #include <p/expressive/core_language/basic_type_builders.hpp>       // (ptr_, ref_)
 #include <p/expressive/library_extension/Collection_traits_.hpp>    // Collection_traits_
+#include <p/expressive/library_extension/Copy_or_ref_.hpp>          // Copy_or_ref_
+
+#include <utility>          // std::move
 
 namespace progrock{ namespace expressive{
 #include <p/expressive/pseudo_keywords/begin_region.hpp>
-    inline namespace core {
+    inline namespace libx {
+        $use_from( std, move );
 
         template< class Collection >
         class Enumerator_
         {
         private:
-            ptr_<Collection>    p_collection_;
+            Copy_or_ref_<Collection>    collection_;
 
         public:
             using Raw_iterator  = typename Collection_traits_<Collection>::Iterator;
@@ -25,12 +29,15 @@ namespace progrock{ namespace expressive{
             struct Enumerated
             {
                 Index       index_;
-                ptr_<Item>  p_object_;
+                ptr_<Item>  p_item_;
 
-                $f index() const     -> Index        { return index_; }
-                $f p_object() const  -> ptr_<Item>   { return p_object_; }
-                $f is_first() const  -> bool         { return index_ == 0; }
-                $f object() const    -> ref_<Item>   { return *p_object_; }
+                $f index() const    -> Index        { return index_; }
+                $f p_object() const -> ptr_<Item>   { return p_item_; }
+                $f is_first() const -> bool         { return index_ == 0; }
+
+                $f object() const   -> ref_<Item>   { return *p_item_; }
+                $f item() const     -> ref_<Item>   { return *p_item_; }
+                $f value() const    -> ref_<Item>   { return *p_item_; }
             };
 
             class Iterator
@@ -58,8 +65,8 @@ namespace progrock{ namespace expressive{
                 {
                     ++it_;
                     ++enumerated_.index_;
-                    //enumerated_.p_object_ = &*it_;       // UB for end-iterator.
-                    enumerated_.p_object_ = nullptr;
+                    //enumerated_.p_item_ = &*it_;       // UB for end-iterator.
+                    enumerated_.p_item_ = nullptr;
                 }
 
                 // Valid also for an end-iterator `it`, while `*it` would be UB.
@@ -90,9 +97,9 @@ namespace progrock{ namespace expressive{
                 $f operator*() const
                     -> ref_<Enumerated>
                 {
-                    if( not enumerated_.p_object_ )
+                    if( not enumerated_.p_item_ )
                     {
-                        enumerated_.p_object_ = &*it_;
+                        enumerated_.p_item_ = &*it_;
                     }
                     return enumerated_;
                 }
@@ -112,18 +119,22 @@ namespace progrock{ namespace expressive{
                 { return (a.it_ != b.it_); }
             };
 
-            $f begin() const
+            $f begin()
                 -> Iterator
             {
-                return Iterator{ typename Iterator::Start{}, std::begin( *p_collection_ ) };
+                return Iterator{ typename Iterator::Start{}, std::begin( collection_.ref() ) };
             }
 
-            $f end() const
+            $f end()
                 -> Iterator
-            { return Iterator{ typename Iterator::Beyond{}, std::end( *p_collection_ ) }; }
+            { return Iterator{ typename Iterator::Beyond{}, std::end( collection_.ref() ) }; }
 
             explicit Enumerator_( ref_<Collection> o )
-                : p_collection_( &o )
+                : collection_( o )              // Makes a reference.
+            {}
+
+            explicit Enumerator_( temp_ref_<Collection> o )
+                : collection_( move( o ) )      // Makes a logical copy, possibly moved.
             {}
         };
 
@@ -132,6 +143,10 @@ namespace progrock{ namespace expressive{
             -> Enumerator_<Collection>
         { return Enumerator_<Collection>{ collection }; }
 
-    }  // namespace core
+        template< class Collection >
+        inline $f enumerated( temp_ref_<Collection> collection )
+            -> Enumerator_<Collection>
+        { return Enumerator_<Collection>{ move( collection ) }; }
+    }  // namespace libx
 #include <p/expressive/pseudo_keywords/end_region.hpp>
 }}  // namespace progrock::cppx

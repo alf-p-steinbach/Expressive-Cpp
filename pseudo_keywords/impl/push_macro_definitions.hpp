@@ -46,6 +46,7 @@
 #pragma push_macro( "$is" )
 
 //--------------------------------------- Flow control:
+#pragma push_macro( "$loop" )
 #pragma push_macro( "$repeat" )
 #pragma push_macro( "$until" )
 #pragma push_macro( "$each_value" )

@@ -94,6 +94,8 @@
 
 //--------------------------------------- Flow control:
 //
+#   define $loop                    for(;;)         // Idiomatic & no sillywarnings.
+#
 #   define $repeat                  do{
 #   define $until(e)                }while(not(e))
 #
