@@ -18,15 +18,9 @@
 ## About.
 
 Expressive C++ implements a less unsafe, more convenient and
-readable-for-non-C++-expert-folks dialect of C++. It's based on ordinary C++
-code plus some supporting pseudo keywords that start with `$`. Expressive C++
-uses the `$` sign as effectively a so far clean and unused namespace for
-its macro keywords. The `$` is supported by the main C++ compilers, including g++,
-Visual C++ and clang, and it provides easy recognition, improved readability
- &ndash;  no uppercase shouting or prefix verbosity &ndash; and greatly reduced
- chance of name collision.
+readable-for-non-C++-expert-folks dialect of C++.
 
-Example of ordinary Expressive C++ code, generally **useful functions** (and types):
+Example of ordinary generally **useful functions** and types in  Expressive C++ code:
 `for( auto const& it : enumerated( c ) )` where `c` is a collection such as a
 `std::vector`, produces an index+item pair `it` for each item in `c`. The body of the
 loop can refer to `it.index()` and `it.object()`, as well as a convenience method
@@ -43,8 +37,17 @@ exception with  the containing function's qualified name prepended to the specif
 exception message. A macro is needed to pick up the function signature. It uses some
 additional machinery to pare it down to just the qualified function name.
 
-There are also purely syntactic sugar keywords allowing e.g. the range based
-loop example above to be written as `for( $each it $in enumerated( c ) )`. Such
+Expressive C++ uses the `$` sign as effectively a so far clean and unused namespace
+for its macro keywords. The `$` is supported by the main C++ compilers, including g++,
+Visual C++ and clang, and provides easy recognition, improved readability
+&ndash;  no uppercase shouting or prefix verbosity &ndash; and greatly reduced
+chance of name collision. This makes Expressive C++ more of a dialect or extension
+of C++ that currently happens to be implemented as a header only library, than
+primarily a library.
+
+Since macros are needed anyway, e.g. for the `$fail` functionality, there are also
+purely syntactic sugar keywords allowing e.g. the range based loop example above to
+be written as `for( $each it $in enumerated( c ) )`. Such
 self-descriptive keywords help non-experts intuit the meaning of the code, they
 generally shorten things, and they help with visual and automated searching for
 specific constructs such as variable declarations (the raw C++ keyword `auto` has
