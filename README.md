@@ -1,3 +1,18 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Expressive C++  &ndash;  readability, safety and convenience](#expressive-c--ndash--readability-safety-and-convenience)
+  - [About.](#about)
+  - [Requirements & how to install.](#requirements--how-to-install)
+  - [Introduction](#introduction)
+  - [Program startup and termination](#program-startup-and-termination)
+  - [Function declarations](#function-declarations)
+    - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
+    - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Expressive C++  &ndash;  readability, safety and convenience
 
 ## About.
@@ -12,12 +27,12 @@ Visual C++ and clang, and it provides easy recognition, improved readability
  chance of name collision.
 
 Example of ordinary Expressive C++ code: `for( auto const& it : enumerated( c ) )`
-where `c` is a
-collection such as a `std::vector`, produces an index+item pair `it` for each item
-in `c`. The body of the loop can refer to `it.index()` and `it.object()`, as well
-as a convenience method `it.is_first()`. Similarly, `i_up_to( n )` creates a view of the integers 0 through `n`-1 of the type
-of the expression `n`, that can be iterated over in a range-based `for`, much like
- Python 3.x's `range`, and there's `i_down_from( n )`, `reverse_view_of( c )`, and more.
+where `c` is a collection such as a `std::vector`, produces an index+item pair `it`
+for each item in `c`. The body of the loop can refer to `it.index()` and
+`it.object()`, as well as a convenience method `it.is_first()`. Similarly,
+`i_up_to( n )` creates a view of the integers 0 through `n`-1 of the type of the
+expression `n`, that can be iterated over in a range-based `for`, much like Python
+3.x's `range`, and there's `i_down_from( n )`, `reverse_view_of( c )`, and more.
 
 > In namespace `progrock::expressive` (some in nested `inline`
 namespaces for selective unqualified usage), as of late Feb 2017:  
@@ -244,18 +259,18 @@ Output:
 ?%☼#"!$! Something ungood happened: compute_something_difficult - Oh my, something was not as expected.
 </pre>
 
-Digression: the function name `compute_something_difficult` was automatically prepended to the exception
-message, by the `$fail` macro. If instead you use the basic pure C++ `fail` function then you
-get just exactly the specified message. Usually the function name is enough to identify where the
-exception occurred and what it's about.
+Digression: the function name `compute_something_difficult` was automatically
+prepended to the exception message, by the `$fail` macro. If instead you use the basic
+pure C++ `fail` function then you get just exactly the specified message. Usually the
+function name is enough to identify where the exception occurred and what it's about.
 
 ## Function declarations
 As motivation for distinguishing clearly between two kinds of functions,
-called `$p` (procedure) and `$f` (function) in Expressive C++, consider a system for managing
-an automated warehouse. It sometimes has to move things around, e.g. to make
-place for new items, or to optimize access patterns. So, guess what is the
-`empty` member function below, here expressed in raw C++14 syntax with
-automatically deduced return type:
+called `$p` (procedure) and `$f` (function) in Expressive C++, consider a
+system for managing an automated warehouse. It sometimes has to move things
+around, e.g. to make place for new items, or to optimize access patterns. So,
+guess what is the `empty` member function below, here expressed in raw C++14
+syntax with automatically deduced return type:
 ```C++
 struct Warehouse
 {
