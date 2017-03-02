@@ -11,7 +11,8 @@ Visual C++ and clang, and it provides easy recognition, improved readability
  &ndash;  no uppercase shouting or prefix verbosity &ndash; and greatly reduced
  chance of name collision.
 
-Example of ordinary C++ code: `for( auto const& it : enumerated( c ) )` where `c` is a
+Example of ordinary Expressive C++ code: `for( auto const& it : enumerated( c ) )`
+where `c` is a
 collection such as a `std::vector`, produces an index+item pair `it` for each item
 in `c`. The body of the loop can refer to `it.index()` and `it.object()`, as well
 as a convenience method `it.is_first()`. Similarly, `i_up_to( n )` creates a view of the integers 0 through `n`-1 of the type
