@@ -11,9 +11,12 @@ Visual C++ and clang, and it provides easy recognition, improved readability
  &ndash;  no uppercase shouting or prefix verbosity &ndash; and greatly reduced
  chance of name collision.
 
-Example of ordinary C++ code: `enumerated( c )` where `c` is a collection such as a
-`std::vector`, creates a view of index/item pairs that can be iterated over in a
-range-based `for`, much like Pyhon's `enumerate`.
+Example of ordinary C++ code: `for( auto const& it : enumerated( c ) )` where `c` is a
+collection such as a `std::vector`, produces an index+item pair `it` for each item
+in `c`. The body of the loop can refer to `it.index()` and `it.object()`, as well
+as a convenience method `it.is_first()`. Similarly, `i_up_to( n )` creates a view of the integers 0 through `n`-1 of the type
+of the expression `n`, that can be iterated over in a range-based `for`, much like
+ Python 3.x's `range`, and there's `i_down_from( n )`, `reverse_view_of( c )`, and more.
 
 > In namespace `progrock::expressive` (some in nested `inline`
 namespaces for selective unqualified usage), as of late Feb 2017:  
@@ -21,7 +24,20 @@ namespaces for selective unqualified usage), as of late Feb 2017:
 
 Example of a pseudo keyword macro: `$fail( "Blah" )` throws a `std::runtime_error`
 exception with  the containing function's qualified name prepended to the specified
-exception message `"Blah"` (a macro is needed to pick up the function name). 
+exception message. A macro is needed to pick up the function signature. It uses some
+additional machinery to pare it down to just the qualified function name.
+
+There are also purely syntactic sugar keywords allowing e.g. the range based
+loop example above to be written as `for( $each it $in enumerated( c ) )`. Such
+self-descriptive keywords help non-experts intuit the meaning of the code, they
+generally shorten things, and they help with visual and automated searching for
+specific constructs such as variable declarations (the raw C++ keyword `auto` has
+many meanings). An expert who wonders about the exact definition can just hover
+the mouse over any such keyword: they're quickly learned.
+
+The most important four are
+* `$f` and `$p` to declare functions and procedures (`void` functions), and
+* `$let` and `$var`, to declare constants and variables.
 
 > As of late Feb 2017:  
 General: `$e`, `$static_assert`, `$funcname`, `$noreturn`.
@@ -312,7 +328,6 @@ descriptions for the `$f` query functions:
 ```C++
 struct Warehouse
 {
-    $p foo();
     $p make_empty();
     $f is_empty() const -> bool;
 };
