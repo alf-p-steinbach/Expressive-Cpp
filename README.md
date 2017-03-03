@@ -510,9 +510,9 @@ $just
     cout << "3 to the 7th power = " << x << ", computed at compile time." << endl;
 }
 ```
-<sub><i>(The <b>$select</b> / <b>$when</b> / <b>$use</b> / <b>$else_use</b> construct
-expands to the conditional operator c <b>:</b> v1 <b>?</b> v2; it's not specific
-to simple pure functions.)</i></sub>
+<sub><i>(The <b>$select</b> <b>$when</b> c <b>$use</b> v1 <b>$else_use</b> v2
+construct expands to the conditional operator c <b>:</b> v1 <b>?</b> v2; it's not
+specific to simple pure functions.)</i></sub>
 
 One practical reason to do this is that if the result overflows you're likely to get
 a compile time diagnostic. That is, a compilation error or warning. For the above
