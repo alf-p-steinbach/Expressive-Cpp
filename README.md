@@ -338,8 +338,9 @@ let's look at the complete definition to find out:
 inline auto Warehouse::empty() { return foo(); }
 ```
 Oh, the return type depends on the return type of `foo`! ***One can't deduce
-the meaning of `empty` merely by looking at its complete definition***, in
-isolation. One must further look at the definition of `foo` that it calls:
+the meaning of `empty`, is it an action or a query?, merely by looking at its
+complete definition*** in isolation. One must further look at the definition of
+`foo` that it calls:
 ```C++
 inline auto Warehouse::foo() { return void(); }
 ```
@@ -544,7 +545,7 @@ function can be harder to express or optimize than an iterative version. And vic
 versa, of course, but for portable simple read only function code one is currently,
 as of March 2017, limited to using recursion to implement repetition. You can try
 this out by optimizing the above recursive and iterative implementations based on
-expressing the exponent `n` as a sum of power of 2, e.g. 3<sup>42</sup> =
+expressing the exponent `n` as a sum of powers of 2, e.g. 3<sup>42</sup> =
 3<sup>32 + 8 + 2</sup> = 3<sup>32</sup>×3<sup>8</sup>×3<sup>2</sup>, where each
 factor can be obtained efficiently by repeatedly squaring 3 (this scheme reduces
 the number of multiplications from &Omicron;(*n*) to &Omicron;(log *n*)).
