@@ -7,6 +7,9 @@
   - [Requirements & how to install.](#requirements--how-to-install)
   - [Introduction](#introduction)
   - [Program startup and termination](#program-startup-and-termination)
+    - [`$just` a simple & safe program startup](#just-a-simple--safe-program-startup)
+    - [`$start_with_ascii_arguments` for simple command line arguments.](#start_with_ascii_arguments-for-simple-command-line-arguments)
+    - [`$start_with` a function and a fatal error exception handler](#start_with-a-function-and-a-fatal-error-exception-handler)
   - [Function declarations](#function-declarations)
     - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
     - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
@@ -187,6 +190,8 @@ produces its return value with the type implied by the `return` statement.
 
 ## Program startup and termination
 
+### `$just` a simple & safe program startup
+
 The basic way to specify what should happen when the program starts, is to use the
 **`$just`** keyword, followed by a statement sequence enclosed in curly braces.
 ```C++
@@ -241,7 +246,7 @@ following ways (plus some!):
   are necessary to get full Unicode-support; I may add that later.
 * It's just less to write. Wonderful!
 
----
+### `$start_with_ascii_arguments` for simple command line arguments.
 
 If you want to process command line arguments you can use
 **`start_with_ascii_arguments`** instead of just `$just`. As with
@@ -277,7 +282,7 @@ able to consume the literal actual argument expression `{args, args+n_args}`,
 where `args` is the `char**` that `main` receives. This initializer expression
 works nicely with a `vector<string>`, producing a vector of `n_args` strings.
 
----
+### `$start_with` a function and a fatal error exception handler
 
 If you want to customize the exception handling, e.g. to present the exception
 message in a GUI message box instead of just on the standard error stream, then
