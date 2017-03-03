@@ -43,7 +43,7 @@
 #
 #   define $when( condition )           (condition?
 #   define $use( value )                value :
-#   define $default_to( value )         value)
+#   define $else_use( value )           value)
 #
 #   define $self                        (*this)
 #
