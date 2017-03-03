@@ -3,6 +3,7 @@
 // Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <p/expressive/library_extension/append_to.hpp>             // append_to
+#include <p/expressive/library_extension/calculations.hpp>          // squared, integral_power
 #include <p/expressive/library_extension/Collection_traits_.hpp>    // Collection_traits_
 #include <p/expressive/library_extension/Enumerator_.hpp>           // (Enumerator_, enumerated)
 #include <p/expressive/library_extension/Is_string_class_.hpp>      // Is_string_class_

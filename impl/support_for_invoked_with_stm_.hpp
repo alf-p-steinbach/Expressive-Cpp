@@ -2,9 +2,12 @@
 // #include <p/expressive/impl/support_for_invoked_with_stm_.hpp>
 // Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
+#include <utility>      // std::declval
+
 namespace progrock{ namespace expressive{ namespace impl{
 #include <p/expressive/pseudo_keywords/impl/push_macro_definitions.hpp>
 #   include <p/expressive/pseudo_keywords/impl/macro_definitions.hpp>
+    $use_from( std, declval );
 
     struct Gurkemeie {};
 

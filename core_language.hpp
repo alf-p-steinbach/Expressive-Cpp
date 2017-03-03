@@ -8,7 +8,7 @@
 #include <p/expressive/core_language/default_startup.hpp>       // default_startup
 #include <p/expressive/core_language/Exit_code.hpp>             // Exit_code::(success, failure)
 #include <p/expressive/core_language/hopefully_and_fail.hpp>    // (hopefully, fail)
-#include <p/expressive/core_language/value_property_checks.hpp>               // is_true
+#include <p/expressive/core_language/value_property_checks.hpp> // is_true, is_odd, is_even
 #include <p/expressive/core_language/no_more_used.hpp>          // no_more_used, std::(move, forward)
 #include <p/expressive/core_language/ref_to.hpp>                // ref_to
 #include <p/expressive/core_language/string_literals.hpp>       // std::literals::string_literals::*

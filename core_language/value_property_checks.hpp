@@ -9,17 +9,17 @@ namespace progrock{ namespace expressive{
     inline namespace core {
 
         template< class Type >
-        inline $f is_true( ref_<const Type> o )
+        inline $simple_pure_f is_true( ref_<const Type> o )
             -> bool
         { return !!o; }         // The `!!` avoids an MSVC silly-warning about performance.
 
         template< class Number >
-        inline $f is_odd( ref_<const Number> v )
+        inline $simple_pure_f is_odd( ref_<const Number> v )
             -> bool
         { return v%2 == 1; }
 
         template< class Number >
-        inline $f is_even( ref_<const Number> v )
+        inline $simple_pure_f is_even( ref_<const Number> v )
             -> bool
         { return v%2 == 0; }
 

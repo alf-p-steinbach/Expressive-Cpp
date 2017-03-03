@@ -566,3 +566,5 @@ expressing the exponent `n` as a sum of powers of 2, e.g. 3<sup>42</sup> =
 3<sup>32 + 8 + 2</sup> = 3<sup>32</sup>×3<sup>8</sup>×3<sup>2</sup>, where each
 factor can be obtained efficiently by repeatedly squaring 3 (this scheme reduces
 the number of multiplications from &Omicron;(*n*) to &Omicron;(log *n*)).
+
+Expressive C++ offers the optimized function as `int_power`.
