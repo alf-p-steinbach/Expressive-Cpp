@@ -2,7 +2,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Expressive C++  &ndash;  readability, safety and convenience](#expressive-c--ndash--readability-safety-and-convenience)
+- [Expressive C++  &rarr;  convenience, readability and safety](#expressive-c--rarr--convenience-readability-and-safety)
   - [About.](#about)
   - [Requirements & how to install.](#requirements--how-to-install)
   - [Introduction](#introduction)
@@ -10,7 +10,7 @@
   - [Function declarations](#function-declarations)
     - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
     - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
-    - [`$simple_pure_f` and `$compile_time`](#simple_pure_function-and-compile_time)
+    - [`$simple_pure_f` and `$compile_time`](#simple_pure_f-and-compile_time)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
