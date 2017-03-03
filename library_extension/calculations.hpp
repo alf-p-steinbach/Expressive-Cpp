@@ -23,9 +23,9 @@ namespace progrock{ namespace expressive{
                 $when exp == 0 $use
                 1.0
                 $when is_odd( exp ) $use
-                base*squared( int_positive_power( base, exp/2 ) )
+                    base*squared( int_positive_power( base, exp/2 ) )
                 $else_use
-                squared( int_positive_power( base, exp/2 ) );
+                    squared( int_positive_power( base, exp/2 ) );
         }
 
         inline $simple_pure_f int_power(
@@ -35,9 +35,9 @@ namespace progrock{ namespace expressive{
         {
             return $select
                 $when exp < 0 $use
-                1.0/int_positive_power( base, -exp )
+                    1.0/int_positive_power( base, -exp )
                 $else_use
-                int_positive_power( base, exp );
+                    int_positive_power( base, exp );
         }
     }  // namespace libx
 #include <p/expressive/pseudo_keywords/end_region.hpp>
