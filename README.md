@@ -73,10 +73,10 @@ to use the principle of substitution to construct types. The type builders also
 support the practice of putting `const` first, even in
 nested parts. For example, instead of raw C++ `char const* const x = "A";` you can
 write `const ptr_<const char> x = "A";`, and this notation works with C++03 template
-argument deduction. The resulting type specifications can be naturally read in the
-forward direction, unlike raw C and C++ type specifications.
+argument type deduction. The resulting type specifications can be naturally read in
+the forward direction, unlike raw C and C++ type specifications.
 
-Of course, for the concrete example given one will more naturally write just
+Of course, for the concrete example above Expressive C++ allows you to write just
 `$let x = "A";`, for the same raw C++ result.
 
 The main criterion for including something or not has been whether it has been of direct
