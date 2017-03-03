@@ -21,7 +21,7 @@ namespace progrock{ namespace expressive{
         {
             return $select
                 $when exp == 0 $use
-                1.0
+                    1.0
                 $when is_odd( exp ) $use
                     base*squared( int_positive_power( base, exp/2 ) )
                 $else_use
