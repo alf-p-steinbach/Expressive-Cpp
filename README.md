@@ -10,6 +10,7 @@
   - [Function declarations](#function-declarations)
     - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
     - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
+    - [`$simple_pure_function` and `$compile_time`](#simple_pure_function-and-compile_time)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -25,8 +26,8 @@ Example of ordinary generally **useful functions** and types in  Expressive C++ 
 `std::vector`, produces an index+item pair `it` for each item in `c`. The body of the
 loop can refer to `it.index()` and `it.object()`, as well as a convenience method
 `it.is_first()`. Similarly `i_up_to( n )` creates a view of the integers 0 through
-`n`-1 of the type of the expression `n`, that can be iterated over, much like Python
-3.x's `range`, and there's `i_down_from( n )`, `reverse_view_of( c )`, and more.
+`n`-1 of the type of the expression `0 + n`, that can be iterated over as a range,
+and there's `i_down_from( n )`, `reverse_view_of( c )`, and more.
 
 > In namespace `progrock::expressive` (some in nested `inline`
 namespaces for selective unqualified usage), as of late Feb 2017:  
@@ -85,6 +86,10 @@ language.
 
 ## Requirements & how to install.
 
+The compiler must support basic C++14 features, including `'` as digit group
+separator, `auto` automatically deduced return type, and e.g. the `remove_reference_t`
+template alias and family.
+
 The following language extensions, supported by g++, Visual C++ and CLang, and probably
 also by far more compilers, are required:
 
@@ -95,9 +100,10 @@ also by far more compilers, are required:
 *  that `$` characters are accepted in identifiers.
 
 Expressive C++ is a pure header C++ library. I.e. you don't have to build or download
-binaries for your platform: the headers are all you need. The library is designed to
-reside in a folder called `p`, somewhere in your compiler's include path. You can just
-copy the file hierarhcy there.
+binaries for your platform: the headers are all you need.
+
+The library is designed to reside in a folder called `p`, somewhere in your
+compiler's include path. You can just copy the file hierarhcy there.
 
 There is one library dependency, one additional library to install, namely the
 [Macro Magic](https://github.com/alf-p-steinbach/Macro-Magic) micro-library, which also
@@ -450,3 +456,95 @@ but in the case of `auto` is directly misleading, an opportunistic reuse, at cos
 of a keyword used for something else entirely in original C. With `$p`, `$f` and
 `$lambda` a function declaration always starts with a pseudo-keyword that's readable
 and indicates what it is about, what main kind of function it is.
+
+### `$simple_pure_function` and `$compile_time`
+
+A **pure function** is a non-`void` function with no side effects. If a pure function
+is sufficiently simple and if the argument values in a call of it are known at
+compile time, then that call can be evaluated at compile time. This adds to the build
+time but it can speed up the program, and it allows e.g. a raw array to be declared
+with a size computed &ndash; at compile time &ndash; in some complex way.
+
+In Expressive C++ you can tell the compiler that a function is such a simple, pure
+function by using the **`$simple_pure_function`** keyword, raw C++ `constexpr auto`,
+instead of `$f`. With this knowledge the compiler in turn allows you to use a call
+result at compile time, under certain conditions. In practice the argument values
+must be known at compile time and the result must be possible to know at compile
+time, e.g. no dynamic allocations.
+
+In the example below the `$compile_time` keyword, raw C++ `static constexpr`, is used
+in the declaration of a `const` variable `x` to hold the result, forcing that
+initialization to compile time (if it couldn't be done at compile time one would get
+a compilation error):
+```c++
+#include <p/expressive/use_weakly_all.hpp>
+
+$simple_pure_function  integral_power( const double base, const int exp )
+    -> double
+{
+    return
+        exp == 0?
+            1.0 :
+        exp < 0?
+            1.0/integral_power( base, -exp ) :
+        //else
+            base*integral_power( base, exp - 1 );
+}
+
+#include <iostream>
+using namespace std;
+
+$just
+{
+    $compile_time $let x = $as<int>( integral_power( 3, 7 ) );
+    cout << "3 to the 7th power = " << x << ", computed at compile time." << endl;
+}
+```
+
+One practical reason to do this is that if the result overflows you're likely to get
+a compile time diagnostic. That is, a compilation error or warning. For the above
+program, if I increase the exponent value from 7 to 42, then the g++ compiler emits
+an error diagnostic, while the Visual C++ compiler emits a warning:
+
+<blockquote><pre>
+[C:\my\dev\libraries\expressive\docs\02 Function declarations]
+&gt; <i><b>cl simple_pure_func.cpp /Feb</b></i>
+simple_pure_func.cpp
+simple_pure_func.cpp(26): warning C4309: 'argument': truncation of constant value
+
+[C:\my\dev\libraries\expressive\docs\02 Function declarations]
+&gt; _
+</pre></blockquote>
+
+That's pretty nice.
+
+As of this writing, early March 2017, there is however a *portability risk*, namely
+that some compilers won't accept more than what the C++11 standard allowed in a simple
+pure function. In particular Visual C++ 2015 update 3 was (is) limited to the pretty
+strict C++11 rules. And so the following iterative version, which compiles fine with
+the g++ compiler version 6.3.0, fails to compile with Visual C++ 2015 update 3:
+```c++
+// Only with ~full C++14-support, e.g. not Visual C++ 2015 update 3:
+$simple_pure_function  integral_power( const double base, const int exp )
+    -> double
+{
+    if( exp < 0 ) { return 1/integral_power( base, -exp ); }
+
+    double result = 1;
+    for( $n_times( exp ) )
+    {
+        result *= base;
+    }
+    return result;
+}
+```
+And this limited compiler support for C++14, that the above won't compile, can
+translate to a *waste of programmer's time*, because a recursive version of a
+function can be harder to express or optimize than an iterative version. And vice
+versa, of course, but for portable simple read only function code one is currently,
+as of March 2017, limited to using recursion to implement repetition. You can try
+this out by optimizing the above recursive and iterative implementations based on
+expressing the exponent `n` as a sum of power of 2, e.g. 3<sup>42</sup> =
+3<sup>32 + 8 + 2</sup> = 3<sup>32</sup>×3<sup>8</sup>×3<sup>2</sup>, where each
+factor can be obtained efficiently by repeatedly squaring 3 (this scheme reduces
+the number of multiplications from &Omicron;(*n*) to &Omicron;(log *n*)).

@@ -99,7 +99,7 @@
 #   define $repeat                  do{
 #   define $until(e)                }while(not(e))
 #
-#   define $_n_times_helper( i, n, expr ) decltype(expr) i = 0, n = expr; i < n; ++i
+#   define $_n_times_helper( i, n, expr ) decltype(0 + expr) i = 0, n = expr; i < n; ++i
 #   define $n_times( n )    \
         $_n_times_helper( $unique_temp_name, $unique_temp_name, n \
         )

@@ -7,12 +7,15 @@
 #include <p/expressive/library_extension/Collection_traits_.hpp>    // Collection_traits_
 #include <p/expressive/library_extension/Copy_or_ref_.hpp>          // Copy_or_ref_
 
-#include <utility>          // std::move
+#include <utility>          // std::move, std::declval
+#include <iterator>         // std::begin
 
 namespace progrock{ namespace expressive{
 #include <p/expressive/pseudo_keywords/begin_region.hpp>
     inline namespace libx {
-        $use_from( std, move );
+        $use_from( std,
+            begin, declval, move
+            );
 
         template< class Collection >
         class Enumerator_
@@ -138,12 +141,21 @@ namespace progrock{ namespace expressive{
             {}
         };
 
-        template< class Collection >
+        template< class Collection
+            , class Enabled_ = decltype( declval<Collection>().begin() )
+            >
         inline $f enumerated( ref_<Collection> collection )
             -> Enumerator_<Collection>
         { return Enumerator_<Collection>{ collection }; }
 
-        template< class Collection >
+        template< class Item, size_t n >
+        inline $f enumerated( ref_<raw_array_of_<n, Item>> a )
+            -> Enumerator_<raw_array_of_<n, Item>>
+        { return Enumerator_<raw_array_of_<n, Item>>{ a }; }
+
+        template< class Collection
+            , class Enabled_ = decltype( declval<Collection>().begin() )
+        >
         inline $f enumerated( temp_ref_<Collection> collection )
             -> Enumerator_<Collection>
         { return Enumerator_<Collection>{ move( collection ) }; }
