@@ -469,9 +469,9 @@ with a size computed &ndash; at compile time &ndash; in some complex way.
 In Expressive C++ you can tell the compiler that a function is such a simple, pure
 function by using the **`$simple_pure_function`** keyword, raw C++ `constexpr auto`,
 instead of `$f`. With this knowledge the compiler in turn allows you to use a call
-result at compile time, under certain conditions. In practice the argument values
-must be known at compile time and the result must be possible to know at compile
-time, e.g. no dynamic allocations.
+result at compile time, under certain conditions. In practice, that the argument
+values must be known at compile time and that the result must be possible to know at
+compile time, e.g. no dynamic allocations.
 
 In the example below the `$compile_time` keyword, raw C++ `static constexpr`, is used
 in the declaration of a `const` variable `x` to hold the result, forcing that
