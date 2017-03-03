@@ -502,7 +502,7 @@ $simple_pure_f integral_power( const double base, const int exp )
 }
 
 #include <iostream>
-using namespace std;
+$use_weakly_all_from( std );
 
 $just
 {
