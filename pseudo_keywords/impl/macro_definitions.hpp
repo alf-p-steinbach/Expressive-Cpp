@@ -41,9 +41,10 @@
         )
 #   define $as                          static_cast
 #
-#   define $when( condition )           (condition?
-#   define $use( value )                value :
-#   define $else_use( value )           value)
+#   define $select                      $e::impl::Select_expression_condition{}?$e::impl::Dummy_default_value{}
+#   define $when                        :
+#   define $use                         ?
+#   define $else_use                    :
 #
 #   define $self                        (*this)
 #
@@ -73,7 +74,7 @@
 #   define $f                       auto        // Function (intended to have expr. result)
 #   define $p                       void        // Procedure (void function)
 #
-#   define $simple_pure_function    constexpr $f
+#   define $simple_pure_f           constexpr $f
 #   define $compile_time            static constexpr
 #
 #   define $use_weakly_all_from( ns )   \

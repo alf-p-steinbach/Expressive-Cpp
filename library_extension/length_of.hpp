@@ -21,7 +21,7 @@ namespace progrock{ namespace expressive {
         { return char_traits<Char>::length( s ); }
 
         template< class Char, size_t n >
-        inline $simple_pure_function compile_time_length_of(
+        inline $simple_pure_f compile_time_length_of(
             ref_<const raw_array_of_<n, Char>>  //s
             ) -> Size
         { return n - 1; }

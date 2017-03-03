@@ -10,7 +10,7 @@
   - [Function declarations](#function-declarations)
     - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
     - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
-    - [`$simple_pure_function` and `$compile_time`](#simple_pure_function-and-compile_time)
+    - [`$simple_pure_f` and `$compile_time`](#simple_pure_function-and-compile_time)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -61,8 +61,8 @@ The most important four are
 
 > As of late Feb 2017:  
 General: `$e`, `$static_assert`, `$funcname`, `$noreturn`.
-Expressions: `$invoked`, `$of_type`, `$as`, `$when`, `$use`, `$else_use`, `$self`, `$lambda_using`, `$byref`, `$byval`, `$capture_byref`, `$capture_byval`, `$lambda`, `$lambda_using_references`, `$lambda_using_values`.
-Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$name`, `$readonly_name`, `$f`, `$p`, `$simple_pure_function`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
+Expressions: `$invoked`, `$of_type`, `$as`, `$select`, `$when`, `$use`, `$else_use`, `$self`, `$lambda_using`, `$byref`, `$byval`, `$capture_byref`, `$capture_byval`, `$lambda`, `$lambda_using_references`, `$lambda_using_values`.
+Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$name`, `$readonly_name`, `$f`, `$p`, `$simple_pure_f`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
 Templates: `$enabled_if`, `$is`.
 Flow control: `$repeat`, `$until`, `$each_value`, `$each_ref`, `$each`, `$in`, `$n_times`, `$hopefully`, `$fail`.
 Startup: `$start_with`, `$start_with_ascii_arguments`, `$just`.
@@ -327,7 +327,7 @@ struct Warehouse
     auto empty();
 };
 ```
-<sup>*Yes, you're absolutely right, one really shouldn't do this!*</sup>
+<sub>*(Yes, you're absolutely right, one really shouldn't do this!)*</sub>
 
 Well, if `empty` is a `void` function then it's certainly about emptying the
 warehouse, &ldquo;empty it!&rdquo;. But if `empty` is a `bool` function, then
@@ -458,7 +458,7 @@ of a keyword used for something else entirely in original C. With `$p`, `$f` and
 `$lambda` a function declaration always starts with a pseudo-keyword that's readable
 and indicates what it is about, what main kind of function it is.
 
-### `$simple_pure_function` and `$compile_time`
+### `$simple_pure_f` and `$compile_time`
 
 A **pure function** is a non-`void` function with no side effects. If a pure function
 is sufficiently simple and if the argument values in a call of it are known at
@@ -467,28 +467,37 @@ time but it can speed up the program, and it allows e.g. a raw array to be decla
 with a size computed &ndash; at compile time &ndash; in some complex way.
 
 In Expressive C++ you can tell the compiler that a function is such a simple, pure
-function by using the **`$simple_pure_function`** keyword, raw C++ `constexpr auto`,
-instead of `$f`. With this knowledge the compiler in turn allows you to use a call
-result at compile time, under certain conditions. In practice, that the argument
-values must be known at compile time and that the result must be possible to know at
-compile time, e.g. no dynamic allocations.
+function by using the **`$simple_pure_f`** keyword, expanding to raw C++ `constexpr
+auto`, instead of `$f`. If C++ at one point should gain support for more general pure
+functions then that may be reflected in Expressive C++ as a new keyword `$pure_f`.
+One main difference is that a simple pure function cannot have a `try`-block.
 
-In the example below the `$compile_time` keyword, raw C++ `static constexpr`, is used
-in the declaration of a `const` variable `x` to hold the result, forcing that
-initialization to compile time (if it couldn't be done at compile time one would get
-a compilation error):
+Anyway, having been informed that your function is a `$simple_pure_f` the compiler
+allows you to use a call result at compile time, under certain conditions.
+
+In practice, as of C++14 those conditions are that the argument values must be known
+at compile time, and that the result must be possible to know at compile time. For
+example, a call cannot involve any dynamic allocations. Unfortunately no dynamic
+allocations means that you cannot have a `std::string` argument or function result,
+so those are two main restrictions: no `try`-block, and no `std::string`.
+
+In the example below the `$compile_time` keyword, expanding to raw C++ `static
+constexpr`, is used in the declaration of a `const` variable `x` to hold the result.
+This forces the computation of `x`'s initial (and only) value to compile time. If the
+initialization couldn't be done at compile time then one would get a compilation
+error:
 ```c++
 #include <p/expressive/use_weakly_all.hpp>
 
-$simple_pure_function  integral_power( const double base, const int exp )
+$simple_pure_f integral_power( const double base, const int exp )
     -> double
 {
-    return
-        exp == 0?
-            1.0 :
-        exp < 0?
-            1.0/integral_power( base, -exp ) :
-        //else
+    return $select
+        $when exp == 0 $use
+            1.0
+        $when exp < 0 $use
+            1.0/integral_power( base, -exp )
+        $else_use
             base*integral_power( base, exp - 1 );
 }
 
@@ -501,6 +510,9 @@ $just
     cout << "3 to the 7th power = " << x << ", computed at compile time." << endl;
 }
 ```
+<sub>*(The **$select** / **$when** / **$use** / **$else_use** construct expands
+to the conditional operator *c* **:** *v1* **?** *v2*; it's not specific
+to simple pure functions.)*</sub>
 
 One practical reason to do this is that if the result overflows you're likely to get
 a compile time diagnostic. That is, a compilation error or warning. For the above
@@ -526,7 +538,7 @@ strict C++11 rules. And so the following iterative version, which compiles fine 
 the g++ compiler version 6.3.0, fails to compile with Visual C++ 2015 update 3:
 ```c++
 // Only with ~full C++14-support, e.g. not Visual C++ 2015 update 3:
-$simple_pure_function  integral_power( const double base, const int exp )
+$simple_pure_f  integral_power( const double base, const int exp )
     -> double
 {
     if( exp < 0 ) { return 1/integral_power( base, -exp ); }
