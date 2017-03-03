@@ -14,12 +14,12 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Expressive C++  &ndash;  readability, safety and convenience
+# Expressive C++  &rarr;  convenience, readability and safety
 
 ## About.
 
-Expressive C++ implements a less unsafe, more convenient and
-readable-for-non-C++-expert-folks dialect of C++.
+Expressive C++ implements a more convenient, more readable-for-non-C++-expert-folks
+and less unsafe dialect of C++.
 
 Example of ordinary generally **useful functions** and types in  Expressive C++ code:
 `for( auto const& it : enumerated( c ) )` where `c` is a collection such as a
