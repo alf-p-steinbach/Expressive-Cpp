@@ -76,6 +76,9 @@ write `const ptr_<const char> x = "A";`, and this notation works with C++03 temp
 argument deduction. The resulting type specifications can be naturally read in the
 forward direction, unlike raw C and C++ type specifications.
 
+Of course, for the concrete example given one will more naturally write just
+`$let x = "A";`, for the same raw C++ result.
+
 The main criterion for including something or not has been whether it has been of direct
 value to me, and something that a novice could reasonably expect to be part of the core
 language.
