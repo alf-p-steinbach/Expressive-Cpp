@@ -172,7 +172,7 @@ just `std::move`-ing the vector.
 The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros.
 
-Here `$use_weakly_from` is one of a family of pseudo keywords for handling C++
+Here `$use_weakly_all_from` is one of a family of pseudo keywords for handling C++
 namespaces (it's there mostly for consistency of notation); `$f`, short for
 *`function`*, denotes a trailing return type function definition that's intended to
 be non-`void`; the `$just` pseudo keyword generates a safe standard C++ `main`
