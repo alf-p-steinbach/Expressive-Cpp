@@ -30,7 +30,7 @@ namespace progrock{ namespace expressive{
             const uint8_t               v
             ) -> int
         {
-            static $readonly_name digits = "0123456789ABCDEF";
+            static $const_view digits = "0123456789ABCDEF";
             buffer[0] = digits[v >> 4];
             buffer[1] = digits[v & 0xF];
             return 2;

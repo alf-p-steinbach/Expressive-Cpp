@@ -65,9 +65,9 @@ The most important four are
 > As of late Feb 2017:  
 General: `$e`, `$static_assert`, `$funcname`, `$noreturn`.
 Expressions: `$invoked`, `$of_type`, `$as`, `$select`, `$when`, `$use`, `$else_use`, `$self`, `$lambda_using`, `$byref`, `$byval`, `$capture_byref`, `$capture_byval`, `$lambda`, `$lambda_using_references`, `$lambda_using_values`.
-Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$name`, `$readonly_name`, `$f`, `$p`, `$simple_pure_f`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
+Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$name`, `$const_view`, `$f`, `$p`, `$simple_pure_f`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
 Templates: `$enabled_if`, `$is`.
-Flow control: `$repeat`, `$until`, `$each_value`, `$each_ref`, `$each`, `$in`, `$n_times`, `$hopefully`, `$fail`.
+Flow control: `$repeat`, `$until`, `$each_value`, `$each_object`, `$each`, `$in`, `$n_times`, `$hopefully`, `$fail`.
 Startup: `$start_with`, `$start_with_ascii_arguments`, `$just`.
 
 Finally, in addition to useful ordinary C++ functions like `enumerated` and `i_up_to`,

@@ -69,7 +69,7 @@
 #   define $let                     auto const
 #   define $var                     auto
 #   define $name                    auto&
-#   define $readonly_name           auto const&
+#   define $const_view              auto const&
 #
 #   define $f                       auto        // Function (intended to have expr. result)
 #   define $p                       void        // Procedure (void function)
@@ -107,7 +107,7 @@
 #
 #   // Syntactic sugaring for range-based `for`:
 #   define $each_value              auto const
-#   define $each_ref                auto&
+#   define $each_object             auto&
 #   define $each                    auto const&
 #   define $in                      :
 #
