@@ -179,7 +179,7 @@ be non-`void`; the `$just` pseudo keyword generates a safe standard C++ `main`
 function, discussed in he next subsection; the readable `$loop`, `$each` and `$in`
 expand to respectively raw C++ &ldquo;`for(;;)`&rdquo;, &ldquo;`auto const&`&rdquo;
 and &ldquo;`:`&rdquo; &ndash; which might be perplexing to a novice; the construct
-with `$select`, `$when`, `$use` and `$else-use` expands to use of the often hard to
+with `$select`, `$when`, `$use` and `$else_use` expands to use of the often hard to
 group visually `:?` operator; and, finally, the readable plain `not` is standard C++.
 
 Expressive C++ also offers some stuff implemented with ordinary C++ code, using C++
