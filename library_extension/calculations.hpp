@@ -14,30 +14,32 @@ namespace progrock{ namespace expressive{
             -> Number
         { return v*v; }
 
-        inline $simple_pure_f int_positive_power(
+        template< class Number = double >
+        $simple_pure_f int_positive_power(
             const double    base,
             const int       exp
-            ) -> double
+            ) -> Number
         {
             return $select
                 $when exp == 0 $use
-                    1.0
+                    1
                 $when is_odd( exp ) $use
-                    base*squared( int_positive_power( base, exp/2 ) )
+                    $as<Number>( base*squared( int_positive_power<Number>( base, exp/2 ) ) )
                 $else_use
-                    squared( int_positive_power( base, exp/2 ) );
+                    squared( int_positive_power<Number>( base, exp/2 ) );
         }
 
-        inline $simple_pure_f int_power(
+        template< class Number = double >
+        $simple_pure_f int_power(
             const double    base,
             const int       exp
-            ) -> double
+            ) -> Number
         {
             return $select
                 $when exp < 0 $use
-                    1.0/int_positive_power( base, -exp )
+                    $as<Number>( 1.0/int_positive_power<Number>( base, -exp ) )
                 $else_use
-                    int_positive_power( base, exp );
+                    int_positive_power<Number>( base, exp );
         }
     }  // namespace libx
 #include <p/expressive/pseudo_keywords/end_region.hpp>
