@@ -2,6 +2,8 @@
 // #include <p/expressive/library_extension/string_builders.hpp>
 // Copyright © 2016 Alf P. Steinbach, distributed under Boost license 1.0.
 
+#include <p/expressive/core_language/basic_type_builders.hpp>       // ref_, forwarding_ref
+
 #include <string>       // std::basic_string
 #include <utility>      // std::(move, forward)
 
