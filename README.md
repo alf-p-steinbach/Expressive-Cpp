@@ -381,7 +381,7 @@ to declare variables using `auto` are for *correctness*, *performance*,
 *maintainability*, and *robustness* — and, yes, *convenience*, but that’s in last
 place on the list&ldquo;.
 
-Scott Meyers recommends clearly &ldquo;Prefer auto to
+Scott Meyers recommends clearly &ldquo;Prefer `auto` to
 explicit type declarations&rdquo;.
 
 To promote this practice Herb invented a new hopefully catchy acronym:
