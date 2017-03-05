@@ -448,7 +448,8 @@ The **`$alias`** keyword, raw C++ `auto&`, creates a name that is an alternative
 to refer to whatever its initializer expression denotes.
 
 If the something is a variable, but you want to make clear that the alias will not be
-used to modify, then you can alternatively use `$const_view`, raw C++ `auto const&`.
+used to modify, then you can alternatively use **`$const_view`**, raw C++
+`auto const&`.
 ```c++
 $let    pi      = 3.14;     // double const
 $var    count   = 0;        // int
@@ -462,6 +463,16 @@ $let    const_pointer   = "Hi";     // $let is always a constant.
 $var    pointer         = "Ho";     // $var is always a variable.
 $alias  const_array     = "Hm";     // $alias is exact same, here a const array.
 ```
+At the raw C++ level one might naïvely think that the various modifiers that one
+applies to `auto`, such as `&` and `const`, only affect or constrain the resulting
+type correspondingly. But as the above example shows the effect can be radical, with
+completely different resulting types, pointer versus array. At the abstraction level
+of the `$let`, `$var` and `$alias` keywords, thinking about what one wants to
+express rather than how to create that effect with the detailed raw C++ machinery,
+it is however quite natural that one gets different types &ndash; or at least it's
+not entirely unnatural; especially the `$alias` effect of identical type is
+grokkable&hellip;
+
 With a string literal as initializer a `const_view` would produce the same as a
 basic `$alias`, since a string literal already is `const`, so I just omitted that.
 
