@@ -343,7 +343,7 @@ exception occurred and what it's about.
 
 ### Herb Sutter´s &ldquo;almost always `auto`&rdquo;
 
-In the C language and in C98 and C++03 the syntax for declaring a named object, a
+In the C language and in C++98 and C++03 the syntax for declaring a named object, a
 **variable**, was essentially the same as the syntax for declaring a function's
 formal argument, e.g.
 ```c++
