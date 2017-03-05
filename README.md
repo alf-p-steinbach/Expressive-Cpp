@@ -530,7 +530,7 @@ $just
 <sub><i>Expressive C++ offers the <b>compile_time_length_of</b> function to find the
 length of a string literal at compile time. It assumes that it’s called with a string
 literal or an exactly corresponding array as argument. It could have further
-simplified the code here, still while an exact equivalence.</i></sub> 
+simplified the code here, still with an exact equivalence.</i></sub> 
 
 So this is one thing that the modern style declarations can do that the C++03 style
 declarations can’t, namely *inferred array reference size*. But in the other
