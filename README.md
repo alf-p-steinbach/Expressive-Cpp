@@ -464,17 +464,17 @@ It gets perhaps more interesting when the initializer is a string literal:
 ```c++
 $let    const_pointer   = "Hi";     // $let is always a constant.
 $var    pointer         = "Ho";     // $var is always a variable.
-$alias  const_array     = "Hm";     // $alias is exact same, here a const array.
+$alias  const_array     = "Hm!";    // $alias is exact same, here a const array.
 ```
 At the raw C++ level one might naïvely think that the various modifiers that one
 applies to `auto`, such as `&` and `const`, only affect or constrain the resulting
 type correspondingly. But as the above example shows the effect can be radical, with
 completely different resulting types, pointer versus array. At the abstraction level
-of the `$let`, `$var` and `$alias` keywords, thinking about what one wants to
-express rather than how to create that effect with the detailed raw C++ machinery,
-it is however quite natural that one gets different types &ndash; or at least it's
-not entirely unnatural; especially the `$alias` effect of identical type is
-grokkable&hellip;
+of the `$let`, `$var` and `$alias` keywords, however, thinking about what one wants
+to express rather than how to create that effect with the detailed raw C++ machinery,
+it is quite natural that one gets different types &ndash; or at least it's not
+entirely over on the unnatural side; especially the `$alias` effect of identical type
+is grokkable&hellip;
 
 For a string literal as initializer a `const_view` would produce the same as a
 basic `$alias`, since a string literal already is `const`, so I just omitted that.
