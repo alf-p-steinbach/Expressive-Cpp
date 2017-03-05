@@ -374,11 +374,12 @@ initializer expression is edited &ndash; oops!
 
 Since there are both advantages and disadvantages of `auto` declarations in raw C++,
 the experts were initially divided about what to use when. But as of 2017 the leading
-experts lean towards using `auto` exclusively, oir at least as the preferred default
+experts lean towards using `auto` exclusively, or at least as the preferred default
 notation. Quoting Herb Sutter, chair of the international C++ standardization
-committee and lead architect of Visual C++, &ldquo;the main reasons to declare
-variables using `auto` are for *correctness*, *performance*, *maintainability*, and
-*robustness* — and, yes, *convenience*, but that’s in last place on the list&ldquo;.
+committee and lead architect of Visual C++, [emphasis added] &ldquo;the main reasons
+to declare variables using `auto` are for *correctness*, *performance*,
+*maintainability*, and *robustness* — and, yes, *convenience*, but that’s in last
+place on the list&ldquo;.
 
 Scott Meyers recommends clearly &ldquo;Prefer auto to
 explicit type declarations&rdquo;.
