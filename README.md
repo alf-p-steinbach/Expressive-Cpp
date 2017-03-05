@@ -255,6 +255,7 @@ one for `EXIT_FAILURE` in their C++ implementation for Windows, Visual C++.
 In summary, `$just` augments the raw standard `main` function in the
 following ways (plus some!):
 
+* It’s just less to write. Wonderful!
 * Catches and reports exceptions.  
   This guarantees an orderly stack unwinding with cleanup, which is not
   guaranteed by standard `main`. Also it’s nice to be able see the
@@ -266,7 +267,6 @@ following ways (plus some!):
   sort of. In particular the wide streams then work with no problem in
   \*nix-land. In Windows, however, some  additional magic incantations
   are necessary to get full Unicode-support; I may add that later.
-* It’s just less to write. Wonderful!
 
 ### `$start_with_ascii_arguments` for simple command line arguments.
 
