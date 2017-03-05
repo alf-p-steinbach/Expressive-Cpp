@@ -10,7 +10,13 @@
     - [`$just` a simple & safe program startup](#just-a-simple--safe-program-startup)
     - [`$start_with_ascii_arguments` for simple command line arguments.](#start_with_ascii_arguments-for-simple-command-line-arguments)
     - [`$start_with` a function and a fatal error exception handler](#start_with-a-function-and-a-fatal-error-exception-handler)
-  - [Function declarations](#function-declarations)
+  - [Variables and constants](#variables-and-constants)
+    - [Herb Sutter´s &ldquo;almost always `auto`&rdquo;](#herb-sutter%C2%B4s-ldquoalmost-always-autordquo)
+    - [`$as` versus `$of_type` for the initializer](#as-versus-of_type-for-the-initializer)
+    - [`$let` and `$var`](#let-and-var)
+    - [`$alias` and `$const_view`](#alias-and-const_view)
+    - [`$wrapped_array`](#wrapped_array)
+  - [Functions](#functions)
     - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
     - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
     - [`$simple_pure_f` and `$compile_time`](#simple_pure_f-and-compile_time)
@@ -65,7 +71,7 @@ The most important four are
 > As of late Feb 2017:  
 General: `$e`, `$static_assert`, `$funcname`, `$noreturn`.
 Expressions: `$invoked`, `$of_type`, `$as`, `$select`, `$when`, `$use`, `$else_use`, `$self`, `$lambda_using`, `$byref`, `$byval`, `$capture_byref`, `$capture_byval`, `$lambda`, `$lambda_using_references`, `$lambda_using_values`.
-Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$name`, `$const_view`, `$f`, `$p`, `$simple_pure_f`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
+Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$alias`, `$const_view`, `$f`, `$p`, `$simple_pure_f`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
 Templates: `$enabled_if`, `$is`.
 Flow control: `$repeat`, `$until`, `$each_value`, `$each_object`, `$each`, `$in`, `$n_times`, `$hopefully`, `$fail`.
 Startup: `$start_with`, `$start_with_ascii_arguments`, `$just`.
@@ -231,7 +237,7 @@ The catching and presentation of exceptions from your code avoids the raw
 some cryptic unrelated message.
 
 When an exception propagates out of your code, if the exception doesn't
-specify a process exit code then an OS-specific process code is returned.
+specify a process exit code then an OS-specific process code is returned by `$just`.
 In \*nix-land this general failure code is the value `EXIT_FAILURE` from the
 `<stdlib.h>` header. But in Windows `EXIT_FAILURE` conflicts with a specific
 Windows error code called `ERROR_INVALID_FUNCTION`, so in Windows a special
@@ -248,8 +254,9 @@ following ways (plus some!):
 * Catches and reports exceptions.  
   This guarantees an orderly stack unwinding with cleanup, which is not
   guaranteed by standard `main`. Also it's nice to be able see the
-  exception message rather than a cryptic crash box. And the default
-  return values are not in conflict with the OS conventions.
+  exception message rather than a cryptic crash box, as with the raw C++ `main`. And,
+  unlike the raw   C++ `main`, the default return values are not in conflict with the
+  OS conventions.
 * Runs your code after a `setlocale( LC_ALL, "" )` call.  
   This makes character classification functions and wide streams, work,
   sort of. In particular the wide streams then work with no problem in
@@ -329,7 +336,141 @@ prepended to the exception message, by the `$fail` macro. If instead you use the
 pure C++ `fail` function then you get just exactly the specified message. Usually the
 function name is enough to identify where the exception occurred and what it's about.
 
-## Function declarations
+## Variables and constants
+
+### Herb Sutter´s &ldquo;almost always `auto`&rdquo;
+
+In the C language and in C98 and C++03 the syntax for declaring a named object, a
+**variable**, was essentially the same as the syntax for declaring a function's
+formal argument, e.g.
+```c++
+vector<int> const           v   = { 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
+vector<int>::const_iterator it  = v.begin();
+double                      avg = 0.0;
+```
+But C++11 let you use `auto` to have the type of a variable *inferred* from its
+initializer:
+```c++
+auto const  v   = vector<int>{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
+auto        it  = v.begin();
+auto        avg = 0.0;
+```
+&hellip; which is not in general a syntax that you can apply to formal arguments of a
+function, without effectively changing the formerly single concrete function into a
+template! So, just as original C++ around ~1980 de-unified the already slightly
+broken unification concept that every routine is a function, C++11 de-unified the
+already slightly broken unification concept that variable declarations and formal
+arguments of functions are the same thing. They aren’t. A variable has (at most) a
+single initializer, while a function’s formal argument has potentially as many
+different initializers, of different types, as there are calls of that function.
+
+With `auto` it's more clear that `it` is a variable that can be changed by
+assignment, that it's not a constant. And the declaration is also shorter, good. But
+the type of `avg` is now less clear, and it can now easily be changed in an ungood
+way, from floating point type to integral, which changes the behavior!, when the
+initializer expression is edited &ndash; oops!
+
+Since there are both advantages and disadvantages of `auto` declarations in raw C++,
+the experts were initially divided about what to use when. But as of 2017 the leading
+experts lean towards using `auto` exclusively, oir at least as the preferred default
+notation. Quoting Herb Sutter, chair of the international C++ standardization
+committee and lead architect of Visual C++, &ldquo;the main reasons to declare
+variables using `auto` are for *correctness*, *performance*, *maintainability*, and
+*robustness* — and, yes, *convenience*, but that’s in last place on the list&ldquo;.
+
+Scott Meyers recommends clearly &ldquo;Prefer auto to
+explicit type declarations&rdquo;.
+
+To promote this practice Herb invented a new hopefully catchy acronym:
+[&ldquo;**AAA**&rdquo;, meaning &ldquo;*Almost Always
+Auto*&rdquo;](https://herbsutter.com/2013/08/12/gotw-94-solution-aaa-style-almost-always-auto/).
+
+### `$as` versus `$of_type` for the initializer
+
+One way to ensure a specific type, such as ensuring `double` type for `avg`,
+is to use a cast for the initializer expression:
+```c++
+auto    avg = static_cast<double>( 0.0 );
+```
+This practice has three problems:
+
+* It's verbose.
+* The cast can hide an incorrect assumption about the type of the initializer
+  expression.
+* The cast can suppress up-front notice of an erroneous later change of initializer
+  type.
+
+If you are only concerned with the verbosity, which goes to readability, then you can
+use Expressive C++ **`$as`**, which translates to `static_cast`:
+```c++
+auto    avg = $as<double>( 0.0 );          // More concise!
+```
+And if you are only concerned with the correctness issue, that the cast can hide an
+unexpected initializer expression type, and e.g. discard information, then to avoid
+that you can use **`$of_type`**, which adds a `static_assert` that `auto` type
+inference would produce the specified type, modulo `const`-ness and reference:
+```c++
+auto    avg = $of_type<double>( 0.0 );     // More maintenance-resistant!
+```
+Either form provides an *explicit mention of the type*, which can be useful both for
+reading and understanding the code, and for searching it for use of that type.
+
+Note: since the initializer expression is passed as a macro argument to `$of_type`,
+it cannot then directly contain a **comma**. Just parenthesize it if it does.
+
+### `$let` and `$var`
+
+In Expressive C++ you can write the above as
+```c++
+$let    v   = vector<int>{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
+$var    it  = v.begin();
+$var    avg = $of_type( double, 0.0 );
+```
+The **`$let`** keyword is `auto const` in raw C++, and denotes a *constant*.
+
+The **`$var`** keyword is `auto` in raw C++, and denotes a non-constant *variable*.
+
+Due to the type inference done by `auto` a `$var` will never be reference. Well,
+unless you add a raw C++ reference symbol, `&`. But it can be very useful to have the
+`$var` keyword clearly and unambiguously signaling &ldquo;mutable variable&rdquo;,
+and adding a type modifier such as `&` or `*` in some declarations would to some
+degree foil that advantage.
+
+### `$alias` and `$const_view`
+
+Okay, producing a pointer type via the initializer expression is easy, but what if
+you really need a reference type?
+
+The **`$alias`** keyword, raw C++ `auto&`, creates a name that is an alternative way
+to refer to whatever its initializer expression denotes.
+
+If the something is a variable, but you want to make clear that the alias will not be
+used to modify, then you can alternatively use `$const_view`, raw C++ `auto const&`.
+```c++
+$let    pi      = 3.14;     // double const
+$var    count   = 0;        // int
+
+$alias  n       = count;    // n and count are the same variable.
+$const_view nc  = count;    // and so also nc, but you can't modify via nc.
+```
+It gets perhaps more interesting when the initializer is a string literal:
+```c++
+$let    const_pointer   = "Hi";     // $let is always a constant.
+$var    pointer         = "Ho";     // $var is always a variable.
+$alias  const_array     = "Hm";     // $alias is exact same, here a const array.
+```
+With a string literal as initializer a `const_view` would produce the same as a
+basic `$alias`, since a string literal already is `const`, so I just omitted that.
+
+### `$wrapped_array`
+
+asdasd
+
+
+
+
+
+## Functions
 As motivation for distinguishing clearly between two kinds of functions,
 called `$p` (procedure) and `$f` (function) in Expressive C++, consider a
 system for managing an automated warehouse. It sometimes has to move things

@@ -58,7 +58,7 @@
 #   define $lambda_using_values         $lambda_using( $capture_byval )
 #   define $lambda                      $lambda_using_references
 
-//--------------------------------------- Declarations & namespace handling:
+//--------------------------------------- Declarations:
 //
 #define $invoked_with( instantiation ) \
     $e::impl::Gurkemeie{} % []( decltype( instantiation ) = instantiation )
@@ -68,7 +68,7 @@
 #
 #   define $let                     auto const
 #   define $var                     auto
-#   define $name                    auto&
+#   define $alias                   auto&
 #   define $const_view              auto const&
 #
 #   define $f                       auto        // Function (intended to have expr. result)
@@ -77,6 +77,9 @@
 #   define $simple_pure_f           constexpr $f
 #   define $compile_time            static constexpr
 #
+
+//--------------------------------------- Namespace handling:
+//
 #   define $use_weakly_all_from( ns )   \
         using namespace ns
 #

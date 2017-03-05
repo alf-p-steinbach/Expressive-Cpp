@@ -26,17 +26,19 @@
 #pragma pop_macro( "$lambda_using_values" )
 #pragma pop_macro( "$lambda" )
 
-//--------------------------------------- Declarations & namespace handling:
+//--------------------------------------- Declarations:
 #pragma pop_macro( "$invoked_with" )
 #pragma pop_macro( "$unique_temp_name" )
 #pragma pop_macro( "$let" )
 #pragma pop_macro( "$var" )
-#pragma pop_macro( "$name" )
+#pragma pop_macro( "$alias" )
 #pragma pop_macro( "$const_view" )
 #pragma pop_macro( "$f" )
 #pragma pop_macro( "$p" )
 #pragma pop_macro( "$simple_pure_f" )
 #pragma pop_macro( "$compile_time" )
+
+//--------------------------------------- Namespace handling:
 #pragma pop_macro( "$use_weakly_all_from" )
 #pragma pop_macro( "$use_nested_in" )
 #pragma pop_macro( "$_generate_using_declaration_in" )     // Implementation detail.
