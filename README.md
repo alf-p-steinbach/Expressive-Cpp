@@ -212,10 +212,14 @@ produces its return value with the type implied by the `return` statement.
 The basic way to specify what should happen when the program starts, is to use the
 **`$just`** keyword, followed by a statement sequence enclosed in curly braces.
 ```C++
-#include <p/expressive/use_weakly_all.hpp>
 #include <iostream>
 $just{ std::cout << "Hello, world!\n"; }
 ```
+<sub><i>This code, and all following examples, assume that the general get-it-all
+Expressive C++ header shown earlier is included via an option in the build command.
+With the g++ compiler you can do that via option <b>-include</b>. With the Visual
+C++ compiler you can do that via option <b>/FI</b>.</i></sub>
+
 Behind the scenes `$just` declares a standard C++ **`main`** function that
 executes `setlocale( LC_ALL, "" )` and then invokes your statement block in
 a context where exceptions are caught and presented on the standard error
@@ -271,7 +275,6 @@ If you want to process command line arguments you can use
 `$just` this is a shallow wrapper for a more general startup macro
 called `$start_with`. Here's an example:
 ```C++
-#include <p/expressive/use_weakly_all.hpp>
 #include <iostream>
 #include <vector>           // std::vector
 #include <string>           // std::string
@@ -307,7 +310,6 @@ message in a GUI message box instead of just on the standard error stream, then
 you can pass your own handler as a second argument to **`$start_with`** (the macro
 used by `$just` and `$start_with_ascii_arguments`), like this:
 ```C++
-#include <p/expressive/use_weakly_all.hpp>
 #include <iostream>
 $use_weakly_all_from( std );
 
@@ -332,9 +334,10 @@ Output:
 </pre>
 
 Digression: the function name `compute_something_difficult` was automatically
-prepended to the exception message, by the `$fail` macro. If instead you use the basic
-pure C++ `fail` function then you get just exactly the specified message. Usually the
-function name is enough to identify where the exception occurred and what it's about.
+prepended to the exception message, by the `$fail` macro. If instead you use
+Expressive C++'s basic pure C++ `fail` function then you get just exactly the
+specified message. Usually the function name is enough to identify where the
+exception occurred and what it's about.
 
 ## Variables and constants
 
@@ -448,8 +451,8 @@ The **`$alias`** keyword, raw C++ `auto&`, creates a name that is an alternative
 to refer to whatever its initializer expression denotes.
 
 If the something is a variable, but you want to make clear that the alias will not be
-used to modify, then you can alternatively use **`$const_view`**, raw C++
-`auto const&`.
+used to modify, then you can alternatively use **`$const_view`**, which translates to
+raw C++ `auto const&`.
 ```c++
 $let    pi      = 3.14;     // double const
 $var    count   = 0;        // int
@@ -473,10 +476,66 @@ it is however quite natural that one gets different types &ndash; or at least it
 not entirely unnatural; especially the `$alias` effect of identical type is
 grokkable&hellip;
 
-With a string literal as initializer a `const_view` would produce the same as a
+For a string literal as initializer a `const_view` would produce the same as a
 basic `$alias`, since a string literal already is `const`, so I just omitted that.
 
 ### `$wrapped_array`
+
+With the old C++03 syntax the above simple declarations become rather awkward:
+```c++
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    char const* const   const_pointer       = "Hi";     // $let
+    char const*         pointer             = "Ho";     // $var
+    char const         (&const_array)[4]    = "Hm!";    // $alias
+    
+    (void) const_pointer; (void) pointer;
+
+    int const n = sizeof( const_array );
+    cout << "A string of " << n - 1 << " characters: ";
+    for( int i = 0; i < n - 1; ++i ) { cout << const_array[i] << ' '; }
+    cout << endl;
+}
+```
+One had to plug in the array size `4` manually, by hand, or otherwise, writing
+```c++
+char const const_array[] = "Hm!";     // copy, with inferred size.
+```
+&hellip; one would incur at least a logical copying of the initializer. The copying
+would probably be optimized away, but it was potentially present, and constrained the
+array item type to one that could be copied. With C++11 `auto&`, as in Expressive C++
+`$alias`, that size is inferred, and one doesn't have to do &ldquo;clever&rdquo;
+stuff like that C++ array reference syntax, to avoid imposing constraints and
+guarantee efficiency &ndash; one can just express things directly & naturally:
+```c++
+#include <iostream>
+using namespace std;
+
+$just
+{
+    $let    const_pointer   = "Hi";     // $let is always a constant.
+    $var    pointer         = "Ho";     // $var is always a variable.
+    $alias  const_array     = "Hm!";    // $alias is exact same, here a const array.
+    
+    (void) const_pointer; (void) pointer;
+
+    cout << "A string of " << sizeof( const_array ) - 1 << " characters: ";
+    for( $each ch $in const_array ) { cout << ch << ' '; }
+    cout << endl;
+}
+```
+<sub><i>Expressive C++ offers the <b>compile_time_length_of</b> function to find the
+length of a string literal at compile time. It assumes that it's called with a string
+literal or an exactly corresponding array as argument. It could have further
+simplified the code here, still while an exact equivalence.</i></sub> 
+
+So this is one thing that the modern style declarations can do,
+that the C++03 style declarations can't.
+
+
 
 asdasd
 
