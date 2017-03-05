@@ -416,7 +416,7 @@ unexpected initializer expression type, and e.g. discard information, then to av
 that you can use **`$of_type`**, which adds a `static_assert` that `auto` type
 inference would produce the specified type, modulo `const`-ness and reference:
 ```c++
-auto    avg = $of_type<double>( 0.0 );     // More maintenance-resistant!
+auto    avg = $of_type( double, 0.0 );     // More maintenance-resistant!
 ```
 Either form provides an *explicit mention of the type*, which can be useful both for
 reading and understanding the code, and for searching it for use of that type.
