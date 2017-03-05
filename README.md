@@ -357,10 +357,12 @@ auto        avg = 0.0;
 ```
 &hellip; which is not in general a syntax that you can apply to formal arguments of a
 function, without effectively changing the formerly single concrete function into a
-template! So, just as original C++ around ~1980 de-unified the already slightly
-broken unification concept that every routine is a function, C++11 de-unified the
-already slightly broken unification concept that variable declarations and formal
-arguments of functions are the same thing. They aren’t. A variable has (at most) a
+template!
+
+So, just as original C++ around ~1980 de-unified the already slightly
+broken unification concept of regarding every routine as a function, C++11 de-unified
+the already slightly broken unification concept of regarding variables and formal
+arguments of functions as the same thing. They aren’t. A variable has (at most) a
 single initializer, while a function’s formal argument has potentially as many
 different initializers, of different types, as there are calls of that function.
 
