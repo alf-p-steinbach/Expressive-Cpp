@@ -524,7 +524,7 @@ char const const_array[] = "Hm!";     // copy, with inferred size.
 would probably be optimized away, but it was potentially present, and constrained the
 array item type to one that could be copied. With C++11 `auto&`, as in Expressive C++
 `$alias`, that size is inferred, and one doesn’t have to do &ldquo;clever&rdquo;
-stuff like that C++ array reference syntax, to avoid imposing constraints and
+stuff like that C++ array reference syntax to avoid imposing constraints and
 guarantee efficiency &ndash; one can just express things directly & naturally:
 ```c++
 #include <iostream>
@@ -552,7 +552,7 @@ So this is one thing that the modern style declarations can do that the C++03 st
 declarations can’t, namely *inferred array reference size*. But in the other
 direction, *inferred array copy size*, to declare a mutable array with size inferred
 from its initializer, is something that the C++03-style declarations can easily do,
-and that’s commonly done!, that’s non-trivial with the modern `auto` syntax in raw
+and that’s commonly done!, that is non-trivial with the modern `auto` syntax in raw
 C++. It might seem that There Ain’t No Such Thing As A Free Lunch:
 ```c++
 #include <iostream>
