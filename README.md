@@ -432,7 +432,7 @@ based C++ function templates?
 **A.** Consider a raw C++ function template `as` as in the code below. The
 actual argument, which here is a temporary, is bound to the formal argument, and so
 its lifetime is not extended. In contrast, the `static_cast` in this code does not
-affect the lifetime extensions of the temporary, avoid the unpleasant Undefined
+affect the lifetime extension of the temporary, avoiding the unpleasant Undefined
 Behavior:
 ```c++
 // Entirely raw C++ code:
