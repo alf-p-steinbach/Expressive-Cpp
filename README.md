@@ -76,8 +76,7 @@ Templates: `$enabled_if`, `$is`.
 Flow control: `$repeat`, `$until`, `$each_value`, `$each_object`, `$each`, `$in`, `$n_times`, `$hopefully`, `$fail`.
 Startup: `$start_with`, `$start_with_ascii_arguments`, `$just`.
 
-Finally, in addition to useful ordinary C++ functions like `enumerated` and `i_up_to`,
-and supporting pseudo keywords like `$fail`, Expressive C++ offers a number of **type
+Finally, Expressive C++ also offers a number of **type
 builder** template aliases such as `ref_`, `ptr_` and `raw_array_`, that enables one
 to use the principle of substitution to construct types. The type builders also
 support the practice of putting `const` first, even in
