@@ -428,21 +428,35 @@ it cannot then directly contain a **comma**. Just parenthesize it if it does.
 
 ### `$let` and `$var`
 
-In Expressive C++ you can write the above as
+In Expressive C++ you can write the above
 ```c++
-$let    v   = vector<int>{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
-$var    it  = v.begin();
-$var    avg = $of_type( double, 0.0 );
+auto const  v   = vector<int>{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
+auto        it  = v.begin();
+auto        avg = $of_type( double, 0.0 );
 ```
+&hellip; as
+```c++
+$let v      = vector<int>{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
+$var it     = v.begin();
+$var avg    = $of_type( double, 0.0 );
+```
+Raw C++ `auto`, `&` and `const` combine to create four different *kinds* of
+variable declarations, and the Expressive C++ pseudo keywords `$let`, `$var`,
+`$alias` and `$const_view` name these kinds for readability and clarity. With the
+two most used, `$let` and `$var`, the code is also shorter and lines up nicely.
+Which really shouldn't count but still, the author likes that.
+
 The **`$let`** keyword is `auto const` in raw C++, and denotes a *constant*.
 
 The **`$var`** keyword is `auto` in raw C++, and denotes a non-constant *variable*.
 
-Due to the type inference done by `auto` a `$var` will never be reference. Well,
-unless you add a raw C++ reference symbol, `&`. But it can be very useful to have the
+Due to the type inference done by `auto` a `$var` will never be a reference unless
+you add a raw C++ reference symbol, `&`. But it can be very useful to have the
 `$var` keyword clearly and unambiguously signaling &ldquo;mutable variable&rdquo;,
-and adding a type modifier such as `&` or `*` in some declarations would to some
-degree foil that advantage.
+so preferably don't add a type modifier. With compiler support for the Expressive
+C++ dialect the syntax could be constrained to not allow such modifiers.
+
+The *intent* is that `$var` guarantees a distinct variable.
 
 ### `$alias` and `$const_view`
 
