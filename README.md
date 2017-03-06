@@ -426,6 +426,71 @@ reading and understanding the code, and for searching it for use of that type.
 Note: since the initializer expression is passed as a macro argument to `$of_type`,
 it cannot then directly contain a **comma**. Just parenthesize it if it does.
 
+**Q.** Why are `$as` and `$of_type` macros, and not just simple universal reference
+based C++ function templates?
+
+**A.** Consider a raw C++ function template `as` as in the code below. The
+actual argument, which here is a temporary, is bound to the formal argument, and so
+its lifetime is not extended. In contrast, the `static_cast` in this code does not
+affect the lifetime extensions of the temporary, avoid the unpleasant Undefined
+Behavior:
+```c++
+// Entirely raw C++ code:
+#include <iostream>
+#include <string>
+#include <utility>
+using namespace std;
+
+template< class T > using type = T;
+
+struct S
+{
+    bool is_valid = true;
+    
+    void report_state() const
+    {
+        // Here “UB” means “Undefined Behavior”, where just about anything can ha.
+        static char const* msgs[] = {"Oops, UB! UB!", "All is /apparently/ OK." };
+        cout << msgs[is_valid] << "\n";
+    }
+
+    ~S() { cout << "S::<destroy>\n"; is_valid = false; }
+    S() { cout << "S::<init>\n"; }
+};
+
+template< class Type >
+auto as( Type&& o )               // A function `as` instead of a macro.
+    -> Type
+{ return forward<Type>( o ); }
+
+int main()
+{
+    cout << "Using a user-defined function template `as`:\n";
+    S const& o1 = as<S const&>( S{} );
+    o1.report_state();
+    cout << "\n";
+    
+    cout << string( 40, '-' ) << "\n";
+    cout << "Using a built-in `static_cast`:\n";
+    S const& o2 = static_cast<S const&>( S{} );
+    o2.report_state();
+}
+```
+Output on my system, with g++ and Visual C++:
+<blockquote><pre>
+Using a user-defined function template `as`:
+S::&lt;init&gt;
+S::&lt;destroy&gt;
+Oops, UB! UB!
+
+----------------------------------------
+Using a built-in `static_cast`:
+S::&lt;init&gt;
+All is /apparently/ OK.
+S::&lt;destroy&gt;
+</pre></blockquote>
+
+
 ### `$let` and `$var`
 
 In Expressive C++ you can write the above
