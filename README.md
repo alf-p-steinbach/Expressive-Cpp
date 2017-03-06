@@ -426,7 +426,7 @@ reading and understanding the code, and for searching it for use of that type.
 Note: since the initializer expression is passed as a macro argument to `$of_type`,
 it cannot then directly contain a **comma**. Just parenthesize it if it does.
 
-**Q.** Why are `$as` and `$of_type` macros, and not just simple universal reference
+**Q.** Why are `$as` and `$of_type` macros, and not just simple forwarding reference
 based C++ function templates?
 
 **A.** Consider a raw C++ function template `as` as in the code below. The
@@ -440,8 +440,6 @@ Behavior:
 #include <string>
 #include <utility>
 using namespace std;
-
-template< class T > using type = T;
 
 struct S
 {
@@ -458,9 +456,9 @@ struct S
     S() { cout << "S::<init>\n"; }
 };
 
-template< class Type >
+template< class Result, class Type >
 auto as( Type&& o )               // A function `as` instead of a macro.
-    -> Type
+    -> Result
 { return forward<Type>( o ); }
 
 int main()
