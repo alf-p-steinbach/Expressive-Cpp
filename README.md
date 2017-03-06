@@ -364,9 +364,12 @@ template!
 So, just as original C++ around ~1980 de-unified the already slightly
 broken unification concept of regarding every routine as a function, C++11 de-unified
 the already slightly broken unification concept of regarding variables and formal
-arguments of functions as the same thing. They aren’t. A variable has (at most) a
+arguments of functions as the same thing. They aren’t. A variable has at most a
 single initializer, while a function’s formal argument has potentially as many
-different initializers, of different types, as there are calls of that function.
+different initializers, of different types, as there are calls of that function; a
+variable's initializer can refer to an earlier declared variable, as with `it`
+above (you can't do that with a function's formal arguments); and as formal
+argument types array and function types decay to pointers.
 
 With `auto` it’s more clear that `it` is a variable that can be changed by
 assignment, that it’s not a constant. And the declaration is also shorter, good. But
