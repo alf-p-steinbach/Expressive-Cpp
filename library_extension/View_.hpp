@@ -4,6 +4,7 @@
 
 #include <p/expressive/library_extension/Collection_traits_.hpp>
 
+#include <assert.h>     // assert
 #include <iterator>     // std::reverse_iterator
 
 namespace progrock{ namespace expressive{
@@ -46,6 +47,15 @@ namespace progrock{ namespace expressive{
             -> View_<typename Collection_traits_<Collection>::Iterator>
         { return { begin( c ), end( c ) }; }
 
+        template< class Collection >
+        $f view_of( ref_<Collection> c, const Size start_offset, const Size beyond_offset )
+            -> View_<typename Collection_traits_<Collection>::Iterator>
+        {
+            assert( start_offset >= 0 );
+            assert( beyond_offset <= 0 );
+            return { begin( c ) + start_offset, end( c ) + beyond_offset };
+        }
+
         template< class Iterator >
         $f reverse_view_of( const Iterator first, const Iterator beyond )
             -> View_< reverse_iterator< Iterator > >
@@ -66,6 +76,20 @@ namespace progrock{ namespace expressive{
             {
                 reverse_iterator<Iterator>{ end( c ) },
                 reverse_iterator<Iterator>{ begin( c ) }
+            };
+        }
+
+        template< class Collection >
+        $f reverse_view_of( ref_<Collection> c, const Size start_offset, const Size beyond_offset )
+            -> View_< reverse_iterator< typename Collection_traits_< Collection >::Iterator > >
+        {
+            using Iterator = typename Collection_traits_< Collection >::Iterator;
+            assert( start_offset >= 0 );
+            assert( beyond_offset <= 0 );
+            return
+            {
+                reverse_iterator<Iterator>{ end( c ) } + start_offset,
+                reverse_iterator<Iterator>{ begin( c ) } + beyond_offset
             };
         }
 

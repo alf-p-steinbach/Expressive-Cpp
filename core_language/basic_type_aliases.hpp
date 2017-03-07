@@ -1,6 +1,6 @@
 #pragma once
 // #include <p/expressive/core_language/basic_type_aliases.hpp>
-// Copyright © 2016 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright © 20xx, 2016 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <stddef.h>     // ptrdiff_t
 #include <stdint.h>     // PTRDIFF_MAX

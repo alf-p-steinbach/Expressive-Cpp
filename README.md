@@ -1,8 +1,8 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON’T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Expressive C++  &rarr;  convenience, readability and safety](#expressive-c--rarr--convenience-readability-and-safety)
+- [Expressive C++  &rArr;  convenience, readability and safety](#expressive-c--rarr--convenience-readability-and-safety)
   - [About.](#about)
   - [Requirements & how to install.](#requirements--how-to-install)
   - [Introduction](#introduction)
@@ -15,7 +15,7 @@
     - [`$as` versus `$of_type` for the initializer](#as-versus-of_type-for-the-initializer)
     - [`$let` and `$var`](#let-and-var)
     - [`$alias` and `$const_view`](#alias-and-const_view)
-    - [`$wrapped_array`](#wrapped_array)
+    - [`wrapped_array` and `wrapped_array_of_`](#wrapped_array-and-wrapped_array_of_)
   - [Functions](#functions)
     - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
     - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
@@ -23,7 +23,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Expressive C++  &rarr;  convenience, readability and safety
+# Expressive C++  &rArr;  convenience, readability and safety
 
 ## About.
 
@@ -178,7 +178,9 @@ The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros.
 
 Here `$use_weakly_all_from` is one of a family of pseudo keywords for handling C++
-namespaces (it’s there mostly for consistency of notation); `$f`, short for
+namespaces (it’s there mostly for consistency of notation, including the name of the
+header used here which provides such a directive for the
+**`::progrock::expressive`** namespace); `$f`, short for
 *`function`*, denotes a trailing return type function definition that’s intended to
 be non-`void`; the `$just` pseudo keyword generates a safe standard C++ `main`
 function, discussed in he next subsection; the readable `$loop`, `$each` and `$in`
@@ -564,7 +566,7 @@ is grokkable&hellip;
 For a string literal as initializer a `const_view` would produce the same as a
 basic `$alias`, since a string literal already is `const`, so I just omitted that.
 
-### `$wrapped_array`
+### `wrapped_array` and `wrapped_array_of_`
 
 With the old C++03 syntax the above simple declarations become rather awkward:
 ```c++
@@ -639,6 +641,43 @@ int main()
 }
 ```
 
+C++17 (or possibly a later version of the standard) will provide
+[`std::make_array`](http://en.cppreference.com/w/cpp/experimental/make_array) to
+support this. With `make_array` the resulting `std::array` item type can be specified
+as a template argument. Alternatively, by specifying `void` the item type will be
+inferred as a the `std::common_type` of the item initializers, which for a single
+item array reduces to the `std::decay_t` of the type of the single initializer.
+
+The idea of specifying `void` to get a deduced type reduces clarity because one has
+to know about it to understand what it means: it's not self-descriptive. And the
+idea of a type cleverly deduced by a non-trivial algorithm, from the types of all
+initializers, is a recipe for fragile, easily broken code. For when one can't
+reliably predict the result then the coding devolves to try-and-fail exploration.
+
+The Expressive C++ support increases clarity here by simply naming the inferred type
+and explicit type cases, **`wrapped_array`** versus **`wrapped_array_of_`**; no need
+to figure out what a `void` item type means, or what to write for that case. And
+`wrapped_array` increases programmer control by using a very simple item type
+deduction for `wrapped_array`. Namely,
+
+* the `std::decay_t` of the first initializer, except
+* when there is only a single initializer itself of array type, such as
+a string literal, in which case `wrapped_array` just wraps that array.
+
+```c++
+#include <iostream>
+using namespace std;
+
+$just
+{
+    $var array = wrapped_array( "Hm!" );    // Initialization with inferred array size.
+    
+    array[1] = 'a';
+    cout << "A string of " << array.size() - 1 << " characters: ";
+    for( $each ch $in view_of( array, 0, -1 ) ) { cout << ch << ' '; }
+    cout << endl;
+}
+```
 
 asdasd
 
