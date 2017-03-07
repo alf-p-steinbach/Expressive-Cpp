@@ -488,6 +488,12 @@ All is /apparently/ OK.
 S::&lt;destroy&gt;
 </pre></blockquote>
 
+Actually, in the last case, if the first case hadn't already invoked Undefined
+Behavior then everything would guaranteed be OK, not just apparently OK. But
+Undefined Behavior is a sinister, calculating, evil beast that can make it *seem* as
+if the code is working all right, all the way until Murphy’s law makes it fail
+at the worst possible moment, with the maximum cost&hellip; So better use a verbose
+`static_cast` or the `$as` macro, or a corresponding macro, which helps avoid the UB.
 
 ### `$let` and `$var`
 
