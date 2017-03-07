@@ -16,6 +16,7 @@
     - [`$let` and `$var`](#let-and-var)
     - [`$alias` and `$const_view`](#alias-and-const_view)
     - [`wrapped_array` and `wrapped_array_of_`](#wrapped_array-and-wrapped_array_of_)
+  - [asdasd](#asdasd)
   - [Functions](#functions)
     - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
     - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
@@ -577,7 +578,7 @@ int main()
 {
     char const* const   const_pointer       = "Hi";     // $let
     char const*         pointer             = "Ho";     // $var
-    char const         (&const_array)[4]    = "Hm!";    // $alias
+    char const        (&const_array)[4]     = "Hm!";    // $alias
     
     (void) const_pointer; (void) pointer;
 
@@ -593,7 +594,9 @@ char const const_array[] = "Hm!";     // copy, with inferred size.
 ```
 &hellip; one would incur at least a logical copying of the initializer. The copying
 would probably be optimized away, but it was potentially present, and constrained the
-array item type to one that could be copied. With C++11 `auto&`, as in Expressive C++
+array item type to one that could be copied.
+
+With C++11 `auto&`, as in Expressive C++
 `$alias`, that size is inferred, and one doesn’t have to do &ldquo;clever&rdquo;
 stuff like that C++ array reference syntax to avoid imposing constraints and
 guarantee efficiency &ndash; one can just express things directly & naturally:
@@ -610,7 +613,7 @@ $just
     (void) const_pointer; (void) pointer;
 
     cout << "A string of " << sizeof( const_array ) - 1 << " characters: ";
-    for( $each ch $in const_array ) { cout << ch << ' '; }
+    for( $each ch $in view_of( const_array, 0, -1 ) ) { cout << ch << ' '; }
     cout << endl;
 }
 ```
@@ -679,7 +682,7 @@ $just
 }
 ```
 
-asdasd
+## asdasd
 
 
 
