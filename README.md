@@ -658,15 +658,17 @@ initializers, is a recipe for fragile, easily broken code. For when one can't
 reliably predict the result then the coding devolves to try-and-fail exploration.
 
 The Expressive C++ support increases clarity here by simply naming the inferred type
-and explicit type cases, **`wrapped_array`** versus **`wrapped_array_of_`**; no need
-to figure out what a `void` item type means, or what to write for that case. And
-`wrapped_array` increases programmer control by using a very simple item type
-deduction for `wrapped_array`. Namely,
+and explicit type cases, **`wrapped_array`** versus **`wrapped_array_of_`**, so that
+there’s no need to figure out what a `void` item type means, or what to write for
+that case. And `wrapped_array` increases programmer control by using a very simple,
+grokkable item type deduction for `wrapped_array`. Namely,
 
 * the `std::decay_t` of the first initializer, except
 * when there is only a single initializer itself of array type, such as
-a string literal, in which case `wrapped_array` just wraps that array.
+a string literal, in which case `wrapped_array` just creates a copy of array.
 
+Thus the C++03 example can be expressed as the slightly shorter and slightly more
+clear
 ```c++
 #include <iostream>
 using namespace std;
@@ -681,6 +683,25 @@ $just
     cout << endl;
 }
 ```
+As a more practically oriented and general example,
+```c++
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+$just
+{
+    $var array = wrapped_array( 3, 1, 4, 1, 5, 9, 6, 5, 3, 5, 8, 9, 7, 9, 3 );
+    sort( array.begin(), array.end() );     // It's a `std::array`
+    cout << "The first " << array.size() << " digits of pi in sorted order:";
+    for( $each digit $in array ) { cout << " " << digit; }
+    cout << "." << endl;
+}
+```
+Output:
+<pre>
+The first 15 digits of pi in sorted order: 1 1 3 3 3 4 5 5 5 6 7 8 9 9 9.
+</pre>
 
 ## asdasd
 
