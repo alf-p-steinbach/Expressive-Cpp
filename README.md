@@ -392,7 +392,8 @@ way, from floating point type to integral, which changes the behavior!, when the
 initializer expression is edited &ndash; oops!
 
 Since there are both advantages and disadvantages of `auto` declarations in raw C++,
-the experts were initially divided about what to use when. But as of 2017 the leading
+the experts were initially divided about what to use when, e.g., using `auto` only
+for constants versus using it also for mutable variables. But as of 2017 the leading
 experts lean towards using `auto` exclusively, or at least as the preferred default
 notation. Quoting Herb Sutter, chair of the international C++ standardization
 committee and lead architect of Visual C++, [emphasis added] &ldquo;the main reasons
