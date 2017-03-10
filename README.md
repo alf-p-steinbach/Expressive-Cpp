@@ -40,9 +40,9 @@ for( auto const& it : enumerated( c ) )
 `std::vector`, and `it` is an index+item-reference pair for each item in `c`. The body of the
 loop can refer to `it.index()` and `it.object()`, as well as a convenience method
 `it.is_first()`. Many other idiomatic loop constructs have similar support, e.g.
-`i_up_to( n )` creates a view of the integers 0 through `n`-1 of the type of the
+`up_to( n )` creates a view of the integers 0 through `n`-1 of the type of the
 expression `0 + n`, that can be iterated over as a range, and there’s
-`i_down_from( n )`, `reverse_view_of( c )`, and more loop support. Support for
+`down_from( n )`, `reverse_view_of( c )`, and more loop support. Support for
 non-loop constructs include in particular string building via the `<<` output
 operator, e.g. writing just `foo( "6*7 = "s << 6*7 )` instead of raw C++
 `foo( "6*7 = " + std::to_string( 6*7 ) )`. `<<` is both more convenient, more clear
@@ -51,7 +51,7 @@ and more efficient, in some cases reducing an Ο(*n*²) string concatenation to
 
 > In namespace `progrock::expressive` (some in nested `inline`
 namespaces for selective unqualified usage), as of late Feb 2017:  
-`Byte`, `Size`, `Index`, `max_byte_value`, `max_index_value`, `max_size_value`, `n_bits_per_<T>`, `forwarding_ref_<T>`, `ptr_<T>`, `raw_array_<T>`, `raw_array_of_<n`, `T>`, `ref_<T>`, `temp_ref_<T>`, `type_<T>`, `call_of<F>`, `default_fatal_error_handler`, `default_startup`, `dummy_main_func`, `Fatal_error_handler`, `Main_func`, `enumerated<T>`, `Enumerator_<T>`, `Exit_code::Enum`, `fail`, `fail_from_location`, `hopefully`, `is_true<T>`, `no_more_used`, `ref_to<T>`, `append_to`, `Collection_traits_`, `Is_string_class_`, `is_string_class_`, `length_of`, `n_items_in`, `No_copy`, `No_copy_or_move`, `Non_instantiable`, `i_down_from`, `i_up_to`, `n_items_in`, `Range`, `range`, `operator<<(S,T)`, `convert_to<T>`, `convert_to_hex_in`, `convert_to_hexsz_in`, `to_<T>`, `to_hex`, `Type_`, `reverse_view_of`, `View_<T>`, `view_of`, `system_is_little_endian`
+`Byte`, `Size`, `Index`, `max_byte_value`, `max_index_value`, `max_size_value`, `n_bits_per_<T>`, `forwarding_ref_<T>`, `ptr_<T>`, `raw_array_<T>`, `raw_array_of_<n`, `T>`, `ref_<T>`, `temp_ref_<T>`, `type_<T>`, `call_of<F>`, `default_fatal_error_handler`, `default_startup`, `dummy_main_func`, `Fatal_error_handler`, `Main_func`, `enumerated<T>`, `Enumerator_<T>`, `Exit_code::Enum`, `fail`, `fail_from_location`, `hopefully`, `is_true<T>`, `no_more_used`, `ref_to<T>`, `append_to`, `Collection_traits_`, `Is_string_class_`, `is_string_class_`, `length_of`, `n_items_in`, `No_copy`, `No_copy_or_move`, `Non_instantiable`, `down_from`, `up_to`, `n_items_in`, `Range`, `range`, `operator<<(S,T)`, `convert_to<T>`, `convert_to_hex_in`, `convert_to_hexsz_in`, `to_<T>`, `to_hex`, `Type_`, `reverse_view_of`, `View_<T>`, `view_of`, `system_is_little_endian`
 
 Example of a **pseudo keyword** macro:
 ```c++

@@ -107,12 +107,12 @@ namespace progrock{ namespace expressive{
         { return Range_<decltype( first + last )>{ first, last }; }
 
         template< class Integer = int >
-        inline $f i_up_to( const Integer beyond )
+        inline $f up_to( const Integer beyond )
             -> Range_<Integer>
         { return Range_<Integer>{ 0, beyond - 1 }; }
 
         template< class Integer = int >
-        inline $f i_down_from( const Integer beyond )
+        inline $f down_from( const Integer beyond )
             -> Range_<Integer, Range_delta::reverse>
         { return Range_<Integer, Range_delta::reverse>{ beyond - 1, 0 }; }
 

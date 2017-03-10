@@ -28,16 +28,23 @@
 #
 #   define $of_type( Type, expr )                   \
         (                                           \
-            (void)sizeof( expr ),                   \
-            (void)sizeof( Type ),                   \
-            static_cast<Type>( $lambda() -> decltype( expr ) { \
-                return expr;                        \
-                static_assert(( ::std::is_same<    \
-                    $e::const_<Type>,         \
-                    $e::const_< $e::unref_<decltype( expr )> > \
-                    >::value ), "$of_type: failed because `" #expr "` was not like `" #Type "`." ); \
-                $static_assert(( not ::std::is_reference<Type>::value )); \
-            }() )                                   \
+            (void) sizeof( expr ),                  \
+            (void) sizeof( Type ),                  \
+            (void) $lambda() { \
+                using Expr_type = decltype(( expr )); \
+                static_assert(                      \
+                    $is( _same,                     \
+                        $e::const_< $e::unref_<Type> >, \
+                        $e::const_< $e::unref_<Expr_type> > \
+                        ),                          \
+                    "$of_type - failed because `" #expr "` was not like `" #Type "`." \
+                    );                              \
+                static_assert(                      \
+                    not $is( _reference, Type ) or $is( _reference, Expr_type ), \
+                    "$of_type - failed because `" #expr "` is not a reference (as specified)." \
+                    );                              \
+                },                                  \
+            $as<Type>( expr )                       \
         )
 #   define $as                          static_cast
 #
