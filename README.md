@@ -440,8 +440,8 @@ auto    avg = $as<double>( 0.0 );          // More concise!
 ```
 And if you are only concerned with the correctness issue, that the cast can hide an
 unexpected initializer expression type, and e.g. discard information, then to avoid
-that you can use **`$of_type`**, which adds a `static_assert` that `auto` type
-inference would produce the specified type, modulo `const`-ness and reference:
+that you can use **`$of_type`**, which adds a `static_assert` that the expression
+produces exactly the specified type, modulo `const`-ness and reference:
 ```c++
 auto    avg = $of_type( double, 0.0 );     // More maintenance-resistant!
 ```
