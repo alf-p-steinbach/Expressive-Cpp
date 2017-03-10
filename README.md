@@ -31,13 +31,23 @@
 Expressive C++ implements a more convenient, more readable-for-non-C++-expert-folks
 and less unsafe dialect of C++.
 
-Example of ordinary generally **useful functions** and types in  Expressive C++ code:
-`for( auto const& it : enumerated( c ) )` where `c` is a collection such as a
-`std::vector`, produces an index+item pair `it` for each item in `c`. The body of the
+Example of ordinary generally **useful functions**: you can express a loop over
+indexed collection items as
+```c++
+for( auto const& it : enumerated( c ) )
+```
+&hellip; where `c` is a collection such as a
+`std::vector`, and `it` is an index+item-reference pair for each item in `c`. The body of the
 loop can refer to `it.index()` and `it.object()`, as well as a convenience method
-`it.is_first()`. Similarly `i_up_to( n )` creates a view of the integers 0 through
-`n`-1 of the type of the expression `0 + n`, that can be iterated over as a range,
-and there’s `i_down_from( n )`, `reverse_view_of( c )`, and more.
+`it.is_first()`. Many other idiomatic loop constructs have similar support, e.g.
+`i_up_to( n )` creates a view of the integers 0 through `n`-1 of the type of the
+expression `0 + n`, that can be iterated over as a range, and there’s
+`i_down_from( n )`, `reverse_view_of( c )`, and more loop support. Support for
+non-loop constructs include in particular string building via the `<<` output
+operator, e.g. writing just `foo( "6*7 = "s << 6*7 )` instead of raw C++
+`foo( "6*7 = " + std::to_string( 6*7 ) )`. `<<` is both more convenient, more clear
+and more efficient, in some cases reducing an Ο(*n*²) string concatenation to
+Ο(*n*).
 
 > In namespace `progrock::expressive` (some in nested `inline`
 namespaces for selective unqualified usage), as of late Feb 2017:  
