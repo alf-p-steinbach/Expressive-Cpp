@@ -433,7 +433,7 @@ This practice has three problems:
 * The cast can suppress up-front notice of an erroneous later change of initializer
   type.
 
-If you are only concerned with the verbosity, which goes to readability, then you can
+If you are only concerned with the verbosity, then you can
 use Expressive C++ **`$as`**, which translates to `static_cast`:
 ```c++
 auto    avg = $as<double>( 0.0 );          // More concise!
