@@ -393,13 +393,13 @@ initializer expression is edited &ndash; oops!
 
 Since there are both advantages and disadvantages of `auto` declarations in raw C++,
 the experts were initially divided about what to use when, e.g., using `auto` only
-for constants versus using it also for mutable variables. But as of 2017 the leading
-experts lean towards using `auto` exclusively, or at least as the preferred default
-notation. Quoting Herb Sutter, chair of the international C++ standardization
-committee and lead architect of Visual C++, [emphasis added] &ldquo;the main reasons
-to declare variables using `auto` are for *correctness*, *performance*,
-*maintainability*, and *robustness* — and, yes, *convenience*, but that’s in last
-place on the list&ldquo;.
+for constants and iterators versus using it also for mutable variables in general.
+But as of 2017 the leading experts lean towards using `auto` exclusively, or at least
+as the preferred default notation. Quoting Herb Sutter, chair of the international
+C++ standardization committee and lead architect of Visual C++, [emphasis added]
+&ldquo;the main reasons to declare variables using `auto` are for *correctness*,
+*performance*, *maintainability*, and *robustness* — and, yes, *convenience*, but
+that’s in last place on the list&ldquo;.
 
 Scott Meyers recommends clearly &ldquo;Prefer `auto` to
 explicit type declarations&rdquo;.
@@ -415,8 +415,6 @@ expanding the applicability of AAA: *almost always `auto`*, even for class data
 members! But for now, as of C++14 the `auto` syntax for type inferred from
 initializer is limited to variable declarations, though this includes declaration
 of variables in conditions in `while`, `switch` and `for`.
-
-
 
 ### `$as` versus `$of_type` for the initializer
 
@@ -445,8 +443,19 @@ produces exactly the specified type, modulo `const`-ness and reference:
 ```c++
 auto    avg = $of_type( double, 0.0 );     // More maintenance-resistant!
 ```
-Either form provides an *explicit mention of the type*, which can be useful both for
-reading and understanding the code, and for searching it for use of that type.
+`$of_type(`*T*`,`*e*`)` produces a comma expression where the last sub-expression,
+the comma expression result, is a `static_cast<`*T*`>(`*e*`)`. The earlier
+sub-expressions are cast to `void` to suppress any warnings that they're not used.
+They are, in order, a check that *T* is well-formed, so as to get diagnostics about
+that up front and in a clean context; a ditto check that *e* is well-formed; a
+`static_assert` that with reference and `const`-ness removed *T* and
+`decltype((`*e*`))` are the exact same type (no conversions); and a `static_assert`
+that if *T* is a reference type, then *e* must also be a reference, because if one
+specifies a reference type as *T* then that is in order to constrain the *e* type.
+
+Either form, `$as` or `$of_type`, provides an *explicit mention of the type*, which
+can be useful both for reading and understanding the code, and for searching it for
+use of that type.
 
 Note: since the initializer expression is passed as a macro argument to `$of_type`,
 it cannot then directly contain a **comma**. Just parenthesize it if it does.
