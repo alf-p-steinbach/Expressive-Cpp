@@ -53,7 +53,11 @@ and more efficient, in some cases reducing an Ο(*n*²) string concatenation to
 namespaces for selective unqualified usage), as of late Feb 2017:  
 `Byte`, `Size`, `Index`, `max_byte_value`, `max_index_value`, `max_size_value`, `n_bits_per_<T>`, `forwarding_ref_<T>`, `ptr_<T>`, `raw_array_<T>`, `raw_array_of_<n`, `T>`, `ref_<T>`, `temp_ref_<T>`, `type_<T>`, `call_of<F>`, `default_fatal_error_handler`, `default_startup`, `dummy_main_func`, `Fatal_error_handler`, `Main_func`, `enumerated<T>`, `Enumerator_<T>`, `Exit_code::Enum`, `fail`, `fail_from_location`, `hopefully`, `is_true<T>`, `no_more_used`, `ref_to<T>`, `append_to`, `Collection_traits_`, `Is_string_class_`, `is_string_class_`, `length_of`, `n_items_in`, `No_copy`, `No_copy_or_move`, `Non_instantiable`, `i_down_from`, `i_up_to`, `n_items_in`, `Range`, `range`, `operator<<(S,T)`, `convert_to<T>`, `convert_to_hex_in`, `convert_to_hexsz_in`, `to_<T>`, `to_hex`, `Type_`, `reverse_view_of`, `View_<T>`, `view_of`, `system_is_little_endian`
 
-Example of a **pseudo keyword** macro: `$fail( "Blah" )` throws a `std::runtime_error`
+Example of a **pseudo keyword** macro:
+```c++
+$fail( "Blah" );
+```
+throws a `std::runtime_error`
 exception with the containing function’s qualified or pure name `$funcname` prepended
 to the specified exception message; the qualified name is used where it’s available
 and supported by Expressive C++. A macro is needed to pick up the function signature
@@ -95,11 +99,15 @@ builder** template aliases such as `ref_`, `ptr_` and `raw_array_`, that enables
 to use the principle of substitution to construct types. The type builders also
 support the practice of putting `const` first, even in
 nested parts. For example, instead of raw C++ `char const* const x = "A";` you can
-write `const ptr_<const char> x = "A";`, and this notation works with C++03 template
+write
+```c++
+const ptr_<const char> x = "A";
+```
+without having to name the nested parts, and this notation works with C++03 template
 argument type deduction. The resulting type specifications can be naturally read in
 the forward direction, unlike raw C and C++ type specifications.
 
-Of course, for the concrete example above Expressive C++ allows you to write just
+Of course, for this concrete example Expressive C++ allows you to write just
 `$let x = "A";`, for the same raw C++ result.
 
 The main criterion for including something or not has been whether it has been of direct
