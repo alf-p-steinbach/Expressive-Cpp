@@ -54,9 +54,12 @@ namespaces for selective unqualified usage), as of late Feb 2017:
 `Byte`, `Size`, `Index`, `max_byte_value`, `max_index_value`, `max_size_value`, `n_bits_per_<T>`, `forwarding_ref_<T>`, `ptr_<T>`, `raw_array_<T>`, `raw_array_of_<n`, `T>`, `ref_<T>`, `temp_ref_<T>`, `type_<T>`, `call_of<F>`, `default_fatal_error_handler`, `default_startup`, `dummy_main_func`, `Fatal_error_handler`, `Main_func`, `enumerated<T>`, `Enumerator_<T>`, `Exit_code::Enum`, `fail`, `fail_from_location`, `hopefully`, `is_true<T>`, `no_more_used`, `ref_to<T>`, `append_to`, `Collection_traits_`, `Is_string_class_`, `is_string_class_`, `length_of`, `n_items_in`, `No_copy`, `No_copy_or_move`, `Non_instantiable`, `i_down_from`, `i_up_to`, `n_items_in`, `Range`, `range`, `operator<<(S,T)`, `convert_to<T>`, `convert_to_hex_in`, `convert_to_hexsz_in`, `to_<T>`, `to_hex`, `Type_`, `reverse_view_of`, `View_<T>`, `view_of`, `system_is_little_endian`
 
 Example of a **pseudo keyword** macro: `$fail( "Blah" )` throws a `std::runtime_error`
-exception with  the containing function’s qualified name prepended to the specified
-exception message. A macro is needed to pick up the function signature. It uses some
-additional machinery to pare it down to just the qualified function name.
+exception with the containing function’s qualified or pure name `$funcname` prepended
+to the specified exception message; the qualified name is used where it’s available
+and supported by Expressive C++. A macro is needed to pick up the function signature
+from compiler-specific macros or C++11 standard but non-qualified [`__func__`](
+    http://en.cppreference.com/w/c/language/function_definition#func).
+Some additional machinery pares it down to just the qualified function name.
 
 Expressive C++ uses the `$` sign as effectively a so far clean and unused namespace
 for its macro keywords. The `$` is supported by the main C++ compilers, including g++,
