@@ -443,22 +443,26 @@ produces exactly the specified type, modulo `const`-ness and reference:
 ```c++
 auto    avg = $of_type( double, 0.0 );     // More maintenance-resistant!
 ```
-`$of_type(`*T*`,`*e*`)` produces a comma expression where the last sub-expression,
-the comma expression result, is a `static_cast<`*T*`>(`*e*`)`. The earlier
-sub-expressions are cast to `void` to suppress any warnings that they're not used.
-They are, in order, a check that *T* is well-formed, so as to get diagnostics about
-that up front and in a clean context; a ditto check that *e* is well-formed; a
-`static_assert` that with reference and `const`-ness removed *T* and
-`decltype((`*e*`))` are the exact same type (no conversions); and a `static_assert`
-that if *T* is a reference type, then *e* must also be a reference, because if one
-specifies a reference type as *T* then that is in order to constrain the *e* type.
-
 Either form, `$as` or `$of_type`, provides an *explicit mention of the type*, which
 can be useful both for reading and understanding the code, and for searching it for
 use of that type.
 
-Note: since the initializer expression is passed as a macro argument to `$of_type`,
-it cannot then directly contain a **comma**. Just parenthesize it if it does.
+`$of_type(`*T*`,`*e*`)` produces a comma expression where the last sub-expression,
+the comma expression result, is a `static_cast<`*T*`>(`*e*`)`. The case serves both
+to guide the `auto` type deduction, and to enforce that the actual raw type of *e*
+is compatible with the specified type *T*. The earlier sub-expressions are just
+checks and they’re cast to `void`. They are, in order, a check that *T* is
+well-formed, by placing it in a `sizeof`, so as to get diagnostics about that up
+front and in a clean context; a ditto `sizeof` check that *e* is well-formed; a
+`static_assert` that with reference and `const`-ness removed *T* and
+`decltype((`*e*`))` are the exact same type (no conversions); and a `static_assert`
+that if *T* is a reference type, then *e* must also be a reference, because if one
+specifies a reference type as *T* then that is in order to constrain the *e* type to
+reference. Note here that `decltype((`*a_variable*`))` produces a reference type.
+
+Also note: since the initializer expression is passed as a macro argument to
+`$of_type`, it cannot then directly contain a **comma**. Just parenthesize it if it
+does.
 
 **Q.** Why are `$as` and `$of_type` macros, and not just simple forwarding reference
 based C++ function templates?
@@ -526,7 +530,7 @@ Actually, in the last case, if the first case hadn't already invoked Undefined
 Behavior then everything would guaranteed be OK, not just apparently OK. But
 Undefined Behavior is a sinister, calculating, evil beast that can make it *seem* as
 if the code is working all right, all the way until Murphy’s law makes it fail
-at the worst possible moment, with the maximum cost&hellip; So better use a verbose
+at the worst possible moment, at maximum cost&hellip; So better use a verbose
 `static_cast` or the `$as` macro, or a corresponding macro, which helps avoid the UB.
 
 ### `$let` and `$var`
