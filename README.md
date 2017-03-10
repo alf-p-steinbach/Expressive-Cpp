@@ -381,19 +381,9 @@ auto const  v   = vector<int>{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
 auto        it  = v.begin();
 auto        avg = 0.0;
 ```
-&hellip; which is not in general a syntax that you can apply to formal arguments of a
-function, without effectively changing the formerly single concrete function into a
-template!
-
-So, just as original C++ around ~1980 de-unified the already slightly
-broken unification concept of regarding every routine as a function, C++11 de-unified
-the already slightly broken unification concept of regarding variables and formal
-arguments of functions as the same thing. They aren’t. A variable has at most a
-single initializer, while a function’s formal argument has potentially as many
-different initializers, of different types, as there are calls of that function; a
-variable's initializer can refer to an earlier declared variable, as with `it`
-above (you can't do that with a function's formal arguments); and as formal
-argument types array and function types decay to pointers.
+&hellip; which is not a syntax that you can use for data members of a class, nor
+in general for the formal arguments of a function &ndash; without effectively
+changing the formerly single concrete function into a template!
 
 With `auto` it’s more clear that `it` is a variable that can be changed by
 assignment, that it’s not a constant. And the declaration is also shorter, good. But
@@ -416,6 +406,16 @@ explicit type declarations&rdquo;.
 To promote this practice Herb invented a new hopefully catchy acronym:
 [&ldquo;**AAA**&rdquo;, meaning &ldquo;*Almost Always
 Auto*&rdquo;](https://herbsutter.com/2013/08/12/gotw-94-solution-aaa-style-almost-always-auto/).
+
+There is no apparent technical reason why a class data member can't be declared with
+`auto`, then prohibiting incompatible initialization in constructor initializer
+lists. And so it's possible that such unifying syntax will be added, then greatly
+expanding the applicability of AAA: *almost always `auto`*, even for class data
+members! But for now, as of C++14 the `auto` syntax for type inferred from
+initializer is limited to variable declarations, though this includes declaration
+of variables in conditions in `while`, `switch` and `for`.
+
+
 
 ### `$as` versus `$of_type` for the initializer
 
