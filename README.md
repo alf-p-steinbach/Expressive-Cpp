@@ -448,7 +448,7 @@ can be useful both for reading and understanding the code, and for searching it 
 use of that type.
 
 `$of_type(`*T*`,`*e*`)` produces a comma expression where the last sub-expression,
-the comma expression result, is a `static_cast<`*T*`>(`*e*`)`. The case serves both
+the comma expression result, is a `static_cast<`*T*`>(`*e*`)`. The cast serves both
 to guide the `auto` type deduction, and to enforce that the actual raw type of *e*
 is compatible with the specified type *T*. The earlier sub-expressions are just
 checks and they’re cast to `void`. They are, in order, a check that *T* is
