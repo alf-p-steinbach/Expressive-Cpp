@@ -12,7 +12,7 @@
 #include <p/expressive/core_language/hopefully_and_fail.hpp>    // $fail
 #include <p/expressive/core_language/default_startup.hpp>       // $start_with
 
-#include <p/expressive/impl/support_for_select_expr.hpp>        // $select
+#include <p/expressive/impl/support_for_select_expr.hpp>        // $pick
 #include <p/expressive/impl/support_for_invoked_with_stm_.hpp>  // $invoked_with
 
 #include <p/expressive/library_extension/Range_.hpp>            // $n_times

@@ -49,7 +49,7 @@ namespace progrock{ namespace expressive{ namespace impl{
 
         $let p_trimmed_beyond = p + 1;
         while( p != p_original_first and *p != ' ' ) { --p; }
-        $let p_trimmed_first = $select $when *p == ' ' $use p + 1 $else_use p;
+        $let p_trimmed_first = $pick $when *p == ' ' $use p + 1 $else_use p;
 
         return Simple_string_view{ p_trimmed_first, p_trimmed_beyond };
     }

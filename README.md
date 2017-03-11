@@ -88,7 +88,7 @@ The most important four are
 
 > As of late Feb 2017:  
 General: `$e`, `$static_assert`, `$funcname`, `$noreturn`.
-Expressions: `$invoked`, `$of_type`, `$as`, `$select`, `$when`, `$use`, `$else_use`, `$self`, `$lambda_using`, `$byref`, `$byval`, `$capture_byref`, `$capture_byval`, `$lambda`, `$lambda_using_references`, `$lambda_using_values`.
+Expressions: `$invoked`, `$of_type`, `$as`, `$pick`, `$when`, `$use`, `$else_use`, `$self`, `$lambda_using`, `$byref`, `$byval`, `$capture_byref`, `$capture_byval`, `$lambda`, `$lambda_using_references`, `$lambda_using_values`.
 Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$alias`, `$const_view`, `$f`, `$p`, `$simple_pure_f`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
 Templates: `$enabled_if`, `$is`.
 Flow control: `$repeat`, `$until`, `$each_value`, `$each_object`, `$each`, `$in`, `$n_times`, `$hopefully`, `$fail`.
@@ -173,7 +173,7 @@ $f collatz( const int n )
     {
         result.push_back( x );
         if( x == 1 ) { break; }
-        x = $select $when is_odd( x ) $use 3*x + 1 $else_use x/2;
+        x = $pick $when is_odd( x ) $use 3*x + 1 $else_use x/2;
     }
     return result;
 }
@@ -208,7 +208,7 @@ be non-`void`; the `$just` pseudo keyword generates a safe standard C++ `main`
 function, discussed in he next subsection; the readable `$loop`, `$each` and `$in`
 expand to respectively raw C++ &ldquo;`for(;;)`&rdquo;, &ldquo;`auto const&`&rdquo;
 and &ldquo;`:`&rdquo; &ndash; which might be perplexing to a novice; the construct
-with `$select`, `$when`, `$use` and `$else_use` expands to use of the often hard to
+with `$pick`, `$when`, `$use` and `$else_use` expands to use of the often hard to
 group visually `:?` operator; and, finally, the readable plain `not` is standard C++.
 
 Expressive C++ also offers some stuff implemented with ordinary C++ code, using C++
@@ -921,7 +921,7 @@ error:
 $simple_pure_f integral_power( const double base, const int exp )
     -> double
 {
-    return $select
+    return $pick
         $when exp == 0 $use
             1.0
         $when exp < 0 $use
@@ -939,7 +939,7 @@ $just
     cout << "3 to the 7th power = " << x << ", computed at compile time." << endl;
 }
 ```
-<sub><i>(The <b>$select</b> <b>$when</b> c <b>$use</b> v1 <b>$else_use</b> v2
+<sub><i>(The <b>$pick</b> <b>$when</b> c <b>$use</b> v1 <b>$else_use</b> v2
 construct expands to the conditional operator c<b>?</b> v1 <b>:</b> v2; it’s not
 specific to simple pure functions.)</i></sub>
 

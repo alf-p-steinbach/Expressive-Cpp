@@ -3,7 +3,7 @@
 // Copyright © 2016 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <p/expressive/core_language/value_property_checks.hpp>     // is_odd
-#include <p/expressive/pseudo_keywords/support_machinery.hpp>       // $select
+#include <p/expressive/pseudo_keywords/support_machinery.hpp>       // $pick
 
 namespace progrock{ namespace expressive{
 #include <p/expressive/pseudo_keywords/begin_region.hpp>
@@ -20,7 +20,7 @@ namespace progrock{ namespace expressive{
             const int       exp
             ) -> Number
         {
-            return $select
+            return $pick
                 $when exp == 0 $use
                     1
                 $when is_odd( exp ) $use
@@ -35,7 +35,7 @@ namespace progrock{ namespace expressive{
             const int       exp
             ) -> Number
         {
-            return $select
+            return $pick
                 $when exp < 0 $use
                     $as<Number>( 1.0/int_positive_power<Number>( base, -exp ) )
                 $else_use

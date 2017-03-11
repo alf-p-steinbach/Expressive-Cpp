@@ -48,7 +48,7 @@
         )
 #   define $as                          static_cast
 #
-#   define $select                      $e::impl::Select_expression_condition{}?$e::impl::Dummy_default_value{}
+#   define $pick                        $e::impl::Select_expression_condition{}?$e::impl::Dummy_default_value{}
 #   define $when                        :
 #   define $use                         ?
 #   define $else_use                    :
