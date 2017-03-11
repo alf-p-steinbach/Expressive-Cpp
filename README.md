@@ -535,24 +535,24 @@ at the worst possible moment, at maximum cost&hellip; So better use a verbose
 
 ### `$let` and `$var`
 
-In Expressive C++ you can write the above
-```c++
-auto const  v   = vector<int>{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
-auto        it  = v.begin();
-auto        avg = $of_type( double, 0.0 );
-```
-&hellip; as
-```c++
-$let v      = vector<int>{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
-$var it     = v.begin();
-$var avg    = $of_type( double, 0.0 );
-```
 Raw C++ `auto`, `&` and `const` combine to create four different *kinds* of
 variable declarations, and the Expressive C++ pseudo keywords `$let`, `$var`,
 `$alias` and `$const_view` name these kinds for readability and clarity. With the
 two most used, `$let` and `$var`, the code is also shorter and lines up nicely.
 Which really shouldn't count but still, the author likes that.
 
+For example, in Expressive C++ you can write the above code
+```c++
+auto const  v   = vector<int>{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
+auto        it  = v.begin();
+auto        avg = $of_type( double, 0.0 );
+```
+&hellip; as just
+```c++
+$let v      = vector<int>{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 4 };
+$var it     = v.begin();
+$var avg    = $of_type( double, 0.0 );
+```
 The **`$let`** keyword is `auto const` in raw C++, and denotes a *constant*.
 
 The **`$var`** keyword is `auto` in raw C++, and denotes a non-constant *variable*.
@@ -652,55 +652,64 @@ $just
     cout << endl;
 }
 ```
-<sub><i>Expressive C++ offers the <b>compile_time_length_of</b> function to find the
-length of a string literal at compile time. It assumes that it’s called with a string
-literal or an exactly corresponding array as argument. It could have further
-simplified the code here, still with an exact equivalence.</i></sub> 
-
 So this is one thing that the modern style declarations can do that the C++03 style
-declarations can’t, namely *inferred array reference size*. But in the other
-direction, *inferred array copy size*, to declare a mutable array with size inferred
-from its initializer, is something that the C++03-style declarations can easily do,
-and that’s commonly done!, that is non-trivial with the modern `auto` syntax in raw
-C++. It might seem that There Ain’t No Such Thing As A Free Lunch:
+declarations can’t, namely *inferred array reference size*.
+
+But in the other direction, to declare a mutable array with size inferred
+from its initializer, an *inferred array copy size*, is something that the
+C++03-style declarations can easily do and that’s commonly done, that is non-trivial
+with the modern `auto` syntax in raw C++:
 ```c++
 #include <iostream>
 using namespace std;
 
 int main()
 {
-    char array[] = "Hm!";   // Initialization with inferred array size.
-    
-    array[1] = 'a';
+    char array[]    = "Hm!";        // Initialization with inferred array size.
+    array[1] = 'a';                 // OK!
+    #ifdef SHOW_UNGOODNESS
+        auto alas       = "Oh.";    // Produces (infers) a pointer, not an array.
+        alas[0] = 'U';              // !Not valid – the pointee is `const`.
+    #endif
+
     int const n = sizeof( array );
     cout << "A string of " << n - 1 << " characters: ";
     for( int i = 0; i < n - 1; ++i ) { cout << array[i] << ' '; }
     cout << endl;
 }
 ```
+As the Visual C++ compiler so fittingly describes it, when the above is compiled with
+`SHOW_UNGOODNESS` defined:
 
-C++17 (or possibly a later version of the standard) will provide
-[`std::make_array`](http://en.cppreference.com/w/cpp/experimental/make_array) to
-support this. With `make_array` the resulting `std::array` item type can be specified
-as a template argument. Alternatively, by specifying `void` the item type will be
-inferred as a the `std::common_type` of the item initializers, which for a single
-item array reduces to the `std::decay_t` of the type of the single initializer.
+<blockquote><pre>
+error C3892: 'alas': you cannot assign to a variable that is const
+</pre></blockquote>
+
+C++17 (or possibly a later version of the standard) will provide [`std::make_array`](http://en.cppreference.com/w/cpp/experimental/make_array) to
+support this. With `std::make_array` the resulting `std::array` item type can be
+specified as a template argument. Alternatively, by specifying `void` the item type
+will be inferred as a the `std::common_type` of the item initializers, which for a
+single item array reduces to the `std::decay_t` of the type of the single
+initializer.
 
 The idea of specifying `void` to get a deduced type reduces clarity because one has
 to know about it to understand what it means: it's not self-descriptive. And the
 idea of a type cleverly deduced by a non-trivial algorithm, from the types of all
 initializers, is a recipe for fragile, easily broken code. For when one can't
-reliably predict the result then the coding devolves to try-and-fail exploration.
+reliably predict the result with just a reasonable effort, and when maintenance can
+inadvertently change the result by changing a value deep into a long sequence of
+values, then the coding and bug-hunting devolves to try-and-fail exploration.
 
-The Expressive C++ support increases clarity here by simply naming the inferred type
-and explicit type cases, **`wrapped_array`** versus **`wrapped_array_of_`**, so that
-there’s no need to figure out what a `void` item type means, or what to write for
-that case. And `wrapped_array` increases programmer control by using a very simple,
-grokkable item type deduction for `wrapped_array`. Namely,
+The Expressive C++ support increases clarity here by simply *naming* both the
+inferred type and explicit type cases, **`wrapped_array`** versus
+**`wrapped_array_of_`**, so that there’s no need to figure out what a `void` item
+type means, or what to write for that case. And `wrapped_array` increases programmer
+control by using a very simple, grokkable item type deduction for `wrapped_array`.
+Namely,
 
 * the `std::decay_t` of the first initializer, except
-* when there is only a single initializer itself of array type, such as
-a string literal, in which case `wrapped_array` just creates a copy of array.
+* when there is only a single initializer that itself is of array type, such as
+a string literal, in which case `wrapped_array` just creates a copy of that array.
 
 Thus the C++03 example can be expressed as the slightly shorter and slightly more
 clear
