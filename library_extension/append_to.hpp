@@ -23,14 +23,16 @@ namespace progrock{ namespace expressive{
         template< class Sequence >
         inline $p append_to( ref_<Sequence> sequence, ref_<const Sequence> items )
         {
-            for( $each item $in items ) { sequence.push_back( item ); }
+            // Needs to be specialized if std::list is to be supported.
+            sequence.reserve( sequence.size() + items.size() );
+            sequence.insert( sequence.end(), items.begin(), items.end() );
         }
 
         template< class Sequence >
         inline $p append_to( ref_<Sequence> sequence, forwarding_ref_<Sequence> items )
         {
             // The other overload catches lvalue refs so this is always an rvalue reference.
-            for( $each item $in items ) { sequence.push_back( move( item ) ); }
+            for( $each_object o $in items ) { sequence.push_back( move( o ) ); }
         }
 
         template< class Char, class Traits, class Allocator >

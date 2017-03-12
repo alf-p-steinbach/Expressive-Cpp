@@ -2,6 +2,7 @@
 // #include <p/expressive/library.hpp>
 // Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
+#include <p/expressive/library_extension/algorithms.hpp>            // sort_items_of etc.
 #include <p/expressive/library_extension/append_to.hpp>             // append_to
 #include <p/expressive/library_extension/calculations.hpp>          // squared, integral_power
 #include <p/expressive/library_extension/Collection_traits_.hpp>    // Collection_traits_

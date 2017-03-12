@@ -736,7 +736,7 @@ using namespace std;
 $just
 {
     $var array = wrapped_array( 3, 1, 4, 1, 5, 9, 6, 5, 3, 5, 8, 9, 7, 9, 3 );
-    sort( array.begin(), array.end() );     // It's a `std::array`
+    sort_items_of( array );
     cout << "The first " << array.size() << " digits of pi in sorted order:";
     for( $each digit $in array ) { cout << " " << digit; }
     cout << "." << endl;
@@ -746,6 +746,9 @@ Output:
 <pre>
 The first 15 digits of pi in sorted order: 1 1 3 3 3 4 5 5 5 6 7 8 9 9 9.
 </pre>
+
+<sub><i><b>sort_items_of</b> is an Expressive C++ convenience wrapper around
+<b>std::sort</b>: generally it's much less to write, and more clear.</i></sub>
 
 ## asdasd
 
@@ -775,10 +778,10 @@ let’s look at the complete definition to find out:
 ```C++
 inline auto Warehouse::empty() { return foo(); }
 ```
-Oh, the return type depends on the return type of `foo`! ***One can’t deduce
-the meaning of `empty`, is it an action or a query?, merely by looking at its
-complete definition*** in isolation. One must further look at the definition of
-`foo` that it calls:
+Oh, look, the return type depends on the return type of `foo`! Raw C++ is such that
+with sufficiently ungood coding practices *one can’t deduce the meaning of `empty`,
+is it an action or a query?, merely by looking at its complete definition* in
+isolation. One must further look at the definition of `foo` that it calls:
 ```C++
 inline auto Warehouse::foo() { return void(); }
 ```
