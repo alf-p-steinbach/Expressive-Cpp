@@ -3,8 +3,10 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Expressive C++  &rArr;  convenience, readability and safety](#expressive-c--rarr--convenience-readability-and-safety)
-  - [About.](#about)
-  - [Requirements & how to install.](#requirements--how-to-install)
+  - [About](#about)
+  - [Requirements & how to install](#requirements--how-to-install)
+  - [Headers and namespaces](#headers-and-namespaces)
+- [A general overview](#a-general-overview)
   - [Introduction](#introduction)
   - [Program startup and termination](#program-startup-and-termination)
     - [`$just` a simple & safe program startup](#just-a-simple--safe-program-startup)
@@ -21,12 +23,13 @@
     - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
     - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
     - [`$simple_pure_f` and `$compile_time`](#simple_pure_f-and-compile_time)
+- [Technical details](#technical-details)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Expressive C++  &rArr;  convenience, readability and safety
 
-## About.
+## About
 
 Expressive C++ implements a more convenient, more readable-for-non-C++-expert-folks
 and less unsafe dialect of C++.
@@ -114,7 +117,7 @@ The main criterion for including something or not has been whether it has been o
 value to me, and something that a novice could reasonably expect to be part of the core
 language.
 
-## Requirements & how to install.
+## Requirements & how to install
 
 The compiler must support basic C++14 features, including `'` as digit group
 separator, `auto` automatically deduced return type, and e.g. the `remove_reference_t`
@@ -138,6 +141,12 @@ compiler’s include path. You can just copy the file hierarhcy there.
 There is one library dependency, one additional library to install, namely the
 [Macro Magic](https://github.com/alf-p-steinbach/Macro-Magic) micro-library, which also
 is a pure header library, and which also is designed to reside in the `p` folder.
+
+## Headers and namespaces
+
+asdlkj
+
+# A general overview
 
 ## Introduction
 
@@ -1004,3 +1013,7 @@ factor can be obtained efficiently by repeatedly squaring 3 (this scheme reduces
 the number of multiplications from &Omicron;(*n*) to &Omicron;(log *n*)).
 
 Expressive C++ offers the optimized function as `int_power`.
+
+# Technical details
+
+asdlkj
