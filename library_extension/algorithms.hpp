@@ -22,9 +22,9 @@ namespace progrock{ namespace expressive{
         }
 
         template< class Container, class Comparator >
-        $p sort_items_of( ref_<Container> c, forwarding_ref_<Comparator> comparator )
+        $p sort_items_of( ref_<Container> c, ref_<const Comparator> comparator )
         {
-            std::sort( begin( c ), end( c ), forward<Comparator>( comparator ) );
+            std::sort( begin( c ), end( c ), comparator );
         }
 
     }  // namespace libx
