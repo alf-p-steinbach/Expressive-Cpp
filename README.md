@@ -13,7 +13,7 @@
     - [`$start_with_ascii_arguments` for simple command line arguments.](#start_with_ascii_arguments-for-simple-command-line-arguments)
     - [`$start_with` a function and a fatal error exception handler](#start_with-a-function-and-a-fatal-error-exception-handler)
   - [Variables and constants](#variables-and-constants)
-    - [Herb Sutter´s &ldquo;almost always `auto`&rdquo;](#herb-sutter%C2%B4s-ldquoalmost-always-autordquo)
+    - [Herb Sutter’s &ldquo;almost always `auto`&rdquo;](#herb-sutter%C2%B4s-ldquoalmost-always-autordquo)
     - [`$as` versus `$of_type` for the initializer](#as-versus-of_type-for-the-initializer)
     - [`$let` and `$var`](#let-and-var)
     - [`$alias` and `$const_view`](#alias-and-const_view)
@@ -144,7 +144,66 @@ is a pure header library, and which also is designed to reside in the `p` folder
 
 ## Headers and namespaces
 
-asdlkj
+All Expressive C++ code (except macros) is in namespace
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`progrock::expressive`
+
+which you can shorten to just **`$e`**.
+
+All Expressive C++ headers are in folder `p/expressive`. For example, the convenience
+header **`<p/expressive/all.hpp>`** includes everything. It’s defined as
+```c++
+#pragma once
+// #include <p/expressive/all.hpp>
+// Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+//
+//  --------------------------------------------------------------------------
+//  <url: http://stackoverflow.com/a/638929/464581>
+//  What does “expressive” mean when referring to programming languages?
+//  
+//  'Expressive' means that it's easy to write code that's easy to understand,
+//  both for the compiler and for a human reader.
+//  
+//  Two factors that make for expressiveness:
+//  
+//  • intuitively readable constructs
+//  • lack of boilerplate code
+//  --------------------------------------------------------------------------
+
+#include <p/expressive/core_language.hpp>               // expressive::core::*
+#include <p/expressive/library_extension.hpp>           // expressive::libx::*
+#include <p/expressive/pseudo_keywords/definitions.hpp> // macros, e.g. `$p`.
+```
+The **`core`** inline namespace contains stuff that directly fixes or augments the
+core language. For example, one of the headers included by *core_language.hpp*
+(the first in the list in my Visual Studio project) provides a signed `Size` type
+defined as `ptrdiff_t`, as well as an unsigned `Byte` type defined as
+`unsigned char`, and an `Index` type as an alias of `Size`. This header also
+provides a sometimes useful `n_bits_per_<T>()` function.
+
+The **`libx`** inline namespace contains stuff that's more naturally regarded as
+basic extensions of the standard library. For example, one of the headers included by
+*library_extension.hpp* (the first in the list in my Visual Studio project) provides
+a convenience function `sort_items_of` that takes a container as argument, instead of
+two iterators, and calls `std::sort`. Such wrappers reduce the need to repeat an
+expression that refers to the container one wants to do something with, i.e. they
+support the DRY principle: *don't repeat yourself*. An alternative is to use a
+macro such as `ITEMS_OF(c)`, defined like “`std::begin(c), std::end(c)`”, but that
+can be dangerous, and such a macro, even though it's very convenient when it’s used
+very very carefully, is not offered by Expressive C++. Instead, wrappers like
+`sort_items_of` are provided.
+
+The `core` and `libx` inline namespaces support `using` directives that include only
+a part of Expressive C++, where that's desired. The granularity here is however
+quite course. But the inline namespace mechanism/idea allows finer granularity to
+be defined in the future, without affecting existing code.
+
+The convenience wrapper **`<p/expressive/use_weakly_all.hpp>`** includes the *all.hpp*
+header and effectively adds a `using namespace progrock::expressive;` directive. For
+small exploration and toy programs, including such as the examples in this
+documentation, the *use_weakly_all.hpp* header can be specified as a forced include
+(e.g. g++ option `-include`, Visual C++ option `/FI`). For larger, more code it is
+probably best avoided: then use *all.hpp*, and be careful about `using` directives.
 
 # A general overview
 
@@ -373,7 +432,7 @@ exception occurred and what it’s about.
 
 ## Variables and constants
 
-### Herb Sutter´s &ldquo;almost always `auto`&rdquo;
+### Herb Sutter’s &ldquo;almost always `auto`&rdquo;
 
 In the C language and in C++98 and C++03 the syntax for declaring a named object, a
 **variable**, was essentially the same as the syntax for declaring a function’s
