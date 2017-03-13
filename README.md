@@ -202,7 +202,7 @@ The convenience wrapper **`<p/expressive/use_weakly_all.hpp>`** includes the *al
 header and effectively adds a `using namespace progrock::expressive;` directive. For
 small exploration and toy programs, including such as the examples in this
 documentation, the *use_weakly_all.hpp* header can be specified as a forced include
-(e.g. g++ option `-include`, Visual C++ option `/FI`). For larger, more code it is
+(e.g. g++ option `-include`, Visual C++ option `/FI`). For larger projects it is
 probably best avoided: then use *all.hpp*, and be careful about `using` directives.
 
 # A general overview
