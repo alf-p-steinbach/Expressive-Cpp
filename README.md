@@ -672,36 +672,9 @@ basic `$alias`, since a string literal already is `const`, so I just omitted tha
 
 ### `wrapped_array` and `wrapped_array_of_`
 
-With the old C++03 syntax the above simple declarations become rather awkward:
-```c++
-#include <iostream>
-using namespace std;
-
-int main()
-{
-    char const* const   const_pointer       = "Hi";     // $let
-    char const*         pointer             = "Ho";     // $var
-    char const        (&const_array)[4]     = "Hm!";    // $alias
-    
-    (void) const_pointer; (void) pointer;
-
-    int const n = sizeof( const_array );
-    cout << "A string of " << n - 1 << " characters: ";
-    for( int i = 0; i < n - 1; ++i ) { cout << const_array[i] << ' '; }
-    cout << endl;
-}
-```
-One had to plug in the array size `4` manually, by hand, or otherwise, writing
-```c++
-char const const_array[] = "Hm!";     // copy, with inferred size.
-```
-&hellip; one would incur at least a logical copying of the initializer. The copying
-would probably be optimized away, but it was potentially present, and constrained the
-array item type to one that could be copied.
-
 With C++11 `auto&`, as in Expressive C++
-`$alias`, that size is inferred, and one doesn’t have to do &ldquo;clever&rdquo;
-stuff like that C++ array reference syntax to avoid imposing constraints and
+`$alias`, an array size is inferred, and one doesn’t have to do &ldquo;clever&rdquo;
+stuff like the raw C++ array reference syntax to avoid imposing constraints and
 guarantee efficiency &ndash; one can just express things directly & naturally:
 ```c++
 #include <iostream>
@@ -720,7 +693,7 @@ $just
     cout << endl;
 }
 ```
-So this is one thing that the modern style declarations can do that the C++03 style
+And this is one thing that the modern style declarations can do that the C++03 style
 declarations can’t, namely *inferred array reference size*.
 
 But in the other direction, to declare a mutable array with size inferred
@@ -760,24 +733,16 @@ will be inferred as a the `std::common_type` of the item initializers, which for
 single item array reduces to the `std::decay_t` of the type of the single
 initializer.
 
-The idea of specifying `void` to get a deduced type reduces clarity because one has
-to know about it to understand what it means: it's not self-descriptive. And the
-idea of a type cleverly deduced by a non-trivial algorithm, from the types of all
-initializers, is a recipe for fragile, easily broken code. For when one can't
-reliably predict the result with just a reasonable effort, and when maintenance can
-inadvertently change the result by changing a value deep into a long sequence of
-values, then the coding and bug-hunting devolves to try-and-fail exploration.
-
-The Expressive C++ support increases clarity here by simply *naming* both the
-inferred type and explicit type cases, **`wrapped_array`** versus
-**`wrapped_array_of_`**, so that there’s no need to figure out what a `void` item
-type means, or what to write for that case. And `wrapped_array` increases programmer
-control by using a very simple, grokkable item type deduction for `wrapped_array`.
-Namely,
+The Expressive C++ support increases clarity relative to `std::make_array` by simply
+*naming* both the inferred type and explicit type cases, **`wrapped_array`** versus
+**`wrapped_array_of_`**, so that there’s no need for a maintainer to figure out what
+a `void` item type means, or for an original developer to figure out what to write
+for that case. And `wrapped_array` increases programmer control of the resulting
+array item type by using a very simple, grokkable item type deduction. Namely,
 
 * the `std::decay_t` of the first initializer, except
-* when there is only a single initializer that itself is of array type, such as
-a string literal, in which case `wrapped_array` just creates a copy of that array.
+* when there is only a single item initializer that itself is of array type, in
+  which case `wrapped_array` just creates a copy of that array.
 
 Thus the C++03 example can be expressed as the slightly shorter and slightly more
 clear
@@ -817,6 +782,9 @@ The first 15 digits of pi in sorted order: 1 1 3 3 3 4 5 5 5 6 7 8 9 9 9.
 
 <sub><i><b>sort_items_of</b> is an Expressive C++ convenience wrapper around
 <b>std::sort</b>: generally it's much less to write, and more clear.</i></sub>
+
+A `wrapped_array` can of course also be used in ordinary expressions, e.g.
+
 
 ## asdasd
 
