@@ -3,8 +3,9 @@
 
 #include <p/expressive/core_language/basic_type_builders.hpp>   // ptr_
 #include <p/expressive/impl/Simple_string_view.hpp>             // Simple_string_view
+#include <p/expressive/impl/support_for_select_expr.hpp>        // Select_expression_condition
 
-#include <string.h>     // strlen, instead of expressive::length_of
+#include <string.h>     // strlen (instead of expressive::length_of), strstr
 
 namespace progrock{ namespace expressive{ namespace impl{
 #include <p/expressive/pseudo_keywords/impl/push_macro_definitions.hpp>
@@ -25,27 +26,37 @@ namespace progrock{ namespace expressive{ namespace impl{
         $let p_original_beyond  = p_original_first + n_original_chars;
         $let p_last             = p_original_beyond - 1;
 
-        $var p          = p_last;
-        while( p != p_original_first and *p != ')' )
+        $var p = const_cast<ptr_<const char>>( strstr( p_original_first, "::<lambda" ) );
+        if( p != nullptr )
         {
-            --p;
+            $let q = strchr( p, '>' );
+            p = $pick $when q != nullptr $use q $else_use p_last;
         }
+        else
+        {
+            p = p_last;
 
-        // If no argument list then just return the whole shebang.
-        if( p == p_original_first )
-        {
-            return Simple_string_view{ p_original_first, p_original_beyond };
-        }
+            while( p != p_original_first and *p != ')' )
+            {
+                --p;
+            }
 
-        --p;    // Skip ')'.
-        $var parens_level   = 1;
-        while( p != p_original_first and parens_level > 0 )
-        {
-            if( *p == '(' ) { --parens_level; }
-            if( *p == ')' ) { ++parens_level; }
-            --p;
+            // If no argument list then just return the whole shebang.
+            if( p == p_original_first )
+            {
+                return Simple_string_view{ p_original_first, p_original_beyond };
+            }
+
+            --p;    // Skip ')'.
+            $var parens_level   = 1;
+            while( p != p_original_first and parens_level > 0 )
+            {
+                if( *p == '(' ) { --parens_level; }
+                if( *p == ')' ) { ++parens_level; }
+                --p;
+            }
+            while( p != p_original_first and *p == ' ' ) { --p; }
         }
-        while( p != p_original_first and *p == ' ' ) { --p; }
 
         $let p_trimmed_beyond = p + 1;
         while( p != p_original_first and *p != ' ' ) { --p; }

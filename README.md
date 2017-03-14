@@ -784,7 +784,21 @@ The first 15 digits of pi in sorted order: 1 1 3 3 3 4 5 5 5 6 7 8 9 9 9.
 <b>std::sort</b>: generally it's much less to write, and more clear.</i></sub>
 
 A `wrapped_array` can of course also be used in ordinary expressions, e.g.
+```c++
+#include <iostream>
+$use_weakly_all_from( std );
 
+$just
+{
+    cout << "Guess which number I'm thinking of: ";
+    $let number = $invoked{
+        int x;
+        cin >> x or fail( "Sorry, ungood input..." );
+        return x;
+        };
+    cout << wrapped_array( "Wrong.", "Right!" )[number == 42] << "\n";
+}
+```
 
 ## asdasd
 
