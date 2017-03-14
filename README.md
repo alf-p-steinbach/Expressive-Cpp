@@ -85,7 +85,7 @@ specific constructs such as variable declarations (the raw C++ keyword `auto` ha
 many meanings). An expert who wonders about the exact definition can just hover
 the mouse over any such keyword: they’re quickly learned.
 
-The most important four are
+The most important four syntactic sugar macros are
 * `$f` and `$p` to declare functions and procedures (`void` functions), and
 * `$let` and `$var`, to declare constants and variables.
 
