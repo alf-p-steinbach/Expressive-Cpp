@@ -866,7 +866,7 @@ $use_weakly_all_from( std );
 
 struct Lockable_string { string s; mutex m; };
 
-void appender(
+$p appender(
     ref_<Lockable_string>       ls,
     ref_<const Range_<char>>    chars
     )
@@ -892,9 +892,10 @@ for this is to support the temporary variable, which is an argument to the
 constructor of the left hand side argument to `%`. But it means that
 `$invoke_with` is directly opposite of `$invoke` in two usage details, namely
 (1) negative, that it's possible to inadvertently grab the left argument to the `%`
-by placing a prefix operator such as `!` in front of the expression, and (2),
-positive, that `%` is found by argument-dependent lookup, so there's no need to have
-a `using` declaration or directive, i.e. `$invoke_with` can be used in any context.
+by placing one of the operators `!`, `~`, `*` or `%` in front of the expression, and
+(2), positive, that `%` is found by argument-dependent lookup, so there's no need to
+have a `using` declaration or directive. I.e. `$invoke_with` can be used regardless
+of `using` or not, in particular also if you only use the *all.hpp* header.
 
 ## Functions
 As motivation for distinguishing clearly between two kinds of functions,
