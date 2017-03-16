@@ -11,6 +11,7 @@
 #include <p/expressive/library_extension/length_of.hpp>             // length_of
 #include <p/expressive/library_extension/n_items_in.hpp>            // n_items_in
 #include <p/expressive/library_extension/No_copy.hpp>               // No_copy
+#include <p/expressive/library_extension/No_move.hpp>               // No_move
 #include <p/expressive/library_extension/No_copy_or_move.hpp>       // No_copy_or_move
 #include <p/expressive/library_extension/Non_instantiable.h>        // Non_instantiable
 #include <p/expressive/library_extension/Range_.hpp>                // (Range_, range, up_to, n_items_in<Range_>)

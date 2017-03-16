@@ -14,14 +14,12 @@ namespace progrock{ namespace expressive{
                 -> ref_<No_copy>
                 = delete;
 
-            No_copy( No_copy const& )
-                = delete;
-
             $f operator=( temp_ref_<No_copy> )
                 -> ref_<No_copy>
             { return *this; }
 
             No_copy() {}
+            No_copy( ref_<const No_copy> ) = delete;
             No_copy( temp_ref_<No_copy> ) {}
         };
 

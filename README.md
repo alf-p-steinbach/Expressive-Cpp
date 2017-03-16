@@ -635,6 +635,35 @@ C++ dialect the syntax could be constrained to not allow such modifiers.
 
 The *intent* is that `$var` guarantees a distinct variable.
 
+**Restriction**: in C++14 and earlier `$let` and `$var` can’t be used with a type
+that’s neither copyable nor movable. That’s because the relevant type must be
+specified via the initializer, which must be logically copied or moved to the
+declared variable, which in C++14 and earlier requires that the corresponding
+constructor is accessible. In C++17 this restriction is reportedly lifted.
+```c++
+using $e::No_copy;          // Just for exposition. Has deleted copy constructor.
+using $e::No_move;          // -- ditto --
+using $e::No_copy_or_move;  // -- ditto --  
+
+$just
+{
+    $var    a   = No_copy{};                // OK, it’s moved.
+    $var    b   = $as<ref_<const No_move>>( No_move{} ); // Awkward but OK, copy.
+
+    $var        c   = No_copy_or_move{};    // Nyet.
+    $alias      d   = No_copy_or_move{};    // Nyet. Ref to non-const.
+    $const_view e   = No_copy_or_move{};    // OK, lifetime-extended temp.
+}
+```
+Happily, most declarations are in practice of variables of types that don’t have
+copy or move restrictions, or that at least don't have a declared but deleted move
+constructor like `No_move` above. But in the cases considered in the code above,
+only for `a`, `b` and `e` are `auto` declarations possible. And only for `a` and
+`e` is this syntax, Herb Sutter’s “AAA”, *almost always `auto`* , natural.
+
+For example, `std::mutex` is a non-copyable, non-movable class, and so is any class
+with a `std::mutex` data member.
+
 ### `$alias` and `$const_view`
 
 Okay, producing a pointer type via the initializer expression is easy, but what if
