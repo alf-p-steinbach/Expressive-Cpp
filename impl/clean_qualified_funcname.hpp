@@ -26,7 +26,9 @@ namespace progrock{ namespace expressive{ namespace impl{
         $let p_original_beyond  = p_original_first + n_original_chars;
         $let p_last             = p_original_beyond - 1;
 
-        $var p = const_cast<ptr_<const char>>( strstr( p_original_first, "::<lambda" ) );
+        $var p = const_cast<ptr_<const char>>(
+            strstr( p_original_first, "::<lambda" )
+            );
         if( p != nullptr )
         {
             $let q = strchr( p, '>' );
@@ -48,7 +50,7 @@ namespace progrock{ namespace expressive{ namespace impl{
             }
 
             --p;    // Skip ')'.
-            $var parens_level   = 1;
+            $var parens_level = 1;
             while( p != p_original_first and parens_level > 0 )
             {
                 if( *p == '(' ) { --parens_level; }

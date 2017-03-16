@@ -499,7 +499,7 @@ This practice has three problems:
 * The cast can suppress up-front notice of an erroneous later change of initializer
   type.
 
-If you are only concerned with the verbosity, then you can
+If you are only concerned with the verbosity then you can
 use Expressive C++ **`$as`**, which translates to `static_cast`:
 ```c++
 auto    avg = $as<double>( 0.0 );          // More concise!
@@ -783,6 +783,8 @@ The first 15 digits of pi in sorted order: 1 1 3 3 3 4 5 5 5 6 7 8 9 9 9.
 <sub><i><b>sort_items_of</b> is an Expressive C++ convenience wrapper around
 <b>std::sort</b>: generally it's much less to write, and more clear.</i></sub>
 
+## Expressions
+
 A `wrapped_array` can of course also be used in ordinary expressions, e.g.
 ```c++
 #include <iostream>
@@ -799,10 +801,39 @@ $just
     cout << wrapped_array( "Wrong.", "Right!" )[number == 42] << "\n";
 }
 ```
+And similarly, `$as` and `$of_type` can have some practical utility in general
+expressions, although they're designed mainly as support for declarations.
 
-## asdasd
+The `$invoked` pseudo keyword used above is an example of a keyword that instead is
+designed primarily for use in expressions.
 
+### `$invoked`
 
+**`$invoked`** translates to an invocation of a capture-by-reference lambda function,
+with the given statement block as function body, and with the expression value type
+inferred from the `return` statement, as in the example above:
+```c++
+$let number = $invoked{
+    int x;
+    cin >> x or fail( "Sorry, ungood input..." );
+    return x;
+    };
+```
+This is an easy way to use (very) local variables, loops and/or selection statements
+within an expression. The macro mainly serves to put everything about the lambda
+invocation up front. If you don't mind having round parentheses around the lambda
+body then you can alternatively use Expressive C++’s **`call_of`** or C++17 or later
+**`std::invoke`** with the lambda explicitly specified as such.
+
+In order to  avoid an extra parenthesis after the lambda body the `$invoked`
+macro uses an overload of the `~` operator, `$e::operator~`, a function template
+that's SFINAE-restricted to only be found for arguments that are invocable
+no-arguments functions &ndash; such as a lambda. With a prefix operator there is no
+problem that a preceding operator can grab an argument of the expression. But since
+there is nothing that can guide overload resolution, and since an operator
+invocation without parenthesized argument list cannot be qualified, this `~` operator
+overload must be present in the using code's namespace or in an enclosing namespace,
+i.e. the pseudo keyword macro can only be used in such a context.
 
 ## Functions
 As motivation for distinguishing clearly between two kinds of functions,

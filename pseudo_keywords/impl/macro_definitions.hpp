@@ -22,10 +22,9 @@
 #   define $noreturn            EXPRESSIVE_NORETURN         // MSVC lacks [noreturn].
 #
 
-//--------------------------------------- Expressions:
+//--------------------------------------- Declarations:
 //
-#   define $invoked                     $e::impl::Gurkemeie{} % [&]()
-#
+#   define $as                          static_cast
 #   define $of_type( Type, expr )                   \
         (                                           \
             (void) sizeof( expr ),                  \
@@ -46,32 +45,6 @@
                 },                                  \
             $as<Type>( expr )                       \
         )
-#   define $as                          static_cast
-#
-#   define $pick                        $e::impl::Select_expression_condition{}?$e::impl::Dummy_default_value{}
-#   define $when                        :
-#   define $use                         ?
-#   define $else_use                    :
-#
-#   define $self                        (*this)
-#
-#   define $lambda_using( ... )         [__VA_ARGS__]
-#   define $byref( object )             &object
-#   define $byval( object )             object
-#   define $capture_byref               &
-#   define $capture_byval               =
-#
-#   define $lambda_using_references     $lambda_using( $capture_byref )
-#   define $lambda_using_values         $lambda_using( $capture_byval )
-#   define $lambda                      $lambda_using_references
-
-//--------------------------------------- Declarations:
-//
-#define $invoked_with( instantiation ) \
-    $e::impl::Gurkemeie{} % []( decltype( instantiation ) = instantiation )
-#
-#   define $unique_temp_name            \
-        MM_CONCAT( unique_name_57AA6ED437D24F6182EB3B0F7826AA2F_, __COUNTER__ )
 #
 #   define $let                     auto const
 #   define $var                     auto
@@ -83,6 +56,35 @@
 #
 #   define $simple_pure_f           constexpr $f
 #   define $compile_time            static constexpr
+#
+
+//--------------------------------------- Expressions:
+//
+#   define $lambda_using( ... )         [__VA_ARGS__]
+#   define $byref( object )             &object
+#   define $byval( object )             object
+#   define $capture_byref               &
+#   define $capture_byval               =
+#
+#   define $lambda_using_references     $lambda_using( $capture_byref )
+#   define $lambda_using_values         $lambda_using( $capture_byval )
+#   define $lambda                      $lambda_using_references
+#
+#   define $invoked                     ~$lambda()
+    //$e::impl::Koenig_lookup_for_invoked_expr{} % $lambda()
+#
+#   define $invoked_with( instantiation ) \
+        $e::impl::Koenig_lookup_for_invoked_expr{} % $lambda( decltype( instantiation ) = instantiation )
+#
+#   define $unique_temp_name            \
+        MM_CONCAT( unique_name_57AA6ED437D24F6182EB3B0F7826AA2F_, __COUNTER__ )
+#
+#   define $pick                        $e::impl::Select_expression_condition{}?$e::impl::Dummy_default_value{}
+#   define $when                        :
+#   define $use                         ?
+#   define $else_use                    :
+#
+#   define $self                        (*this)
 #
 
 //--------------------------------------- Namespace handling:
