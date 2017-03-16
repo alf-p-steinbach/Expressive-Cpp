@@ -89,7 +89,7 @@ namespace progrock{ namespace expressive{
 
             explicit Range_( const Integer first, const Integer last )
                 : first_{ $as<Unsigned>( first ) }
-                , beyond_{ $as<Unsigned>( last ) + delta }
+                , beyond_{ $as<Unsigned>( $as<Unsigned>( last ) + delta ) }
             {
                 if( is_signed<Integer>::value and
                     last != first and
@@ -105,6 +105,11 @@ namespace progrock{ namespace expressive{
         inline $f range( const Int_a first, const Int_b last )
             -> Range_<decltype( first + last )>
         { return Range_<decltype( first + last )>{ first, last }; }
+
+        template< class Int >
+        inline $f range( const Int first, const Int last )
+            -> Range_<Int>
+        { return Range_<Int>{ first, last }; }
 
         template< class Integer = int >
         inline $f up_to( const Integer beyond )

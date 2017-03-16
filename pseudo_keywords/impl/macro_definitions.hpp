@@ -71,10 +71,10 @@
 #   define $lambda                      $lambda_using_references
 #
 #   define $invoked                     ~$lambda()
-    //$e::impl::Koenig_lookup_for_invoked_expr{} % $lambda()
 #
-#   define $invoked_with( instantiation ) \
-        $e::impl::Koenig_lookup_for_invoked_expr{} % $lambda( decltype( instantiation ) = instantiation )
+#   define $invoked_with( initializer ) \
+        $e::impl::Invoked_arg_<std::remove_reference_t<decltype(initializer)>>{ initializer } \
+        % $lambda()
 #
 #   define $unique_temp_name            \
         MM_CONCAT( unique_name_57AA6ED437D24F6182EB3B0F7826AA2F_, __COUNTER__ )

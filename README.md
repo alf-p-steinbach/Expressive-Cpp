@@ -836,6 +836,65 @@ invocation without parenthesized argument list cannot be qualified, this `~` ope
 overload must be present in the using code's namespace or in an enclosing namespace,
 i.e. the pseudo keyword macro can only be used in such a context.
 
+### `$invoked_with`
+
+**`$invoked_with`** is like `$invoked`, but takes an initializer expression as
+argument, creates a temporary variable with that initializer, and then calls the
+lambda in the scope of the still existing temporary.
+
+For example, given
+```c++
+struct Lockable_string { string s; mutex m; };
+```
+… instead of
+```c++
+$const_view lock = lock_guard<mutex>{ ls.m };
+ls.s += ch;
+```
+… you can write
+```c++
+$invoked_with( lock_guard<mutex>{ ls.m } ) { ls.s += ch; };
+```
+Complete example code for that:
+```c++
+#include <iostream>
+#include <string>       // std::string
+#include <thread>       // std::thread
+#include <mutex>        // std::(mutex, lock_guard)
+$use_weakly_all_from( std );
+
+struct Lockable_string { string s; mutex m; };
+
+void appender(
+    ref_<Lockable_string>       ls,
+    ref_<const Range_<char>>    chars
+    )
+{
+    for( $each ch $in chars )
+    {
+        this_thread::sleep_for( 1ms );
+        $invoked_with( lock_guard<mutex>{ ls.m } ) { ls.s += ch; };
+    }
+}
+
+$just
+{
+    Lockable_string ls;
+    $var t1 = thread{ appender, ref( ls ), range( 'a', 'z' ) };
+    $var t2 = thread{ appender, ref( ls ), range( 'A', 'Z' ) };
+    t1.join(); t2.join();
+    cout << ls.s << endl;
+}
+```
+`$invoke_with` is implemented via an overload of the infix `%` operator. The reason
+for this is to support the temporary variable, which is an argument to the
+constructor of the left hand side argument to `%`. But it means that
+`$invoke_with` is directly opposite of `$invoke` in two usage details, namely
+(1) negative, that it's possible to inadvertently grab the left argument to the `%`
+by placing a prefix operator such as `!` in front of the expression, and (2),
+positive, that `%` is found by argument-dependent lookup, so there's no need to have
+a `using` declaration or directive, i.e. `$invoke_with` can be used in any context.
+
 ## Functions
 As motivation for distinguishing clearly between two kinds of functions,
 called `$p` (procedure) and `$f` (function) in Expressive C++, consider a
