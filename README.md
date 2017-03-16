@@ -20,6 +20,7 @@
     - [`wrapped_array` and `wrapped_array_of_`](#wrapped_array-and-wrapped_array_of_)
   - [Expressions](#expressions)
     - [`$invoked`](#invoked)
+    - [`$invoked_with`](#invoked_with)
   - [Functions](#functions)
     - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
     - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
