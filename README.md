@@ -16,6 +16,7 @@
     - [Herb Sutter’s &ldquo;almost always `auto`&rdquo;](#herb-sutters-ldquoalmost-always-autordquo)
     - [`$as` versus `$of_type` for the initializer](#as-versus-of_type-for-the-initializer)
     - [`$let` and `$var`](#let-and-var)
+    - [`$no_move`](#no_move)
     - [`$alias` and `$const_view`](#alias-and-const_view)
     - [`wrapped_array` and `wrapped_array_of_`](#wrapped_array-and-wrapped_array_of_)
   - [Expressions](#expressions)
@@ -664,9 +665,60 @@ only for `a`, `b` and `e` are `auto` declarations possible. And only for `a` and
 For example, `std::mutex` is a non-copyable, non-movable class, and so is any class
 with a `std::mutex` data member.
 
+### `$no_move`
+
+The awkward code for using the `auto` declaration syntax with a class that has a
+declared but deleted or inaccessible move constructor, can be rewritten in a
+concise and elegant way with the **`$no_move`** pseudo keyword. Conceptually it's
+the opposite of a `std::move`, requesting “don&rsquo;t attempt to move, please!”.
+Technically it casts an expression of type *T* to `ref_<const `*T*`>`, which
+doesn't match the formal argument of a move constructor, thus preventing the
+move constructor from being chosen when the expression is an initializer.
+
+E.g. in the code below `$no_move`, or some equivalent casting, is necessary for
+this code to compile, since `Verbose` has a declared but deleted move constructor:
+
+```c++
+#include <iostream>
+$use_weakly_all_from( std );
+
+struct Verbose
+{
+    ~Verbose() { cout << "Verbose::<destroy>" << endl; }
+    Verbose() { cout << "Verbose::<init>" << endl; }
+    Verbose( ref_<const Verbose> ) { cout << "Verbose::<copy>" << endl; }
+    Verbose( temp_ref_<Verbose> ) = delete;
+};
+
+$just
+{
+    $let        a   = $no_move( Verbose{} );    // OK, it's logically copied.
+    $var        b   = $no_move( Verbose{} );    // OK, it's logically copied.
+    $alias      c   = $no_move( Verbose{} );    // OK, it's life-extended.
+    $const_view d   = $no_move( Verbose{} );    // OK, it's life-extended.
+    
+    cout << "Main logic." << endl;
+}
+```
+Output:
+<blockquote><pre>
+Verbose::&lt;init&gt;
+Verbose::&lt;init&gt;
+Verbose::&lt;init&gt;
+Verbose::&lt;init&gt;
+Main logic.
+Verbose::&lt;destroy&gt;
+Verbose::&lt;destroy&gt;
+Verbose::&lt;destroy&gt;
+Verbose::&lt;destroy&gt;
+</pre></blockquote>
+
+There are only four init messages, one for each of `a`, `b`, `c` and `d`, and no
+copy message, because the logical copying has been completely optimized away.
+
 ### `$alias` and `$const_view`
 
-Okay, producing a pointer type via the initializer expression is easy, but what if
+Producing a pointer type via the initializer expression is easy, but what if
 you really need a reference type?
 
 The **`$alias`** keyword, raw C++ `auto&`, creates a name that is an alternative way

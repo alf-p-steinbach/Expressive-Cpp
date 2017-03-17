@@ -11,6 +11,7 @@
 //--------------------------------------- Declarations:
 #pragma push_macro( "$as" )
 #pragma push_macro( "$of_type" )
+#pragma push_macro( "$no_move" )
 #pragma push_macro( "$let" )
 #pragma push_macro( "$var" )
 #pragma push_macro( "$alias" )

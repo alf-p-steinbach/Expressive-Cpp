@@ -45,6 +45,8 @@
                 },                                  \
             $as<Type>( expr )                       \
         )
+#   define $no_move( ... ) \
+        $as<$e::ref_<const decltype(__VA_ARGS__)>>( __VA_ARGS__ )
 #
 #   define $let                     auto const
 #   define $var                     auto
