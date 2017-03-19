@@ -277,28 +277,27 @@ $just
     cout << "." << endl;
 }
 ```
-The use of a temporary `vector<int>` result in the expression
-`enumerated( collatz( 41 ) )` is both safe and efficient. C++ does *not* extend
-the lifetime of the temporary from the `collatz()` call to cover the full loop
-execution, so do take care for such calls in raw C++! But the `enumerated` function
-uses the Expressive C++ facility `Copy_or_ref_` to deal with a temporary argument,
-and makes a safe logical copy of that temporary &ndash; here very efficiently by
-just `std::move`-ing the vector.
-
 The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros.
 
-Here `$use_weakly_all_from` is one of a family of keywords for handling C++
-namespaces (it’s there mostly for consistency of notation, including the name of the
-header used here which provides such a directive for the
-**`::progrock::expressive`** namespace); `$f`, short for
+Here
+- the *use_weakly_all.hpp* header includes the *all.hpp* header and adds a
+`using namespace` directive for `$e`, that is, for namespace 
+`progrock::expressive`;
+- `$use_weakly_all_from` expands to `using namespace` and is there mostly for
+consistency of notation, including consistency with the *use_weakly_all.hpp*
+header name, but also to provide a self-descriptive statement;
+-  `$f`, short for
 *`function`*, denotes a trailing return type function definition that’s intended to
-be non-`void`; the `$just` keyword generates a safe standard C++ `main`
-function, discussed in he next subsection; the readable `$loop`, `$each` and `$in`
-expand to respectively raw C++ &ldquo;`for(;;)`&rdquo;, &ldquo;`auto const&`&rdquo;
-and &ldquo;`:`&rdquo; &ndash; which might be perplexing to a novice; the construct
-with `$pick`, `$when`, `$use` and `$else_use` expands to use of the often hard to
-group visually `:?` operator; and, finally, the readable plain `not` is standard C++.
+be non-`void`;
+- the `$just` keyword generates a safe standard C++ `main`
+function, discussed in he next subsection;
+- `$loop`, `$each` and `$in` expand to the more cryptic raw C++
+&ldquo;`for(;;)`&rdquo;, &ldquo;`auto const&`&rdquo; and &ldquo;`:`&rdquo;;
+- the construct
+with `$pick`, `$when`, `$use` and `$else_use` expands to use of the ternary
+choice operator `:?`; and, finally,
+- `not` is just standard C++, in spite of being readable.
 
 Expressive C++ also offers some stuff implemented with ordinary C++ code, using C++
 core language features up to and including C++14.
@@ -308,11 +307,22 @@ functionality. This convenience functionality is implemented with the pseudo
 keywords and generally full expressive C++, but it can be *used* without the
 keywords, in raw C++. If you want to use just those parts of Expressive C++.
 
+And for example, the use of a temporary `vector<int>` result in the expression
+`enumerated( collatz( 41 ) )` is both safe and efficient. C++ does *not* extend
+the lifetime of the temporary from the `collatz()` call to cover the full loop
+execution, so do take care for such calls in raw C++! But the `enumerated` function
+uses the Expressive C++ facility `Copy_or_ref_` to deal with a temporary argument,
+and makes a safe logical copy of that temporary &ndash; here very efficiently by
+just `std::move`-ing the vector.
+
 As an example where the keywords combine with underlying pure C++ machinery,
-i.e. where both macros and ordinary C++ code are involved, the *expression*
+i.e. where both macros and ordinary C++ code are involved to simplify things, the
+*expression*
+
 ```C++
 $invoked{ $var x=1; while( x*x < 50 ) ++x; return x - 1; }
 ```    
+
 &hellip; uses an Expressive C++ keyword macro, `$invoked`, to produce a lambda,
 and to pass it to some ordinary C++14 machinery that invokes that lambda and
 produces its return value with the type implied by the `return` statement.
