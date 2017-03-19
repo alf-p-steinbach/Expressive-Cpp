@@ -307,10 +307,11 @@ functionality. This convenience functionality is implemented with the pseudo
 keywords and generally full expressive C++, but it can be *used* without the
 keywords, in raw C++. If you want to use just those parts of Expressive C++.
 
-And for example, the use of a temporary `vector<int>` result in the expression
-`enumerated( collatz( 41 ) )` is both safe and efficient. C++ does *not* extend
-the lifetime of the temporary from the `collatz()` call to cover the full loop
-execution, so do take care for such calls in raw C++! But the `enumerated` function
+And for example, the temporary `vector<int>` result in the expression
+`enumerated( collatz( 41 ) )` is both safe and efficient, without physically
+copying the vector data – it’s just moved. C++ does *not* extend the lifetime of the
+temporary from the `collatz()` call to cover the full loop execution, so do take
+care for such calls in raw C++! But the `enumerated` function
 uses the Expressive C++ facility `Copy_or_ref_` to deal with a temporary argument,
 and makes a safe logical copy of that temporary &ndash; here very efficiently by
 just `std::move`-ing the vector.
