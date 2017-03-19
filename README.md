@@ -63,21 +63,21 @@ Example of a **pseudo keyword** macro:
 ```c++
 $fail( "Blah" );
 ```
-throws a `std::runtime_error`
-exception with the containing function’s qualified or pure name `$funcname` prepended
-to the specified exception message; the qualified name is used where it’s available
-and supported by Expressive C++. A macro is needed to pick up the function signature
-from compiler-specific macros or C++11 standard but non-qualified [`__func__`](
+throws a `std::runtime_error` exception with the containing function’s qualified
+or pure name `$funcname` prepended to the specified exception message; the qualified
+name is used where it’s available and supported by Expressive C++. A macro is needed
+to pick up the function signature from compiler-specific macros or C++11 standard
+but non-qualified [`__func__`](
     http://en.cppreference.com/w/c/language/function_definition#func).
 Some additional machinery pares it down to just the qualified function name.
 
 Expressive C++ uses the `$` sign as effectively a so far clean and unused namespace
-for its macro keywords. The `$` is supported by the main C++ compilers, including g++,
-Visual C++ and clang, and provides easy recognition, improved readability
-&ndash;  no uppercase shouting or prefix verbosity &ndash; and greatly reduced
-chance of name collision. This makes Expressive C++ more of a dialect or extension
-of C++ that currently happens to be implemented as a header only library, than
-primarily a library.
+for its macro-based pseudo keywords, henceforth referred to as just keywords. The `$`
+is supported by the main C++ compilers, including g++, Visual C++ and clang, and
+provides easy recognition, improved readability &ndash;  no uppercase shouting or
+prefix verbosity &ndash; and greatly reduced chance of name collision. This makes
+Expressive C++ more of a dialect or extension of C++ that currently happens to be
+implemented as a header only library, than primarily a library.
 
 Since macros are needed anyway, e.g. for the `$fail` functionality, there are also
 purely syntactic sugar keywords allowing e.g. the range based loop example above to
@@ -270,12 +270,12 @@ just `std::move`-ing the vector.
 The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros.
 
-Here `$use_weakly_all_from` is one of a family of pseudo keywords for handling C++
+Here `$use_weakly_all_from` is one of a family of keywords for handling C++
 namespaces (it’s there mostly for consistency of notation, including the name of the
 header used here which provides such a directive for the
 **`::progrock::expressive`** namespace); `$f`, short for
 *`function`*, denotes a trailing return type function definition that’s intended to
-be non-`void`; the `$just` pseudo keyword generates a safe standard C++ `main`
+be non-`void`; the `$just` keyword generates a safe standard C++ `main`
 function, discussed in he next subsection; the readable `$loop`, `$each` and `$in`
 expand to respectively raw C++ &ldquo;`for(;;)`&rdquo;, &ldquo;`auto const&`&rdquo;
 and &ldquo;`:`&rdquo; &ndash; which might be perplexing to a novice; the construct
@@ -290,12 +290,12 @@ functionality. This convenience functionality is implemented with the pseudo
 keywords and generally full expressive C++, but it can be *used* without the
 keywords, in raw C++. If you want to use just those parts of Expressive C++.
 
-As an example where the pseudo keywords combine with underlying pure C++ machinery,
+As an example where the keywords combine with underlying pure C++ machinery,
 i.e. where both macros and ordinary C++ code are involved, the *expression*
 ```C++
 $invoked{ $var x=1; while( x*x < 50 ) ++x; return x - 1; }
 ```    
-&hellip; uses an Expressive C++ pseudo keyword macro, `$invoked`, to produce a lambda,
+&hellip; uses an Expressive C++ keyword macro, `$invoked`, to produce a lambda,
 and to pass it to some ordinary C++14 machinery that invokes that lambda and
 produces its return value with the type implied by the `return` statement.
 
@@ -663,7 +663,7 @@ at the worst possible moment, at maximum cost&hellip; So better use a verbose
 ### `$let` and `$var`
 
 Raw C++ `auto`, `&` and `const` combine to create four different *kinds* of
-variable declarations, and the Expressive C++ pseudo keywords `$let`, `$var`,
+variable declarations, and the Expressive C++ keywords `$let`, `$var`,
 `$alias` and `$const_view` name these kinds for readability and clarity. With the
 two most used, `$let` and `$var`, the code is also shorter and lines up nicely.
 Which really shouldn't count but still, the author likes that.
@@ -725,7 +725,7 @@ with a `std::mutex` data member.
 
 The awkward code for using the `auto` declaration syntax with a class that has a
 declared but deleted or inaccessible move constructor, can be rewritten in a
-concise and elegant way with the **`$no_move`** pseudo keyword. Conceptually it's
+concise and elegant way with the **`$no_move`** keyword. Conceptually it's
 the opposite of a `std::move`, requesting “don&rsquo;t attempt to move, please!”.
 Technically it casts an expression of type *T* to `ref_<const `*T*`>`, which
 doesn't match the formal argument of a move constructor, thus preventing the
@@ -943,7 +943,7 @@ $just
 And similarly, `$of_type` can have practical utility in general expressions,
 although it’s mainly designed as support for declarations.
 
-The `$as` pseudo keyword, and the `$invoked` pseudo keyword used above, are examples
+The `$as` keyword, and the `$invoked` keyword used above, are examples
 of keywords that instead primarily are designed for use in expressions.
 
 ### `$invoked`
@@ -972,7 +972,7 @@ problem that a preceding operator can grab an argument of the expression. But si
 there is nothing that can guide overload resolution, and since an operator
 invocation without parenthesized argument list cannot be qualified, this `~` operator
 overload must be present in the using code's namespace or in an enclosing namespace,
-i.e. the pseudo keyword macro can only be used in such a context.
+i.e. the keyword macro can only be used in such a context.
 
 ### `$invoked_with`
 
@@ -1073,7 +1073,7 @@ emptiness&hellip;
 
 ### `$p`, `$f` and `$lambda`
 
-The Expressive C++ pseudo keywords `$p` and `$f`
+The Expressive C++ keywords `$p` and `$f`
 are there to let you much more clearly communicate the *intended kind*
 of function declaration. No doubt about whether `empty` empties or checks. If
 it’s a `$p` then it empties, and if it’s a `$f`, then it checks.
