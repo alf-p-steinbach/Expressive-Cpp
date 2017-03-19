@@ -317,7 +317,7 @@ C++ compiler you can do that via option <b>/FI</b>.</i></sub>
 Behind the scenes `$just` declares a standard C++ **`main`** function that
 executes `setlocale( LC_ALL, "" )` and then invokes your statement block in
 a context where exceptions are caught and presented on the standard error
-stream, with the following code or with a later improvement of it:
+stream, using the following code or a later improvement of it:
 ``` c++
 inline $p dummy_main_func() {}
 
