@@ -317,7 +317,63 @@ C++ compiler you can do that via option <b>/FI</b>.</i></sub>
 Behind the scenes `$just` declares a standard C++ **`main`** function that
 executes `setlocale( LC_ALL, "" )` and then invokes your statement block in
 a context where exceptions are caught and presented on the standard error
-stream.
+stream, with the following code or with a later improvement of it:
+``` c++
+inline $p dummy_main_func() {}
+
+inline $p report_exception( ref_<const exception> x )
+{
+    fprintf( stderr, "\n! %s\n", x.what() );
+    fflush( stderr );       // It's here that failure may be discovered.
+    if( ferror( stderr ) ) { throw x; }
+}
+
+inline $f default_startup(
+    const ptr_<$p()>                        main_func       = dummy_main_func,
+    const ptr_<$p( ref_<const exception> )> on_fatal_error  = report_exception
+    ) -> int
+{
+    // With g++ setlocale() isn't guaranteed called by the C++ level locale handling.
+    // This call is necessary for e.g. wide streams. "" is the user's natural locale.
+    setlocale( LC_ALL, "" );            // C level global locale.
+    locale::global( locale( "" ) );     // C++ level global locale.
+    try
+    {
+        main_func();                    // The app's C++ level main function.
+        return Exit_code::success;
+    }
+    catch( exception const& x )
+    {
+        on_fatal_error( x );
+    }
+    catch( system_error const& x )
+    {
+        // TODO: also retrieve and report error code.
+        on_fatal_error( x );
+    }
+    catch( Exit_code::Enum const code )
+    {
+        on_fatal_error( runtime_error( "Fatal error ($e::Exit_code)" ) );
+        return $pick
+            $when code == Exit_code::success $use   // success == 0 == unknown.
+                Exit_code::failure
+            $else_use
+                code;
+    }
+    catch( ... )
+    {
+        on_fatal_error( runtime_error( "<unknown exception>" ) );
+    }
+    return Exit_code::failure;
+}
+```
+Yep, all that code, and more!, should ideally be in even the simplest &ldquo;Hello,
+world!&rdquo; program in C++. Just to make i/o work in general and to get error
+messages presented, etc. But of course no beginner will write or copy that…
+
+That’s part of the rationale for Expressive C++: to provide and tuck away this
+non-trivial and rather overwhelming support code for trivial tasks, so as to make
+trivial stuff trivially easy to express also in C++.
 
 The `setlocale` call makes the standard library’s character
 classification functions like `toupper` work for non-ASCII characters in
@@ -884,11 +940,11 @@ $just
     cout << wrapped_array( "Wrong.", "Right!" )[number == 42] << "\n";
 }
 ```
-And similarly, `$as` and `$of_type` can have some practical utility in general
-expressions, although they're designed mainly as support for declarations.
+And similarly, `$of_type` can have practical utility in general expressions,
+although it’s mainly designed as support for declarations.
 
-The `$invoked` pseudo keyword used above is an example of a keyword that instead is
-designed primarily for use in expressions.
+The `$as` pseudo keyword, and the `$invoked` pseudo keyword used above, are examples
+of keywords that instead primarily are designed for use in expressions.
 
 ### `$invoked`
 

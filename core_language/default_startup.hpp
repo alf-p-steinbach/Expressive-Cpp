@@ -4,25 +4,24 @@
 
 #include <p/expressive/core_language/basic_type_builders.hpp>   // expressive::ref_
 #include <p/expressive/core_language/Exit_code.hpp>             // expressive::Exit_code
+#include <p/expressive/pseudo_keywords/support_machinery.hpp>   // $pick
 
 #include <stdio.h>              // fflush, fprintf, stderr
 #include <functional>           // std::function
 #include <locale.h>             // setlocale, LC_ALL
+#include <locale>               // std::(locale::*)
 #include <stdexcept>            // std::(exception, runtime_error)
 
 namespace progrock{ namespace expressive {
 #include <p/expressive/pseudo_keywords/begin_region.hpp>
     inline namespace core {
         $use_from( std,
-            exception, function, runtime_error
+            exception, function, locale, runtime_error, system_error
             );
-
-        using Main_func = $p();
-        using Fatal_error_handler = $p( ref_<const exception> );
 
         inline $p dummy_main_func() {}
 
-        inline $p default_fatal_error_handler( ref_<const exception> x )
+        inline $p report_exception( ref_<const exception> x )
         {
             fprintf( stderr, "\n! %s\n", x.what() );
             fflush( stderr );       // It's here that failure may be discovered.
@@ -30,24 +29,36 @@ namespace progrock{ namespace expressive {
         }
 
         inline $f default_startup(
-            const function<Main_func>           main_func       = dummy_main_func,
-            const function<Fatal_error_handler> on_fatal_error  = default_fatal_error_handler
+            const ptr_<$p()>                        main_func       = dummy_main_func,
+            const ptr_<$p( ref_<const exception> )> on_fatal_error  = report_exception
             ) -> int
         {
-            setlocale( LC_ALL, "" );
+            // With g++ setlocale() isn't guaranteed called by the C++ level locale handling.
+            // This call is necessary for e.g. wide streams. "" is the user's natural locale.
+            setlocale( LC_ALL, "" );            // C level global locale.
+            locale::global( locale( "" ) );     // C++ level global locale.
             try
             {
-                main_func();
+                main_func();                    // The app's C++ level main function.
                 return Exit_code::success;
             }
             catch( exception const& x )
             {
                 on_fatal_error( x );
             }
+            catch( system_error const& x )
+            {
+                // TODO: also retrieve and report error code.
+                on_fatal_error( x );
+            }
             catch( Exit_code::Enum const code )
             {
-                on_fatal_error( runtime_error( "Fatal error (cppx::Exit_code)" ) );
-                return code == Exit_code::success? Exit_code::failure : code;
+                on_fatal_error( runtime_error( "Fatal error ($e::Exit_code)" ) );
+                return $pick
+                    $when code == Exit_code::success $use   // success == 0 == unknown.
+                        Exit_code::failure
+                    $else_use
+                        code;
             }
             catch( ... )
             {
