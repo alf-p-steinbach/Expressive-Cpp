@@ -37,6 +37,24 @@
 Expressive C++ implements a more convenient, more readable-for-non-C++-expert-folks
 and less unsafe dialect of C++.
 
+The author feels that trivial stuff that's trivially easy to express in some other
+languages, should also be trivially easy to express in C++.
+
+For example, a beginner’s program that asks for the user’s name and presents a
+greeting incorporating that name, should not be difficult, and should not require
+more than a few lines of code. It should work for e.g. names
+with Norwegian characters, by default. And so part of Expressive C++ is about
+transparent configuration of more **reasonable defaults**, such as console i/o that
+works for international text.
+
+And for example, a beginner’s program that uses some simple formula to compute the
+expected future foreign debt of the USA, to a ridiculous precision of pennies, should
+not be difficult, and should not require more than a few lines of code. For this
+Expressive C++ provides (or will provide) **practical basic types**. The work on
+basic types is just barely started, but it’s very much part of the aim of the
+library: it’s necessary to have those types there, always available, in order to make
+it trivial to express the common stuff that’s trivial in other languages.
+
 Example of ordinary generally **useful functions**: you can express a loop over
 indexed collection items as
 ```c++
