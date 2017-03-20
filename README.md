@@ -322,7 +322,7 @@ copying the vector data – it’s just moved. C++ does *not* extend the lifetim
 temporary from the `collatz()` call to cover the full loop execution, so do take
 care for such calls in raw C++! But the `enumerated` function
 uses the Expressive C++ facility `Copy_or_ref_` to deal with a temporary argument,
-and makes a safe logical copy of that temporary &ndash; here very efficiently by
+and makes a safe logical copy of that temporary, here very efficiently by
 just `std::move`-ing the vector.
 
 As an example where the keywords combine with underlying pure C++ machinery,
