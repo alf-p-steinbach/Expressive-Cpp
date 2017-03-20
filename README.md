@@ -251,13 +251,13 @@ Flavor example, with the header inclusion expressed in code:
 
 #include <vector>
 #include <iostream>
-$use_weakly_all_from( std );
+using namespace std;
 
 $f collatz( const int n )
     -> vector<int>
 {
     vector<int> result;
-    int x = n;
+    $var x = n;
     $loop
     {
         result.push_back( x );
@@ -277,26 +277,35 @@ $just
     cout << "." << endl;
 }
 ```
+Output:
+
+<blockquote><pre>
+42, 21, 64, 32, 16, 8, 4, 2, 1.
+</pre></blockquote>
+
+The *use_weakly_all.hpp* header includes the *all.hpp* header and adds a
+`using namespace` directive for `$e`, that is, for namespace 
+`progrock::expressive`;
+
 The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros.
 
-Here
-- the *use_weakly_all.hpp* header includes the *all.hpp* header and adds a
-`using namespace` directive for `$e`, that is, for namespace 
-`progrock::expressive`;
-- `$use_weakly_all_from` expands to `using namespace` and is there mostly for
-consistency of notation, including consistency with the *use_weakly_all.hpp*
-header name, but also to provide a self-descriptive statement;
 -  `$f`, short for
-*`function`*, denotes a trailing return type function definition that’s intended to
-be non-`void`;
+*function*, denotes a trailing return type function definition that’s intended to
+be non-`void` (there’s also `$p`, short for *procedure*, for `void` functions);
+- `$var`, short for *variable*, just as in e.g. Javascript and C#, declares a
+variable of the decayed type of the initializer (there’s also `$let` to declare a
+constant, and `$alias` and `$const_view` to declare references);
+- `$loop` provides a simple loop construct with no continuation condition, which
+is very useful for the common &ldquo;loop-and-a-half&rdquo; case illustrated by
+this code;
+- the construct with `$pick`, `$when`, `$use` and `$else_use` selects the first
+expression whose `$when` condition is satisfied, without evaluating the other
+expressions;
 - the `$just` keyword generates a safe standard C++ `main`
 function, discussed in he next subsection;
-- `$loop`, `$each` and `$in` expand to the more cryptic raw C++
-&ldquo;`for(;;)`&rdquo;, &ldquo;`auto const&`&rdquo; and &ldquo;`:`&rdquo;;
-- the construct
-with `$pick`, `$when`, `$use` and `$else_use` expands to use of the ternary
-choice operator `:?`; and, finally,
+-  `$each` and `$in` are just syntactic sugar for readability, expanding to the
+more cryptic raw C++ &ldquo;`auto const&`&rdquo; and &ldquo;`:`&rdquo;; and finally
 - `not` is just standard C++, in spite of being readable.
 
 Expressive C++ also offers some stuff implemented with ordinary C++ code, using C++
