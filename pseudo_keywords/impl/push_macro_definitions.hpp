@@ -60,6 +60,12 @@
 #pragma push_macro( "$n_times" )
 #pragma push_macro( "$hopefully" )
 #pragma push_macro( "$fail" )
+#pragma push_macro( "$_with" )
+#pragma push_macro( "$with" )
+#pragma push_macro( "$_with_var" )
+#pragma push_macro( "$with_var" )
+#pragma push_macro( "$_with_let" )
+#pragma push_macro( "$with_let" )
 
 //--------------------------------------- Startup:
 #pragma push_macro( "$start_with" )

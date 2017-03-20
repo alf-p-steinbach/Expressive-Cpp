@@ -14,6 +14,7 @@
 
 #include <p/expressive/impl/support_for_select_expr.hpp>        // $pick
 #include <p/expressive/impl/support_for_invoked_with_stm_.hpp>  // $invoked_with
+#include <p/expressive/impl/support_for_with_xxx_stm.hpp>       // $with...
 
 #include <p/expressive/library_extension/Range_.hpp>            // $n_times
 
@@ -21,5 +22,5 @@
 #include <p/expressive/macros/EXPRESSIVE_NORETURN.hpp>          // $noreturn
 #include <p/expressive/macros/EXPRESSIVE_STATIC_ASSERT.hpp>     // $static_assert
 
+#include <array>            // std::array                      for $with_var
 #include <type_traits>      // std::(decay_t, is_same, is_*)   for $of_type & $is
-#include <utility>          // std::enable_if_t                for $enabled_if
