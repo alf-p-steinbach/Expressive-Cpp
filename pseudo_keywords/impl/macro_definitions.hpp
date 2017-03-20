@@ -132,16 +132,16 @@
         )
 #
 #   // RAII support:
-#   define $_with( loopvar_name, initializer ) \
+#   define $_with_helper( loopvar_name, initializer ) \
         for( \
             $e::impl::Object_holder_for_with_<decltype(initializer)> loopvar_name{initializer, true}; \
             loopvar_name.is_first_iteration; \
             loopvar_name.is_first_iteration = false \
             )
 #   define $with( initializer ) \
-        $_with( $unique_temp_name, initializer )
+        $_with_helper( $unique_temp_name, initializer )
 #
-#   define $_with_var( loopvar_name, name, initializer ) \
+#   define $_with_var_helper( loopvar_name, name, initializer ) \
         for( \
             $e::impl::Object_holder_for_with_<decltype(initializer)> loopvar_name{initializer, true}; \
             loopvar_name.is_first_iteration; \
@@ -149,9 +149,9 @@
             ) \
             for( $each_object name $in loopvar_name )
 #   define $with_var( name, initializer ) \
-        $_with_var( $unique_temp_name, name, initializer )
+        $_with_var_helper( $unique_temp_name, name, initializer )
 #
-#   define $_with_let( loopvar_name, name, initializer ) \
+#   define $_with_let_helper( loopvar_name, name, initializer ) \
         for( \
             $e::impl::Object_holder_for_with_<decltype(initializer)> loopvar_name{initializer, true}; \
             loopvar_name.is_first_iteration; \
@@ -159,7 +159,7 @@
             ) \
             for( $each name $in loopvar_name )
 #   define $with_let( name, initializer ) \
-        $_with_let( $unique_temp_name, name, initializer )
+        $_with_let_helper( $unique_temp_name, name, initializer )
 
 //--------------------------------------- Startup:
 //

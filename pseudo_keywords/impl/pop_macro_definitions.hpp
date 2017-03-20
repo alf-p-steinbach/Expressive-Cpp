@@ -60,11 +60,11 @@
 #pragma pop_macro( "$n_times" )
 #pragma pop_macro( "$hopefully" )
 #pragma pop_macro( "$fail" )
-#pragma pop_macro( "$_with" )
+#pragma pop_macro( "$_with_helper" )
 #pragma pop_macro( "$with" )
-#pragma pop_macro( "$_with_var" )
+#pragma pop_macro( "$_with_var_helper" )
 #pragma pop_macro( "$with_var" )
-#pragma pop_macro( "$_with_let" )
+#pragma pop_macro( "$_with_let_helper" )
 #pragma pop_macro( "$with_let" )
 
 //--------------------------------------- Startup:
