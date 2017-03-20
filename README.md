@@ -380,13 +380,13 @@ inline $f default_startup(
         main_func();                    // The app's C++ level main function.
         return Exit_code::success;
     }
-    catch( exception const& x )
-    {
-        on_fatal_error( x );
-    }
     catch( system_error const& x )
     {
         // TODO: also retrieve and report error code.
+        on_fatal_error( x );
+    }
+    catch( exception const& x )
+    {
         on_fatal_error( x );
     }
     catch( Exit_code::Enum const code )
