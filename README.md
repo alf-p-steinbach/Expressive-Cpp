@@ -285,7 +285,7 @@ Output:
 
 The *use_weakly_all.hpp* header includes the *all.hpp* header and adds a
 `using namespace` directive for `$e`, that is, for namespace 
-`progrock::expressive`;
+`progrock::expressive`.
 
 The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros.
@@ -300,8 +300,7 @@ constant, and `$alias` and `$const_view` to declare references);
 is very useful for the common &ldquo;loop-and-a-half&rdquo; case illustrated by
 this code;
 - the construct with `$pick`, `$when`, `$use` and `$else_use` selects the first
-expression whose `$when` condition is satisfied, without evaluating the other
-expressions;
+expression whose `$when` condition is satisfied (or the `$else_use` expression), without evaluating the other expressions;
 - the `$just` keyword generates a safe standard C++ `main`
 function, discussed in he next subsection;
 -  `$each` and `$in` are just syntactic sugar for readability, expanding to the
