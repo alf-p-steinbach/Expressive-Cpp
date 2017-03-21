@@ -302,7 +302,7 @@ this code;
 - the construct with `$pick`, `$when`, `$use` and `$else_use` selects the first
 expression whose `$when` condition is satisfied (or the `$else_use` expression), without evaluating the other expressions;
 - the `$just` keyword generates a safe standard C++ `main`
-function, discussed in he next subsection;
+function, discussed in the next subsection;
 -  `$each` and `$in` are just syntactic sugar for readability, expanding to the
 more cryptic raw C++ &ldquo;`auto const&`&rdquo; and &ldquo;`:`&rdquo;; and finally
 - `not` is just standard C++, in spite of being readable.
