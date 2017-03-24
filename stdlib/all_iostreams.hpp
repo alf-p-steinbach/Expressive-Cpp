@@ -6,3 +6,5 @@
 #include <iostream>         // std::(cin, cout, cerr, clog, & friends)
 #include <fstream>          // std::(ifstream, ofstream)
 #include <sstream>          // std::(istringstream & friends)
+
+// Deprecated compatibility header <strstream> is intentionally not included.

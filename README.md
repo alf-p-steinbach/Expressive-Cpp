@@ -1042,7 +1042,7 @@ struct Lockable_string { string s; mutex m; };
 
 $p appender(
     ref_<Lockable_string>       ls,
-    ref_<const Range_<char>>    chars
+    ref_<const Int_range_<char>>    chars
     )
 {
     for( $each ch $in chars )

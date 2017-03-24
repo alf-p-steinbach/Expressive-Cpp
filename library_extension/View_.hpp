@@ -25,8 +25,8 @@ namespace progrock{ namespace expressive{
             Iterator        beyond_;
 
         public:
-            $f first() const     -> Iterator     { return first_; }
-            $f beyond() const    -> Iterator     { return beyond_; }
+            $f it_first() const  -> Iterator     { return first_; }
+            $f it_beyond() const -> Iterator     { return beyond_; }
 
             $f begin() const     -> Iterator     { return first_; }
             $f end() const       -> Iterator     { return beyond_; }

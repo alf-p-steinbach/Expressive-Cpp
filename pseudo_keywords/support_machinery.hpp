@@ -16,7 +16,7 @@
 #include <p/expressive/impl/support_for_invoked_with_stm_.hpp>  // $invoked_with
 #include <p/expressive/impl/support_for_with_xxx_stm.hpp>       // $with...
 
-#include <p/expressive/library_extension/Range_.hpp>            // $n_times
+#include <p/expressive/library_extension/Int_range_.hpp>            // $n_times
 
 #include <p/expressive/macros/EXPRESSIVE_FUNCNAME.hpp>          // $funcname & $fail
 #include <p/expressive/macros/EXPRESSIVE_NORETURN.hpp>          // $noreturn

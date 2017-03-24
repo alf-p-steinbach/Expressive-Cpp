@@ -131,7 +131,7 @@
         $as<std::string>( $funcname ), __VA_ARGS__          \
         )
 #
-#   // RAII support:
+#   // RAII support (can probably be improved with C++17 loop conditions):
 #   define $_with_helper( loopvar_name, initializer ) \
         for( \
             $e::impl::Object_holder_for_with_<decltype(initializer)> loopvar_name{initializer, true}; \
