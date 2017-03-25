@@ -6,7 +6,6 @@
 #include <p/expressive/core_language/basic_type_builders.hpp>   // (ptr_, ref_)
 
 #include <type_traits>      // std::(is_signed, make_unsigned_t, make_signed_t)
-#include <stdlib.h>         // abs(Int)
 
 namespace progrock{ namespace expressive{
 #include <p/expressive/pseudo_keywords/begin_region.hpp>
@@ -52,7 +51,7 @@ namespace progrock{ namespace expressive{
         public:
             constexpr $f length() const
                 -> Size
-            { return abs( beyond_ - first_ ); }
+            { return 1 + max_value() - min_value(); }
 
             constexpr $f first() const
                 -> Integer
