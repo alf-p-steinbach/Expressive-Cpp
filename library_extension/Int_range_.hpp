@@ -74,7 +74,7 @@ namespace progrock{ namespace expressive{
             { return $pick $when is_reversed $use first() $else_use last(); }
 
             template< class Number >
-            constexpr $f contains( Number const x )
+            constexpr $f contains( Number const x ) const
                 -> bool
             {
                 return ($pick

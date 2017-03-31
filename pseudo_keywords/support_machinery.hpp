@@ -9,9 +9,6 @@
 //
 // Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
-#include <p/expressive/core_language/hopefully_and_fail.hpp>    // $fail
-#include <p/expressive/core_language/default_startup.hpp>       // $start_with
-
 #include <p/expressive/impl/support_for_select_expr.hpp>        // $pick
 #include <p/expressive/impl/support_for_invoked_with_stm_.hpp>  // $invoked_with
 #include <p/expressive/impl/support_for_with_xxx_stm.hpp>       // $with...
@@ -24,3 +21,8 @@
 
 #include <array>            // std::array                      for $with_var
 #include <type_traits>      // std::(decay_t, is_same, is_*)   for $of_type & $is
+
+
+// Last because they can use general C++ things defined in the above:
+#include <p/expressive/core_language/hopefully_and_fail.hpp>    // $fail
+#include <p/expressive/core_language/default_startup.hpp>       // $start_with

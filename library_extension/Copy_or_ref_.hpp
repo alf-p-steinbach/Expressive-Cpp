@@ -6,7 +6,8 @@
 
 #include <new>          // ::operator new(void*)
 #include <stddef.h>     // std::size_t
-#include <utility>      // std::move
+#include <type_traits>  // std::is_reference
+#include <utility>      // std::(move, enable_if_t)
 
 namespace progrock{ namespace expressive{
 #include <p/expressive/pseudo_keywords/begin_region.hpp>
@@ -19,9 +20,11 @@ namespace progrock{ namespace expressive{
     }  // namespace impl
 
     inline namespace libx {
-        $use_from( std, move );
+        $use_from( std, move, enable_if_t );
 
-        template< class Type >
+        template< class Type
+            , $enabled_if<not $is( _reference, Type )>
+            >
         class Copy_or_ref_
         {
         private:

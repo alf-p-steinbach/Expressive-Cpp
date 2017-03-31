@@ -10,11 +10,12 @@
 #include <p/expressive/library_extension/Is_string_class_.hpp>      // Is_string_class_
 #include <p/expressive/library_extension/length_of.hpp>             // length_of
 #include <p/expressive/library_extension/n_items_in.hpp>            // n_items_in
+#include <p/expressive/library_extension/Multidimensional_view_.hpp>// Multidimensional_view_, md_view
 #include <p/expressive/library_extension/No_copy.hpp>               // No_copy
 #include <p/expressive/library_extension/No_move.hpp>               // No_move
 #include <p/expressive/library_extension/No_copy_or_move.hpp>       // No_copy_or_move
 #include <p/expressive/library_extension/Non_instantiable.h>        // Non_instantiable
-#include <p/expressive/library_extension/Int_range_.hpp>                // (Int_range_, range, up_to, n_items_in<Int_range_>)
+#include <p/expressive/library_extension/Int_range_.hpp>            // (Int_range_, range, up_to, n_items_in<Int_range_>)
 #include <p/expressive/library_extension/string_builders.hpp>       // operator<<
 #include <p/expressive/library_extension/to_.hpp>                   // to_
 #include <p/expressive/library_extension/Type_.hpp>                 // Type_
