@@ -54,6 +54,7 @@
 #   define $const_view              auto const&
 #
 #   define $f                       auto        // Function (intended to have expr. result)
+#   define $f_inferred              auto        // A $f with inferred return type.
 #   define $p                       void        // Procedure (void function)
 #
 #   define $simple_pure_f           constexpr $f
@@ -62,6 +63,8 @@
 
 //--------------------------------------- Expressions:
 //
+#   define $a                           $e::as_array
+#
 #   define $lambda_using( ... )         [__VA_ARGS__]
 #   define $byref( object )             &object
 #   define $byval( object )             object

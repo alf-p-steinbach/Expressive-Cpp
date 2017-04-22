@@ -16,7 +16,7 @@ namespace progrock{ namespace expressive {
         );
 
         template< class Item, class... Args >
-        $f wrapped_array_of_(
+        $f as_array_of_(
             forwarding_ref_<Args>...    args
             ) -> array<Item, sizeof...( Args )>
         {
@@ -25,13 +25,13 @@ namespace progrock{ namespace expressive {
         }
 
         template< class First_arg, class... Rest_of_args >
-        auto wrapped_array(
+        $f_inferred as_array(
             forwarding_ref_<First_arg>          arg_1,
             forwarding_ref_<Rest_of_args>...    rest_of_args
             ) // -> deduced return type
         {
             using Item = decay_t<First_arg>;
-            return wrapped_array_of_<Item>(
+            return as_array_of_<Item>(
                 forward<First_arg>( arg_1 ), forward<Rest_of_args>( rest_of_args )...
                 );
         }
@@ -40,7 +40,7 @@ namespace progrock{ namespace expressive {
         // This relies on a logical necessity that a `std::array` has its raw array
         // data member as its first data member.
         template< class Item, size_t n >
-        auto wrapped_array( ref_<raw_array_of_<n, Item>> arg )
+        $f as_array( ref_<raw_array_of_<n, Item>> arg )
             -> array<remove_const_t<Item>, n>
         {
             using Assumed_layout = const array<remove_const_t<Item>, n>;

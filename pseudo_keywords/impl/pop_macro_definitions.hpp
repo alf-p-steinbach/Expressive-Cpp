@@ -17,11 +17,13 @@
 #pragma pop_macro( "$alias" )
 #pragma pop_macro( "$const_view" )
 #pragma pop_macro( "$f" )
+#pragma pop_macro( "$f_inferred" )
 #pragma pop_macro( "$p" )
 #pragma pop_macro( "$simple_pure_f" )
 #pragma pop_macro( "$compile_time" )
 
 //--------------------------------------- Expressions:
+#pragma pop_macro( "$a" )
 #pragma pop_macro( "$lambda_using" )
 #pragma pop_macro( "$byref" )
 #pragma pop_macro( "$byval" )

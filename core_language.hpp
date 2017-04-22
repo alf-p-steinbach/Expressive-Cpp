@@ -12,7 +12,7 @@
 #include <p/expressive/core_language/no_more_used.hpp>          // no_more_used, std::(move, forward)
 #include <p/expressive/core_language/ref_to.hpp>                // ref_to
 #include <p/expressive/core_language/string_literals.hpp>       // std::literals::string_literals::*
-#include <p/expressive/core_language/wrapped_array.hpp>         // wrapped_array, wrapped_array_of_
+#include <p/expressive/core_language/as_array.hpp>         // as_array, as_array_of_
 
 #include <string>           // std::literals::string_literals::*
 

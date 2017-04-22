@@ -18,7 +18,7 @@
     - [`$let` and `$var`](#let-and-var)
     - [`$no_move`](#no_move)
     - [`$alias` and `$const_view`](#alias-and-const_view)
-    - [`wrapped_array` and `wrapped_array_of_`](#wrapped_array-and-wrapped_array_of_)
+    - [`as_array` and `as_array_of_`](#as_array-and-as_array_of_)
   - [Expressions](#expressions)
     - [`$invoked`](#invoked)
     - [`$invoked_with`](#invoked_with)
@@ -846,7 +846,7 @@ is grokkable&hellip;
 For a string literal as initializer a `const_view` would produce the same as a
 basic `$alias`, since a string literal already is `const`, so I just omitted that.
 
-### `wrapped_array` and `wrapped_array_of_`
+### `as_array` and `as_array_of_`
 
 With C++11 `auto&`, as in Expressive C++
 `$alias`, an array size is inferred, and one doesn’t have to do &ldquo;clever&rdquo;
@@ -910,15 +910,15 @@ single item array reduces to the `std::decay_t` of the type of the single
 initializer.
 
 The Expressive C++ support increases clarity relative to `std::make_array` by simply
-*naming* both the inferred type and explicit type cases, **`wrapped_array`** versus
-**`wrapped_array_of_`**, so that there’s no need for a maintainer to figure out what
+*naming* both the inferred type and explicit type cases, **`as_array`** versus
+**`as_array_of_`**, so that there’s no need for a maintainer to figure out what
 a `void` item type means, or for an original developer to figure out what to write
-for that case. And `wrapped_array` increases programmer control of the resulting
+for that case. And `as_array` increases programmer control of the resulting
 array item type by using a very simple, grokkable item type deduction. Namely,
 
 * the `std::decay_t` of the first initializer, except
 * when there is only a single item initializer that itself is of array type, in
-  which case `wrapped_array` just creates a copy of that array.
+  which case `as_array` just creates a copy of that array.
 
 Thus the C++03 example can be expressed as the slightly shorter and slightly more
 clear
@@ -928,7 +928,7 @@ using namespace std;
 
 $just
 {
-    $var array = wrapped_array( "Hm!" );    // Initialization with inferred array size.
+    $var array = as_array( "Hm!" );    // Initialization with inferred array size.
     
     array[1] = 'a';
     cout << "A string of " << array.size() - 1 << " characters: ";
@@ -944,7 +944,7 @@ using namespace std;
 
 $just
 {
-    $var array = wrapped_array( 3, 1, 4, 1, 5, 9, 6, 5, 3, 5, 8, 9, 7, 9, 3 );
+    $var array = as_array( 3, 1, 4, 1, 5, 9, 6, 5, 3, 5, 8, 9, 7, 9, 3 );
     sort_items_of( array );
     cout << "The first " << array.size() << " digits of pi in sorted order:";
     for( $each digit $in array ) { cout << " " << digit; }
@@ -961,7 +961,7 @@ The first 15 digits of pi in sorted order: 1 1 3 3 3 4 5 5 5 6 7 8 9 9 9.
 
 ## Expressions
 
-A `wrapped_array` can of course also be used in ordinary expressions, e.g.
+A `as_array` can of course also be used in ordinary expressions, e.g.
 ```c++
 #include <iostream>
 $use_weakly_all_from( std );
@@ -974,7 +974,7 @@ $just
         cin >> x or fail( "Sorry, ungood input..." );
         return x;
         };
-    cout << wrapped_array( "Wrong.", "Right!" )[number == 42] << "\n";
+    cout << as_array( "Wrong.", "Right!" )[number == 42] << "\n";
 }
 ```
 And similarly, `$of_type` can have practical utility in general expressions,

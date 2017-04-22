@@ -7,33 +7,56 @@
 #include <p/expressive/library_extension/Copy_or_ref_.hpp>          // Copy_or_ref_
 #include <p/expressive/library_extension/Collection_traits_.hpp>    // Collection_traits_
 
-#include <initializer_list>	// std::initializer_list
+#include <initializer_list> // std::initializer_list
 #include <iterator>         // std::(begin, end)
-#include <utility>          // std::forward
+#include <utility>          // std::(forward, move)
+#include <tuple>            // std::tuple
 #include <type_traits>      // std::remove_reference_t
 
 namespace progrock{ namespace expressive{
 #include <p/expressive/pseudo_keywords/begin_region.hpp>
     inline namespace libx {
         $use_from( std,
-            begin, end, forward, initializer_list, remove_reference_t
+            begin, end, forward, initializer_list, move, remove_reference_t, tuple
             );
 
         template< class... Collections >
         class Multidimensional_view_
         {
+        private:
+            //tuple< Copy_or_ref_<Collections>... >   collections_;
+
         public:
-            Multidimensional_view_( Collections const&... )
-            {}
+            Multidimensional_view_() = default;     // TODO: remove
+
+            //Multidimensional_view_( Copy_or_ref_<Collections>... c )
+            //    : collections_( move( c )... )
+            //{}
         };
 
-        template< class... Collections >
-        inline $f make_multidimensional_view( ref_<const Collections>...  c )
-            -> Multidimensional_view_< Collections... >
-        { return Multidimensional_view_< Collections... >{ c... }; }
+        template<>
+        class Multidimensional_view_<void>
+        {};
+
+        //template< class... Collections_1, class... Collections_2 >
+        //inline $f operator*(
+        //    temp_ref_<Multidimensional_view_<Collections_1...>>     mv_1,
+        //    temp_ref_<Multidimensional_view_<Collections_2...>>     mv_2
+        //    ) -> Multidimensional_view_<Collections_1..., Collections_2...>
+        //{ (void) mv_1; (void) mv_2; return {}; }
 
         template< class... Collections >
-        inline auto multi( ref_<Collections>...  c )
+        inline $f make_multidimensional_view( ref_<const Collections>... )
+            -> Multidimensional_view_< Collections... >
+        //{ return Multidimensional_view_< Collections... >( c... ); }
+        { ; return {}; }  // TODO:
+
+        inline $f multi()
+            -> Multidimensional_view_<void>
+        { return {}; }
+
+        template< class... Collections >
+        inline auto multi( ref_<const Collections>...  c )
         { return make_multidimensional_view( c... ); }
 
         template< class Value >                                                 // i
