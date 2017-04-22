@@ -23,7 +23,7 @@
     - [`$invoked`](#invoked)
     - [`$invoked_with`](#invoked_with)
   - [Functions](#functions)
-    - [`$p`, `$f` and `$lambda`](#p-f-and-lambda)
+    - [`$proc`, `$func` and `$lambda`](#p-f-and-lambda)
     - [Historical reasons for the raw C++ terminology versus notation mismatch](#historical-reasons-for-the-raw-c-terminology-versus-notation-mismatch)
     - [`$simple_pure_f` and `$compile_time`](#simple_pure_f-and-compile_time)
 - [Technical details](#technical-details)
@@ -107,13 +107,13 @@ many meanings). An expert who wonders about the exact definition can just hover
 the mouse over any such keyword: they’re quickly learned.
 
 The most important four syntactic sugar macros are
-* `$f` and `$p` to declare functions and procedures (`void` functions), and
+* `$func` and `$proc` to declare functions and procedures (`void` functions), and
 * `$let` and `$var`, to declare constants and variables.
 
 > As of late Feb 2017:  
 General: `$e`, `$static_assert`, `$funcname`, `$noreturn`.
 Expressions: `$invoked`, `$of_type`, `$as`, `$pick`, `$when`, `$use`, `$else_use`, `$self`, `$lambda_using`, `$byref`, `$byval`, `$capture_byref`, `$capture_byval`, `$lambda`, `$lambda_using_references`, `$lambda_using_values`.
-Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$alias`, `$const_view`, `$f`, `$p`, `$simple_pure_f`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
+Declarations & namespaces: `$invoked_with`, `$unique_temp_name`, `$let`, `$var`, `$alias`, `$const_view`, `$func`, `$proc`, `$simple_pure_f`,`$compile_time`, `$use_weakly_all_from`, `$use_nested_in`, `$use_from`.
 Templates: `$enabled_if`, `$is`.
 Flow control: `$repeat`, `$until`, `$each_value`, `$each_object`, `$each`, `$in`, `$n_times`, `$hopefully`, `$fail`.
 Startup: `$start_with`, `$start_with_ascii_arguments`, `$just`.
@@ -193,7 +193,7 @@ header **`<p/expressive/all.hpp>`** includes everything. It’s defined as
 
 #include <p/expressive/core_language.hpp>               // expressive::core::*
 #include <p/expressive/library_extension.hpp>           // expressive::libx::*
-#include <p/expressive/pseudo_keywords/definitions.hpp> // macros, e.g. `$p`.
+#include <p/expressive/pseudo_keywords/definitions.hpp> // macros, e.g. `$proc`.
 ```
 The **`core`** inline namespace contains stuff that directly fixes or augments the
 core language. For example, one of the headers included by *core_language.hpp*
@@ -253,7 +253,7 @@ Flavor example, with the header inclusion expressed in code:
 #include <iostream>
 using namespace std;
 
-$f collatz( const int n )
+$func collatz( const int n )
     -> vector<int>
 {
     vector<int> result;
@@ -290,9 +290,9 @@ The *use_weakly_all.hpp* header includes the *all.hpp* header and adds a
 The **`$`** words are pseudo keywords, keywords for the Expressive C++ dialect,
 implemented as macros.
 
--  `$f`, short for
+-  `$func`, short for
 *function*, denotes a trailing return type function definition that’s intended to
-be non-`void` (there’s also `$p`, short for *procedure*, for `void` functions);
+be non-`void` (there’s also `$proc`, short for *procedure*, for `void` functions);
 - `$var`, short for *variable*, just as in e.g. Javascript and C#, declares a
 variable of the decayed type of the initializer (there’s also `$let` to declare a
 constant, and `$alias` and `$const_view` to declare references);
@@ -356,18 +356,18 @@ executes `setlocale( LC_ALL, "" )` and then invokes your statement block in
 a context where exceptions are caught and presented on the standard error
 stream, using the following code or a later improvement of it:
 ``` c++
-inline $p dummy_main_func() {}
+inline $proc dummy_main_func() {}
 
-inline $p report_exception( ref_<const exception> x )
+inline $proc report_exception( ref_<const exception> x )
 {
     fprintf( stderr, "\n! %s\n", x.what() );
     fflush( stderr );       // It's here that failure may be discovered.
     if( ferror( stderr ) ) { throw x; }
 }
 
-inline $f default_startup(
-    const ptr_<$p()>                        main_func       = dummy_main_func,
-    const ptr_<$p( ref_<const exception> )> on_fatal_error  = report_exception
+inline $func default_startup(
+    const ptr_<$proc()>                        main_func       = dummy_main_func,
+    const ptr_<$proc( ref_<const exception> )> on_fatal_error  = report_exception
     ) -> int
 {
     // With g++ setlocale() isn't guaranteed called by the C++ level locale handling.
@@ -467,7 +467,7 @@ called `$start_with`. Here’s an example:
 #include <string>           // std::string
 $use_weakly_all_from( std );
 
-$p cpp_main( ref_<const vector<string>> args )
+$proc cpp_main( ref_<const vector<string>> args )
 {
     for( $each arg $in enumerated( args ) )
         cout << "Arg " << arg.index() << " is ’" << arg.object() << "’.\n";
@@ -500,13 +500,13 @@ used by `$just` and `$start_with_ascii_arguments`), like this:
 #include <iostream>
 $use_weakly_all_from( std );
 
-$p my_fatal_error_handler( ref_<const exception> x )
+$proc my_fatal_error_handler( ref_<const exception> x )
 {
     // E.g. present the `x.what()` message in a GUI message box. But for now:
     cerr << "?%¤#\"!$! Something ungood happened: " << x.what() << endl;
 }
 
-$p compute_something_difficult()
+$proc compute_something_difficult()
 {
     // Here could be some computation, e.g. parsing a file, that could fail.
     $fail( "Oh my, something was not as expected." );   // Throws an exception.
@@ -1040,7 +1040,7 @@ $use_weakly_all_from( std );
 
 struct Lockable_string { string s; mutex m; };
 
-$p appender(
+$proc appender(
     ref_<Lockable_string>       ls,
     ref_<const Int_range_<char>>    chars
     )
@@ -1073,7 +1073,7 @@ of `using` or not, in particular also if you only use the *all.hpp* header.
 
 ## Functions
 As motivation for distinguishing clearly between two kinds of functions,
-called `$p` (procedure) and `$f` (function) in Expressive C++, consider a
+called `$proc` (procedure) and `$func` (function) in Expressive C++, consider a
 system for managing an automated warehouse. It sometimes has to move things
 around, e.g. to make place for new items, or to optimize access patterns. So,
 guess what is the `empty` member function below, here expressed in raw C++14
@@ -1108,28 +1108,28 @@ out that `foo` returns `void`, and so must then also `empty`, which
 therefore certainly is a command to make empty, not a query to check for
 emptiness&hellip;
 
-### `$p`, `$f` and `$lambda`
+### `$proc`, `$func` and `$lambda`
 
-The Expressive C++ keywords `$p` and `$f`
+The Expressive C++ keywords `$proc` and `$func`
 are there to let you much more clearly communicate the *intended kind*
 of function declaration. No doubt about whether `empty` empties or checks. If
-it’s a `$p` then it empties, and if it’s a `$f`, then it checks.
+it’s a `$proc` then it empties, and if it’s a `$func`, then it checks.
 
 For the purpose of high level source code, as opposed to writing assembly
 code, is primarily to communicate the intended meaning *to human readers*.
 
-In addition to `$p` and `$f` the `$lambda` keyword denotes a main
+In addition to `$proc` and `$func` the `$lambda` keyword denotes a main
 category:
 
-* **`$p`** &ndash; *procedure*  
+* **`$proc`** &ndash; *procedure*  
    a.k.a. raw C++ `void`:  
    A function that does not produce an expression result value and is just
    meant to have some side effect, like a Pascal `procedure`. It’s a function
    with `void` result type. So, it can’t be used to produce a value (although
    it can appear to be used that way in a `return` expression), and since it’s
-   all about run-time side effects, even the simplest `$p` can’t be evaluated
+   all about run-time side effects, even the simplest `$proc` can’t be evaluated
    at compile time.
-* **`$f`** &ndash; *function*  
+* **`$func`** &ndash; *function*  
    a.k.a. raw C++ `auto`:  
    A function that’s *intended* to be one that produces an expression result
    value. It’s *intended* to have a non-`void` result that can be used in an
@@ -1142,18 +1142,18 @@ category:
    properties exemplified below). It can produce an expression result value, or
    not; by default it doesn’t.
 
-So, if you intend that a function should be a command, use `$p`. If you intend
+So, if you intend that a function should be a command, use `$proc`. If you intend
 instead that it should produce an expression result, whose type you will
-specify with `->`*`Type`* after the function head, use `$f`.
+specify with `->`*`Type`* after the function head, use `$func`.
 
 With this focus on distinction of function kinds also comes a natural different
-choice of names, with verbs for `$p` commands, and, often, expression result
-descriptions for the `$f` query functions:
+choice of names, with verbs for `$proc` commands, and, often, expression result
+descriptions for the `$func` query functions:
 ```C++
 struct Warehouse
 {
-    $p make_empty();
-    $f is_empty() const -> bool;
+    $proc make_empty();
+    $func is_empty() const -> bool;
 };
 ```
 Only if you really intend to have a C++14 automatically deduced return type, as
@@ -1196,23 +1196,23 @@ Behavior.
 So, after the de-unification in C++, somewhere around 1980, we now have
 
 * routines that do produce expression  result values and sometimes model
-  mathematical functions, called `function` in the Pascal language and `$f`
+  mathematical functions, called `function` in the Pascal language and `$func`
   in Expressive C++; and
 * the more purely action-oriented `void` routines that are unlike anything in
-  maths, called `procedure` in Pascal and `$p` in Expressive C++.
+  maths, called `procedure` in Pascal and `$proc` in Expressive C++.
 
 Raw C++ pays lip service to the original and early dropped C routine kind
 unification idea by *keeping the original unification terminology* with all
 routines referred to as &ldquo;functions&rdquo;, whether they produce
 expression values or not.
 
-While the `$p`, `$f` and `$lambda` pseudo-keywords more clearly express important
+While the `$proc`, `$func` and `$lambda` pseudo-keywords more clearly express important
 differences that have been toned down in the raw C++ syntax, as a group these
 keywords unify the other-wild-directions differences in the syntax. In raw C++ they
 correspond to respectively `void`, `auto` and `[&]`, which are a type, a non-type
 keyword, and an operator-like special syntax, which not only lack mnemonic value
 but in the case of `auto` is directly misleading, an opportunistic reuse, at cost,
-of a keyword used for something else entirely in original C. With `$p`, `$f` and
+of a keyword used for something else entirely in original C. With `$proc`, `$func` and
 `$lambda` a function declaration always starts with a pseudo-keyword that’s readable
 and indicates what it is about, what main kind of function it is.
 
@@ -1226,7 +1226,7 @@ with a size computed &ndash; at compile time &ndash; in some complex way.
 
 In Expressive C++ you can tell the compiler that a function is such a simple, pure
 function by using the **`$simple_pure_f`** keyword, expanding to raw C++ `constexpr
-auto`, instead of `$f`. If C++ at one point should gain support for more general pure
+auto`, instead of `$func`. If C++ at one point should gain support for more general pure
 functions then that may be reflected in Expressive C++ as a new keyword `$pure_f`.
 One main difference is that a simple pure function cannot have a `try`-block.
 
