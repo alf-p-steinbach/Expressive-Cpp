@@ -18,7 +18,7 @@ namespace progrock{ namespace expressive {
         $compile_time Index   max_index_value     = max_size_value;
 
         template< class Type >
-        $simple_pure_f n_bits_per_()
+        $simple_pure_func n_bits_per_()
             -> Size
         { return CHAR_BIT*sizeof( Type ); }
 

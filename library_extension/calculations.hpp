@@ -10,12 +10,12 @@ namespace progrock{ namespace expressive{
     inline namespace libx {
 
         template< class Number >
-        $simple_pure_f squared( const Number v )
+        $simple_pure_func squared( const Number v )
             -> Number
         { return v*v; }
 
         template< class Number = double >
-        $simple_pure_f int_positive_power(
+        $simple_pure_func int_positive_power(
             const double    base,
             const int       exp
             ) -> Number
@@ -30,7 +30,7 @@ namespace progrock{ namespace expressive{
         }
 
         template< class Number = double >
-        $simple_pure_f int_power(
+        $simple_pure_func int_power(
             const double    base,
             const int       exp
             ) -> Number

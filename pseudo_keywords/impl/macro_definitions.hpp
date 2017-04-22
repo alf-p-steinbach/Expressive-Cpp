@@ -53,11 +53,11 @@
 #   define $alias                   auto&
 #   define $const_view              auto const&
 #
-#   define $f                       auto        // Function (intended to have expr. result)
-#   define $f_inferred              auto        // A $f with inferred return type.
-#   define $p                       void        // Procedure (void function)
+#   define $func                       auto        // Function (intended to have expr. result)
+#   define $auto_result_func              auto        // A $func with inferred return type.
+#   define $proc                       void        // Procedure (void function)
 #
-#   define $simple_pure_f           constexpr $f
+#   define $simple_pure_func           constexpr $func
 #   define $compile_time            static constexpr
 #
 
@@ -173,7 +173,7 @@
 #   // To use `n_args` and `args` you can pass a lambda as macro argument.
 #   // The macro is variadic to allow specification of a fatal error handler.
 #   define $start_with( ... ) \
-        $f main( const int n_args, $e::raw_array_<$e::ptr_<char>> args ) \
+        $func main( const int n_args, $e::raw_array_<$e::ptr_<char>> args ) \
             -> int \
         { \
             (void) n_args; (void) args; \
@@ -191,6 +191,6 @@
 #   // A super-convenience wrapper, primarily for the really tiny C++ program,
 #   // used like `$just{ cout << "Hello!"; }`.
 #   define $just \
-        $p cpp_main(); $start_with( cpp_main ) $p cpp_main()
+        $proc cpp_main(); $start_with( cpp_main ) $proc cpp_main()
 
 #endif  // EXPRESSIVE_PSEUDO_KEYWORDS_MACRO_DEFINITIONS_HPP

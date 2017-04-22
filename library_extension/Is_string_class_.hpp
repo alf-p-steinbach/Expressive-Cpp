@@ -22,7 +22,7 @@ namespace progrock{ namespace expressive{
         };
 
         template< class Type >
-        $simple_pure_f is_string_class_()
+        $simple_pure_func is_string_class_()
             -> bool
         { return Is_string_class_<Type>::value; }
 

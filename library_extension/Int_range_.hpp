@@ -17,7 +17,7 @@ namespace progrock{ namespace expressive{
         struct Range_delta{ enum Enum: signed char { reverse = -1, forward = +1 }; };
 
         constexpr
-        inline $f minus( const Range_delta::Enum v )
+        inline $func minus( const Range_delta::Enum v )
             -> Range_delta::Enum
         { return $as<Range_delta::Enum>( -v ); }
 
@@ -49,32 +49,32 @@ namespace progrock{ namespace expressive{
             {}
 
         public:
-            constexpr $f length() const
+            constexpr $func length() const
                 -> Size
             { return 1 + max_value() - min_value(); }
 
-            constexpr $f first() const
+            constexpr $func first() const
                 -> Integer
             { return $as<Integer>( first_ ); }
 
-            constexpr $f last() const
+            constexpr $func last() const
                 -> Integer
             { return $as<Integer>( beyond_ - delta ); }
 
-            constexpr $f beyond() const
+            constexpr $func beyond() const
                 -> Integer
             { return $as<Integer>( beyond_ ); }
 
-            constexpr $f min_value() const
+            constexpr $func min_value() const
                 -> Integer
             { return $pick $when is_reversed $use last() $else_use first(); }
 
-            constexpr $f max_value() const
+            constexpr $func max_value() const
                 -> Integer
             { return $pick $when is_reversed $use first() $else_use last(); }
 
             template< class Number >
-            constexpr $f contains( Number const x ) const
+            constexpr $func contains( Number const x ) const
                 -> bool
             {
                 return ($pick
@@ -85,7 +85,7 @@ namespace progrock{ namespace expressive{
                     );
             }
 
-            constexpr $f is_empty() const
+            constexpr $func is_empty() const
                 -> bool
             { return first_ == beyond_; }
 
@@ -100,16 +100,16 @@ namespace progrock{ namespace expressive{
                 {}
 
             public:
-                $p advance() { value_ += static_cast<Unsigned>( delta ); }
+                $proc advance() { value_ += static_cast<Unsigned>( delta ); }
 
-                $f operator++()
+                $func operator++()
                     -> ref_<Iterator>
                 {
                     advance();
                     return *this;
                 }
 
-                $f operator++( int )
+                $func operator++( int )
                     -> Iterator
                 {
                     Iterator original{ *this };
@@ -117,30 +117,30 @@ namespace progrock{ namespace expressive{
                     return original;
                 }
 
-                $f operator*() const
+                $func operator*() const
                     -> Integer
                 { return $as<Integer>( value_ ); }
 
-                $f operator->() const
+                $func operator->() const
                     -> ptr_<const Integer>
                     = delete;
 
                 friend
-                $f operator==( ref_<const Iterator> a, ref_<const Iterator> b )
+                $func operator==( ref_<const Iterator> a, ref_<const Iterator> b )
                     -> bool
                 { return (a.value_ == b.value_); }
 
                 friend
-                $f operator!=( ref_<const Iterator> a, ref_<const Iterator> b )
+                $func operator!=( ref_<const Iterator> a, ref_<const Iterator> b )
                     -> bool
                 { return (a.value_ != b.value_); }
             };
 
-            $f it_first() const      -> Iterator { return Iterator{ first_ }; }
-            $f it_beyond() const     -> Iterator { return Iterator{ beyond_ }; }
+            $func it_first() const      -> Iterator { return Iterator{ first_ }; }
+            $func it_beyond() const     -> Iterator { return Iterator{ beyond_ }; }
 
-            $f begin() const         -> Iterator { return it_first(); }
-            $f end() const           -> Iterator { return it_beyond(); }
+            $func begin() const         -> Iterator { return it_first(); }
+            $func end() const           -> Iterator { return it_beyond(); }
 
             constexpr
             Int_range_( const Integer first, const Integer last )
@@ -162,33 +162,33 @@ namespace progrock{ namespace expressive{
         };
 
         template< class Int_a, class Int_b >
-        inline $f range( const Int_a first, const Int_b last )
+        inline $func range( const Int_a first, const Int_b last )
             -> Int_range_<decltype( first + last )>
         { return Int_range_<decltype( first + last )>{ first, last }; }
 
         template< class Int >
-        inline $f range( const Int first, const Int last )
+        inline $func range( const Int first, const Int last )
             -> Int_range_<Int>
         { return Int_range_<Int>{ first, last }; }
 
         template< class Integer = int >
-        inline $f up_to( const Integer beyond )
+        inline $func up_to( const Integer beyond )
             -> Int_range_<Integer>
         { return Int_range_<Integer>{ 0, beyond - 1 }; }
 
         template< class Integer = int >
-        inline $f down_from( const Integer beyond )
+        inline $func down_from( const Integer beyond )
             -> Int_range_<Integer, Range_delta::reverse>
         { return Int_range_<Integer, Range_delta::reverse>{ beyond - 1, 0 }; }
 
         template< class Integer = int, Range_delta::Enum delta >
-        inline $f reversed( ref_<const Int_range_<Integer, delta>> r )
+        inline $func reversed( ref_<const Int_range_<Integer, delta>> r )
             -> Int_range_<Integer, minus( delta )>
         { return {r.last(), r.first()}; }
 
         // Not quite natural, but for generality, e.g. in template code:
         template< class Integer >
-        inline $f n_items_in( ref_<const Int_range_<Integer>> range )
+        inline $func n_items_in( ref_<const Int_range_<Integer>> range )
             -> Size
         { return range.length(); }
 

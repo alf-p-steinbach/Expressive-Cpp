@@ -16,10 +16,10 @@
 #pragma push_macro( "$var" )
 #pragma push_macro( "$alias" )
 #pragma push_macro( "$const_view" )
-#pragma push_macro( "$f" )
-#pragma push_macro( "$f_inferred" )
-#pragma push_macro( "$p" )
-#pragma push_macro( "$simple_pure_f" )
+#pragma push_macro( "$func" )
+#pragma push_macro( "$auto_result_func" )
+#pragma push_macro( "$proc" )
+#pragma push_macro( "$simple_pure_func" )
 #pragma push_macro( "$compile_time" )
 
 //--------------------------------------- Expressions:

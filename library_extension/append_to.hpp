@@ -15,13 +15,13 @@ namespace progrock{ namespace expressive{
             );
 
         template< class Sequence, class Item >
-        inline $p append_to( ref_<Sequence> sequence, forwarding_ref_<Item> item )
+        inline $proc append_to( ref_<Sequence> sequence, forwarding_ref_<Item> item )
         {
             sequence.push_back( forward<Item>( item ) );
         }
 
         template< class Sequence >
-        inline $p append_to( ref_<Sequence> sequence, ref_<const Sequence> items )
+        inline $proc append_to( ref_<Sequence> sequence, ref_<const Sequence> items )
         {
             // Needs to be specialized if std::list is to be supported.
             sequence.reserve( sequence.size() + items.size() );
@@ -29,21 +29,21 @@ namespace progrock{ namespace expressive{
         }
 
         template< class Sequence >
-        inline $p append_to( ref_<Sequence> sequence, forwarding_ref_<Sequence> items )
+        inline $proc append_to( ref_<Sequence> sequence, forwarding_ref_<Sequence> items )
         {
             // The other overload catches lvalue refs so this is always an rvalue reference.
             for( $each_object o $in items ) { sequence.push_back( move( o ) ); }
         }
 
         template< class Char, class Traits, class Allocator >
-        inline $p append_to(
+        inline $proc append_to(
             ref_<basic_string<Char, Traits, Allocator>>         s,
             const Char                                          ch
             )
         { s += ch; }
 
         template< class Char, class Traits, class Allocator >
-        inline $p append_to(
+        inline $proc append_to(
             ref_<basic_string<Char, Traits, Allocator>>         s,
             ref_<const basic_string<Char, Traits, Allocator>>   tail
             )

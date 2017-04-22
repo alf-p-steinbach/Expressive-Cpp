@@ -23,7 +23,7 @@ namespace progrock{ namespace expressive{
         template< class String, class Type
             , $enabled_if< is_string_class_<String>() >
             >
-        inline $f operator<<(
+        inline $func operator<<(
             ref_<String>                s,
             ref_<const Type>            o
             ) -> ref_<String>
@@ -32,7 +32,7 @@ namespace progrock{ namespace expressive{
         template< class String, class Type
             , $enabled_if< is_string_class_<String>() >
             >
-        inline $f operator<<(
+        inline $func operator<<(
             forwarding_ref_<String>     s,
             ref_<const Type>            o
             ) -> temp_ref_<String>

@@ -16,13 +16,13 @@ namespace progrock{ namespace expressive{
             );
 
         template< class Container >
-        $p sort_items_of( ref_<Container> c )
+        $proc sort_items_of( ref_<Container> c )
         {
             std::sort( begin( c ), end( c ) );
         }
 
         template< class Container, class Comparator >
-        $p sort_items_of( ref_<Container> c, ref_<const Comparator> comparator )
+        $proc sort_items_of( ref_<Container> c, ref_<const Comparator> comparator )
         {
             std::sort( begin( c ), end( c ), comparator );
         }

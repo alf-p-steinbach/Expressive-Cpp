@@ -15,8 +15,8 @@ namespace progrock{ namespace expressive{
             Type    object;
             bool    is_first_iteration;
     
-            $f begin() -> Type* { return &object; }
-            $f end() -> Type* { return begin() + 1; }
+            $func begin() -> Type* { return &object; }
+            $func end() -> Type* { return begin() + 1; }
         };
     }  // namespace impl
 

@@ -11,7 +11,7 @@ namespace progrock{ namespace expressive{ namespace impl{
 #include <p/expressive/pseudo_keywords/impl/push_macro_definitions.hpp>
 #   include <p/expressive/pseudo_keywords/impl/macro_definitions.hpp>
 
-    inline $f clean_qualified_funcname(
+    inline $func clean_qualified_funcname(
         const ptr_<const char>      classic_func_declaration
         ) -> Simple_string_view
     {

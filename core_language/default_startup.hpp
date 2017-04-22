@@ -19,18 +19,18 @@ namespace progrock{ namespace expressive {
             exception, function, locale, runtime_error, system_error
             );
 
-        inline $p dummy_main_func() {}
+        inline $proc dummy_main_func() {}
 
-        inline $p report_exception( ref_<const exception> x )
+        inline $proc report_exception( ref_<const exception> x )
         {
             fprintf( stderr, "\n! %s\n", x.what() );
             fflush( stderr );       // It's here that failure may be discovered.
             if( ferror( stderr ) ) { throw x; }
         }
 
-        inline $f default_startup(
-            const ptr_<$p()>                        main_func       = dummy_main_func,
-            const ptr_<$p( ref_<const exception> )> on_fatal_error  = report_exception
+        inline $func default_startup(
+            const ptr_<$proc()>                        main_func       = dummy_main_func,
+            const ptr_<$proc( ref_<const exception> )> on_fatal_error  = report_exception
             ) -> int
         {
             // With g++ setlocale() isn't guaranteed called by the C++ level locale handling.

@@ -34,13 +34,13 @@ namespace progrock{ namespace expressive{
                 Index       index_;
                 ptr_<Item>  p_item_;
 
-                $f index() const    -> Index        { return index_; }
-                $f p_object() const -> ptr_<Item>   { return p_item_; }
-                $f is_first() const -> bool         { return index_ == 0; }
+                $func index() const    -> Index        { return index_; }
+                $func p_object() const -> ptr_<Item>   { return p_item_; }
+                $func is_first() const -> bool         { return index_ == 0; }
 
-                $f object() const   -> ref_<Item>   { return *p_item_; }
-                $f item() const     -> ref_<Item>   { return *p_item_; }
-                $f value() const    -> ref_<Item>   { return *p_item_; }
+                $func object() const   -> ref_<Item>   { return *p_item_; }
+                $func item() const     -> ref_<Item>   { return *p_item_; }
+                $func value() const    -> ref_<Item>   { return *p_item_; }
             };
 
             class Iterator
@@ -64,7 +64,7 @@ namespace progrock{ namespace expressive{
                 {}
 
             public:
-                $p advance()
+                $proc advance()
                 {
                     ++it_;
                     ++enumerated_.index_;
@@ -73,23 +73,23 @@ namespace progrock{ namespace expressive{
                 }
 
                 // Valid also for an end-iterator `it`, while `*it` would be UB.
-                $f index() const
+                $func index() const
                     -> Index
                 { return enumerated_.index; }
 
                 // UB for end-iterator.
-                $f object() const
+                $func object() const
                     -> ref_<Item>
                 { return *enumerated_.p_object; }
 
-                $f operator++()
+                $func operator++()
                     -> ref_<Iterator>
                 {
                     advance();
                     return *this;
                 }
 
-                $f operator++( int )
+                $func operator++( int )
                     -> Iterator
                 {
                     Iterator original{ *this };
@@ -97,7 +97,7 @@ namespace progrock{ namespace expressive{
                     return original;
                 }
 
-                $f operator*() const
+                $func operator*() const
                     -> ref_<Enumerated>
                 {
                     if( not enumerated_.p_item_ )
@@ -107,28 +107,28 @@ namespace progrock{ namespace expressive{
                     return enumerated_;
                 }
 
-                $f operator->() const
+                $func operator->() const
                     -> ptr_<Enumerated>
                 { return &(operator*()); }
 
                 friend
-                $f operator==( ref_<const Iterator> a, ref_<const Iterator> b )
+                $func operator==( ref_<const Iterator> a, ref_<const Iterator> b )
                     -> bool
                 { return (a.it_ == b.it_); }
 
                 friend
-                $f operator!=( ref_<const Iterator> a, ref_<const Iterator> b )
+                $func operator!=( ref_<const Iterator> a, ref_<const Iterator> b )
                     -> bool
                 { return (a.it_ != b.it_); }
             };
 
-            $f begin()
+            $func begin()
                 -> Iterator
             {
                 return Iterator{ typename Iterator::Start{}, std::begin( collection_.ref() ) };
             }
 
-            $f end()
+            $func end()
                 -> Iterator
             { return Iterator{ typename Iterator::Beyond{}, std::end( collection_.ref() ) }; }
 
@@ -144,19 +144,19 @@ namespace progrock{ namespace expressive{
         template< class Collection
             , class Enabled_ = decltype( declval<Collection>().begin() )
             >
-        inline $f enumerated( ref_<Collection> collection )
+        inline $func enumerated( ref_<Collection> collection )
             -> Enumerator_<Collection>
         { return Enumerator_<Collection>{ collection }; }
 
         template< class Item, size_t n >
-        inline $f enumerated( ref_<raw_array_of_<n, Item>> a )
+        inline $func enumerated( ref_<raw_array_of_<n, Item>> a )
             -> Enumerator_<raw_array_of_<n, Item>>
         { return Enumerator_<raw_array_of_<n, Item>>{ a }; }
 
         template< class Collection
             , class Enabled_ = decltype( declval<Collection>().begin() )
         >
-        inline $f enumerated( temp_ref_<Collection> collection )
+        inline $func enumerated( temp_ref_<Collection> collection )
             -> Enumerator_<Collection>
         { return Enumerator_<Collection>{ move( collection ) }; }
     }  // namespace libx

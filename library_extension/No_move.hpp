@@ -10,11 +10,11 @@ namespace progrock{ namespace expressive{
 
         struct No_move
         {
-            $f operator=( ref_<const No_move> )
+            $func operator=( ref_<const No_move> )
                 -> ref_<No_move>
             { return *this; }
 
-            $f operator=( temp_ref_<No_move> )
+            $func operator=( temp_ref_<No_move> )
                 -> ref_<No_move>
                 = delete;
 

@@ -15,19 +15,19 @@ namespace progrock{ namespace expressive {
             );
 
         template< class Char >
-        inline $f length_of(
+        inline $func length_of(
             const ptr_<const Char>              s
             ) -> Size
         { return char_traits<Char>::length( s ); }
 
         template< class Char, size_t n >
-        inline $simple_pure_f compile_time_length_of(
+        inline $simple_pure_func compile_time_length_of(
             ref_<const raw_array_of_<n, Char>>  //s
             ) -> Size
         { return n - 1; }
 
         template< class Char >
-        inline $f length_of(
+        inline $func length_of(
             ref_<const basic_string<Char>>      s
             ) -> Size
         { return s.length(); }

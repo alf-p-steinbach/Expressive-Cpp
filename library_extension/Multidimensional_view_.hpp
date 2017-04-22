@@ -39,19 +39,19 @@ namespace progrock{ namespace expressive{
         {};
 
         //template< class... Collections_1, class... Collections_2 >
-        //inline $f operator*(
+        //inline $func operator*(
         //    temp_ref_<Multidimensional_view_<Collections_1...>>     mv_1,
         //    temp_ref_<Multidimensional_view_<Collections_2...>>     mv_2
         //    ) -> Multidimensional_view_<Collections_1..., Collections_2...>
         //{ (void) mv_1; (void) mv_2; return {}; }
 
         template< class... Collections >
-        inline $f make_multidimensional_view( ref_<const Collections>... )
+        inline $func make_multidimensional_view( ref_<const Collections>... )
             -> Multidimensional_view_< Collections... >
         //{ return Multidimensional_view_< Collections... >( c... ); }
         { ; return {}; }  // TODO:
 
-        inline $f multi()
+        inline $func multi()
             -> Multidimensional_view_<void>
         { return {}; }
 
@@ -80,7 +80,7 @@ namespace progrock{ namespace expressive{
         { return make_multidimensional_view( list, c ); }
 
         template< class Value_1, class Value_2 >                                // ii
-        inline $f multi(
+        inline $func multi(
             ref_<const initializer_list<Value_1>>   list_1,
             ref_<const initializer_list<Value_2>>   list_2
             )

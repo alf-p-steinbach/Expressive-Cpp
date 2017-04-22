@@ -12,13 +12,13 @@ namespace progrock{ namespace expressive {
             int const exit_code_failure         = 0x80004005;       // E_FAIL
             int const exit_code_still_running   = 0x00000103;       // STILL_ACTIVE = 259
 
-            inline $f is_returnable_exit_code( const int x )
+            inline $func is_returnable_exit_code( const int x )
                 -> bool
             { return x != exit_code_still_running; }
         #else
             int const exit_code_failure = EXIT_FAILURE;             // Usually 1.
 
-            inline $f is_returnable_exit_code( const int x )
+            inline $func is_returnable_exit_code( const int x )
                 -> bool
             { return x == (x & 0xFF); }             // See exit() documentation.
         #endif
@@ -34,15 +34,15 @@ namespace progrock{ namespace expressive {
                 failure = impl::exit_code_failure
             };
 
-            static $f is_success( const Enum value )
+            static $func is_success( const Enum value )
                 -> bool
             { return value == success; }
 
-            static $f is_failure( const Enum value )
+            static $func is_failure( const Enum value )
                 -> bool
             { return value != success; }
 
-            static $f is_returnable( const Enum value )
+            static $func is_returnable( const Enum value )
                 -> bool
             { return impl::is_returnable_exit_code( value ); }
         };

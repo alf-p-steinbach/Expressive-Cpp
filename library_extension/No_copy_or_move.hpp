@@ -11,11 +11,11 @@ namespace progrock{ namespace expressive{
 
         struct No_copy_or_move: No_copy, No_move
         {
-            $f operator=( ref_<const No_copy_or_move> )
+            $func operator=( ref_<const No_copy_or_move> )
                 -> ref_<No_copy_or_move>
                 = delete;
 
-            $f operator=( temp_ref_<No_copy_or_move> )
+            $func operator=( temp_ref_<No_copy_or_move> )
                 -> ref_<No_copy_or_move>
                 = delete;
 

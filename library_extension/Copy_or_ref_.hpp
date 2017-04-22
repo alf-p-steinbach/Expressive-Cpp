@@ -36,11 +36,11 @@ namespace progrock{ namespace expressive{
             bool    has_object_copy_;
 
         public:
-            $f ref() const
+            $func ref() const
                 -> ref_<const Type>
             { return (has_object_copy_? object_ : *pointer_); }
 
-            $f ref()
+            $func ref()
                 -> ref_<Type>
             {
                 return *(has_object_copy_? &object_ : pointer_);
@@ -102,8 +102,8 @@ namespace progrock{ namespace expressive{
         using Wrapped_array = impl::Wrapper_< Raw_array >;
         using Base          = Copy_or_ref_< Wrapped_array >;
         public:
-            $f ref() const  -> ref_<const Raw_array>    { return Base::ref().items; }
-            $f ref()        -> ref_<Raw_array>          { return Base::ref().items; }
+            $func ref() const  -> ref_<const Raw_array>    { return Base::ref().items; }
+            $func ref()        -> ref_<Raw_array>          { return Base::ref().items; }
 
             Copy_or_ref_( ref_<Raw_array> a )
                 : Base( reinterpret_cast< ref_<Wrapped_array> >( a ) )
