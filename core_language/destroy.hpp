@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once    // Source encoding: utf-8 ∩
 // #include <p/expressive/core_language/destory.hpp>
-// Copyright � 2016 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright © 2016 Alf P. Steinbach, distributed under Boost license 1.0.
 
 // Ref <url: http://stackoverflow.com/a/26307877/464581>.
 

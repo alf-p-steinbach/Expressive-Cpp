@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once    // Source encoding: utf-8 ∩
 // #include <p/expressive/core_language/call_of.hpp>
 // Visual 2015 doesn't provide std::invoke, and besides, it has ungood vibes.
-// Copyright � 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <p/expressive/core_language/basic_type_builders.hpp>   // ref_, forwarding_ref_
 

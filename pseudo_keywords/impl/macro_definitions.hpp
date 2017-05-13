@@ -1,11 +1,11 @@
-// Can't use `#pragma once` for this file: it can be reincluded with the guard
+﻿// Can't use `#pragma once    // Source encoding: utf-8 ∩` for this file: it can be reincluded with the guard
 // undef'ed by a `#pragma pop_macro` in `pop_macro_definitions.hpp`.
 // #include <p/expressive/pseudo_keywords/impl/macro_definitions.hpp>
 //
 // Also, this file can be included within the `progrock::expressive` namespace,
 // so should not include anything that defines namespaces.
 //
-// Copyright � 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #ifndef EXPRESSIVE_PSEUDO_KEYWORDS_MACRO_DEFINITIONS_HPP
 #   define EXPRESSIVE_PSEUDO_KEYWORDS_MACRO_DEFINITIONS_HPP

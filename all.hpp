@@ -1,18 +1,18 @@
-#pragma once
+Ôªø#pragma once    // Source encoding: utf-8 ‚à©
 // #include <p/expressive/all.hpp>
-// Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright ¬© 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 //
 //  --------------------------------------------------------------------------
 //  <url: http://stackoverflow.com/a/638929/464581>
-//  What does ìexpressiveî mean when referring to programming languages?
+//  What does ‚Äúexpressive‚Äù mean when referring to programming languages?
 //  
 //  'Expressive' means that it's easy to write code that's easy to understand,
 //  both for the compiler and for a human reader.
 //  
 //  Two factors that make for expressiveness:
 //  
-//  ï intuitively readable constructs
-//  ï lack of boilerplate code
+//  ‚Ä¢ intuitively readable constructs
+//  ‚Ä¢ lack of boilerplate code
 //  --------------------------------------------------------------------------
 
 #include <p/expressive/core_language.hpp>               // expressive::core::*

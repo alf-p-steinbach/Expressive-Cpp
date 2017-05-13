@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once    // Source encoding: utf-8 ∩
 // #include <p/expressive/macros/EXPRESSIVE_FUNCNAME.hpp>
 // Qualified function name as a String_view_.
-// Copyright � 2016, 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright © 2016, 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <p/expressive/impl/clean_qualified_funcname.hpp>
 

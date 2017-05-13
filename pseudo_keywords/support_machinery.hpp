@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once    // Source encoding: utf-8 ∩
 //#include <p/expressive/pseudo_keywords/support_machinery.hpp>
 //
 // This file must be included in the global namespace before using the pseudo
@@ -7,7 +7,7 @@
 // The intent is that the latter two files can be used within named namespaces,
 // in header files. For example, they're used that way throughout this library.
 //
-// Copyright � 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <p/expressive/impl/support_for_select_expr.hpp>        // $pick
 #include <p/expressive/impl/support_for_invoked_with_stm_.hpp>  // $invoked_with

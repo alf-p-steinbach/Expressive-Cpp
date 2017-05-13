@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once    // Source encoding: utf-8 ∩
 // #include <p/expressive/library_extension/Int_range_.hpp>
-// Copyright � 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <p/expressive/core_language/basic_type_aliases.hpp>    // (Size)
 #include <p/expressive/core_language/basic_type_builders.hpp>   // (ptr_, ref_)
@@ -153,7 +153,7 @@ namespace progrock{ namespace expressive{
                             (last - first < 0) != (delta < 0)
                         $use
                             // `last` could only be reached from `first` via wraparound
-                            first       // � so create an empty range.
+                            first       // … so create an empty range.
                         $else_use
                            $as<Unsigned>( last ) + delta
                         )

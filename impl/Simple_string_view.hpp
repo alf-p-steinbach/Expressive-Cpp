@@ -1,5 +1,5 @@
-#pragma once
-// Copyright � 2016, 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+﻿#pragma once    // Source encoding: utf-8 ∩
+// Copyright © 2016, 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 // Safety: the header below does not include the pseudo keyword definitions.
 #include <p/expressive/core_language/basic_type_builders.hpp>   // ptr_

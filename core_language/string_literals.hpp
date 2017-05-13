@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once    // Source encoding: utf-8 ∩
 // #include <p/expressive/core_language/string_literals.hpp>
-// Copyright � 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 namespace progrock{ namespace expressive {
 #include <p/expressive/pseudo_keywords/begin_region.hpp>

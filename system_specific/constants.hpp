@@ -1,6 +1,6 @@
-#pragma once
+Ôªø#pragma once    // Source encoding: utf-8 ‚à©
 // #include <p/expressive/system_specific/constants.hpp>
-// Copyright © 2016 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright ¬© 2016 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <p/expressive/library_extension/length_of.hpp>     // expressive::compile_time_length_of
 
@@ -23,7 +23,7 @@ namespace progrock{ namespace expressive {
             bufsize_for_pointer_as_hex + 1;
 
         // Best to avoid endianness, absolutely, but sometimes needs must.
-        // Since the PDP-11 is no longer in use, ìnot little-Eî = ìbig-Eî.
+        // Since the PDP-11 is no longer in use, ‚Äúnot little-E‚Äù = ‚Äúbig-E‚Äù.
 #   if defined( _WIN32 )                // Note: Visual C++ can compile for e.g. XBox.
         $compile_time $let   system_is_little_endian     =
             true;

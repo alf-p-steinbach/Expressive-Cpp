@@ -1,6 +1,6 @@
-#pragma once
+Ôªø#pragma once    // Source encoding: utf-8 ‚à©
 // #include <p/expressive/core_language/basic_type_builders.hpp>
-// Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright ¬© 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <p/expressive/core_language/basic_type_aliases.hpp>    // cppx::Size
 
@@ -19,7 +19,7 @@ namespace progrock{ namespace expressive{
         using temp_ref_ = Some_type&&;          // std::add_rvalue_reference_t<Some_type>;
 
         template< class Some_type >
-        using forwarding_ref_ = Some_type&&;    // Also known as a ìuniversal referenceî.
+        using forwarding_ref_ = Some_type&&;    // Also known as a ‚Äúuniversal reference‚Äù.
 
         template< class Some_type >
         using ptr_ = Some_type*;

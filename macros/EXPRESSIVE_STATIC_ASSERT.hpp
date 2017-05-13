@@ -1,4 +1,4 @@
-﻿#pragma once
+﻿#pragma once    // Source encoding: utf-8 ∩
 // #include <p/expressive/macros/EXPRESSIVE_STATIC_ASSERT.hpp>
 // Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 

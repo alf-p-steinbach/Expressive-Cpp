@@ -1,4 +1,4 @@
-﻿#pragma once
+﻿#pragma once    // Source encoding: utf-8 ∩
 // #include <p/expressive/Exit_code.hpp>
 // Copyright © 2016 Alf P. Steinbach, distributed under Boost license 1.0.
 

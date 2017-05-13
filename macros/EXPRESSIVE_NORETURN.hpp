@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once    // Source encoding: utf-8 ∩
 // #include <p/expressive/macros/EXPRESSIVE_NORETURN.hpp>
-// Copyright � 2016, 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright © 2016, 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 // To avoid the shouting uppercase prefer to use the alias `$noreturn` instead.
 #ifndef EXPRESSIVE_NORETURN

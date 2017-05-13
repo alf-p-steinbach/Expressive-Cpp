@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once    // Source encoding: utf-8 ∩
 // #include <p/expressive/core_language.hpp>
-// Copyright � 2017 Alf P. Steinbach, distributed under Boost license 1.0.
+// Copyright © 2017 Alf P. Steinbach, distributed under Boost license 1.0.
 
 #include <p/expressive/core_language/basic_type_aliases.hpp>    // (Byte, Size, Index)
 #include <p/expressive/core_language/basic_type_builders.hpp>   // (type_, ref_, ptr_, raw_array_, raw_array_of_)
